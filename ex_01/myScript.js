@@ -1,5 +1,6 @@
 
-// versión 1
+// ¿Qué andas mirando aquí?
+// ¡Vaya a hacer su tarea!
 
 var QTN;
 var ANS;
@@ -78,21 +79,17 @@ function test(){
     
     if( rndi(1,100) <= 75 ){
         
-        let prob = rndi(1,4);        
+        let prob = rndi(1,2);        
         
         if(prob===1) prob_conv_T();
-        if(prob===2) prob_conv_P();
-        if(prob===3) prob_conv_n(); 
-        if(prob===4) prob_P_abs();  
+        if(prob===2) prob_ley_charles()
 
     }else{
         
-        let prob = rndi(1,4);
+        let prob = rndi(1,2);
         
         if(prob===1) prob_conv_T();
-        if(prob===2) prob_conv_P();
-        if(prob===3) prob_conv_n(); 
-        if(prob===4) prob_P_abs();  
+        if(prob===2) prob_ley_charles()
         
         // if(prob===2) prob_2a_ley_charles()
         // if(prob===3) prob_ley_charles();
@@ -115,54 +112,7 @@ function test(){
     }
     
     
-    
-/*    
-    // problemas NUEVOS
-    if(ii>=1  && ii<=7){
-        
-        let prob = rndi(1,2);
-        
-		if(prob===1) prob_rx_quim_calor_1();
-        if(prob===2) prob_rx_quim_calor_2();
-		
-    }    
-    // problemas VIEJOS
-    if(ii>=8 && ii<=10){
-        
-        let prob = rndi(1,20);    
-        
-        if(prob===1){            
-            let prob2 = rndi(1,6);            
-            if(prob2===1) prob_conv_P();
-            if(prob2===2) prob_conv_T();
-            if(prob2===3) prob_conv_V(); 
-            if(prob2===4) prob_conv_n();  
-            if(prob2===5) prob_P_abs();
-            if(prob2===6) prob_frac_molar();
-        }
-        
-        if(prob===2) prob_ley_boyle();
-        if(prob===3) prob_ley_charles();
-        if(prob===4) prob_ley_avogadro();        
-        if(prob===5) prob_2a_ley_charles();
-        if(prob===6) prob_gas_ideal();        
-        if(prob===7) prob_ley_Dalton();
-        if(prob===8) prob_ley_Amagat(); 
-        if(prob===9) prob_Z();
-        if(prob===10) prob_Van_der_Waals();    
-        if(prob===11) prob_1a_ley();        
-        if(prob===12) prob_Cp_Cv();
-        if(prob===13) prob_calor_isobarico();
-        if(prob===14) prob_calor_isocorico();
-        if(prob===15) prob_trabajo_isobarico();
-        if(prob===16) prob_trabajo_calor_isotermico();        
-        if(prob===17) prob_trabajo_adiabatico();
-        if(prob===18) prob_ecs_adiabaticas();
-		if(prob===19) prob_epsilon();
-        if(prob===20) prob_entropia();
-                
-    }
-*/
+ 
 		
 	document.getElementById("question").innerHTML = QTN;
 
