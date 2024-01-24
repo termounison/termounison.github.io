@@ -76,23 +76,21 @@ function test(){
 
 	updateScore();
     
-    if( rndi(1,100) <= 80 ){
+    if( rndi(1,100) <= 70 ){
         
-        let prob = rndi(1,4);        
-        
-        if(prob===1) prob_2a_ley_charles()
-        if(prob===2) prob_ley_charles();
-		if(prob===3) prob_ley_boyle();
-        if(prob===4) prob_ley_avogadro();
+        let prob = rndi(1,3);        
+                
+		if(prob===1) prob_ley_boyle();
+        if(prob===2) prob_conv_P();
+        if(prob===3) prob_P_abs();         
 
     }else{
         
-        let prob = rndi(1,4);
+        let prob = rndi(1,2);
         
         if(prob===1) prob_conv_T();
-        if(prob===2) prob_conv_P();
-        if(prob===3) prob_conv_n(); 
-        if(prob===4) prob_P_abs();  
+        if(prob===2) prob_ley_charles();
+ 
         
     }
     
