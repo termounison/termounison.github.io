@@ -26,7 +26,7 @@ var zold=0;
 //var z1,z2,z3,z4; //fakes
 
 
-var act=2;
+var act=3;
 var uname;
 var ii=1; //contador
 var iimax=20; //num de preguntas
