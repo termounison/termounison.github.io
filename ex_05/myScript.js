@@ -76,17 +76,18 @@ function test(){
 
 	updateScore();
     
-    if( rndi(1,100) <= 80 ){
+    if( rndi(1,100) <= 85 ){
         
-        let prob = rndi(1,3); 
+        let prob = rndi(1,4); 
 		
 		if(prob===1) prob_frac_molar();
 		if(prob===2) prob_ley_Dalton();
-		if(prob===3) prob_ley_Amagat();     
+		if(prob===3) prob_ley_Amagat();    
+        if(prob===4) prob_gas_ideal();	        
 		
     }else{
         
-        let prob = rndi(1,6);
+        let prob = rndi(1,5);
         
 		if( prob === 1){
 			
@@ -101,8 +102,7 @@ function test(){
         if(prob===3) prob_ley_charles();
 		if(prob===4) prob_ley_boyle();
         if(prob===5) prob_ley_avogadro();
-		if(prob===6) prob_gas_ideal();		
-        
+			        
     }
     
         // if(prob===2) prob_2a_ley_charles()
