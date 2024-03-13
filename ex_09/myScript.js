@@ -76,7 +76,7 @@ function test(){
 
 	updateScore();
     
-    if( rndi(1,100) <= 90 ){
+    if( rndi(1,100) <= 95 ){
         
         let prob = rndi(1,6); 
 		
@@ -2696,7 +2696,7 @@ function round4(num) {
 //------------------------------------------------------------------------------
 function showAns(){
 	
-	console.log("ANS: ", ANS);
+	//console.log("ANS: ", ANS);
 
 	var trueANS = "";
     

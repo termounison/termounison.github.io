@@ -2690,7 +2690,7 @@ function round4(num) {
 //------------------------------------------------------------------------------
 function showAns(){
 	
-	console.log("ANS: ", ANS);
+	//console.log("ANS: ", ANS);
 
 	var trueANS = "";
     
