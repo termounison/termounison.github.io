@@ -67,10 +67,12 @@ function test(){
 
     while(1){
         
-        if(rndi(1,100)<=90)            
-            PFV_id = rndi(   103, 218 ); // preguntas "nuevas"          
+        if( rndi(1,100)<85 )     
+
+            PFV_id = rndi(  161, 218 ); // preguntas "nuevas" 
+
         else            
-            PFV_id = rndi(   1, 102 ); // preguntas anteriores             
+            PFV_id = rndi(  103, 160 ); // preguntas anteriores          
         
         
         if(PFV_id !== PFV_id_old) break;
