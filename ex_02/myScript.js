@@ -1,5 +1,13 @@
 
-// versión 1
+/*
+
+(C) 2024 Dr. Octavio Juárez
+octavio.juarez@unison.mx
+
+Todos los derechos reservados.
+
+*/
+
 
 var QTN;
 var ANS;
@@ -26,7 +34,7 @@ var zold=0;
 //var z1,z2,z3,z4; //fakes
 
 
-var act=2;
+var act=2; // numero de examen
 var uname;
 var ii=1; //contador
 var iimax=20; //num de preguntas
@@ -76,552 +84,35 @@ function test(){
 
 	updateScore();
     
-    if( rndi(1,100) <= 70 ){
-        
-        let prob = rndi(1,3);        
-                
-		if(prob===1) prob_ley_boyle();
-        if(prob===2) prob_conv_P();
-        if(prob===3) prob_P_abs();         
+	
+	let prob = rndi(1,100);
+	
+	if(prob<20){
+		let prob2 = rndi(1,4);
+		if(prob2===1) prob_conv_T();
+		if(prob2===2) prob_conv_P();
+		if(prob2===3) prob_conv_V(); 
+		if(prob2===4) prob_conv_E();
+	}else{
+		let prob2 = rndi(1,6);
+		if(prob2===1) prob_conv_n();  
+		if(prob2===2) prob_conv_d();
+		if(prob2===3) prob_conv_Vm();
+		if(prob2===4) prob_calor();
+		if(prob2===5) prob_rx_quim_calor_1();
+		if(prob2===6) prob_rx_quim_calor_2();
+	}
+   
 
-    }else{
-        
-        let prob = rndi(1,2);
-        
-        if(prob===1) prob_conv_T();
-        if(prob===2) prob_ley_charles();
- 
-        
-    }
-    
-        // if(prob===2) prob_2a_ley_charles()
-        // if(prob===3) prob_ley_charles();
-		// if(prob===4) prob_ley_boyle()
-        // if(prob===5) prob_gas_ideal()
-        // if(prob===6) prob_ley_Dalton();
-        // if(prob===7) prob_ley_Amagat();
-        // if(prob===8) prob_Z();
-        // if(prob===9) prob_Van_der_Waals(); 
-        // if(prob===10) prob_1a_ley();        
-        // if(prob===11) prob_Cp_Cv();
-        // if(prob===12) prob_calor_isobarico();
-        // if(prob===13) prob_calor_isocorico();
-        // if(prob===14) prob_trabajo_isobarico();	
-        // if(prob===15) prob_trabajo_calor_isotermico();        
-        // if(prob===16) prob_trabajo_adiabatico();
-        // if(prob===17) prob_ecs_adiabaticas();    
-        // if(prob===18) prob_epsilon();
-        // if(prob===19) prob_entropia();        
+	//pruebame...
+	//prob_conv_Vm();
+		
 
-    
-    
-    
-/*    
-    // problemas NUEVOS
-    if(ii>=1  && ii<=7){
-        
-        let prob = rndi(1,2);
-        
-		if(prob===1) prob_rx_quim_calor_1();
-        if(prob===2) prob_rx_quim_calor_2();
-		
-    }    
-    // problemas VIEJOS
-    if(ii>=8 && ii<=10){
-        
-        let prob = rndi(1,20);    
-        
-        if(prob===1){            
-            let prob2 = rndi(1,6);            
-            if(prob2===1) prob_conv_P();
-            if(prob2===2) prob_conv_T();
-            if(prob2===3) prob_conv_V(); 
-            if(prob2===4) prob_conv_n();  
-            if(prob2===5) prob_P_abs();
-            if(prob2===6) prob_frac_molar();
-        }
-        
-        if(prob===2) prob_ley_boyle();
-        if(prob===3) prob_ley_charles();
-        if(prob===4) prob_ley_avogadro();        
-        if(prob===5) prob_2a_ley_charles();
-        if(prob===6) prob_gas_ideal();        
-        if(prob===7) prob_ley_Dalton();
-        if(prob===8) prob_ley_Amagat(); 
-        if(prob===9) prob_Z();
-        if(prob===10) prob_Van_der_Waals();    
-        if(prob===11) prob_1a_ley();        
-        if(prob===12) prob_Cp_Cv();
-        if(prob===13) prob_calor_isobarico();
-        if(prob===14) prob_calor_isocorico();
-        if(prob===15) prob_trabajo_isobarico();
-        if(prob===16) prob_trabajo_calor_isotermico();        
-        if(prob===17) prob_trabajo_adiabatico();
-        if(prob===18) prob_ecs_adiabaticas();
-		if(prob===19) prob_epsilon();
-        if(prob===20) prob_entropia();
-                
-    }
-*/
-		
 	document.getElementById("question").innerHTML = QTN;
 
 	showAns();
 
 }
-
-//------------------------------------------------------------------------------
-function prob_ley_charles(){
-    
-    let P,V,R,T,M,n,d,m,e;
-    let w,q,dU,dH,dG,dS;
-    let P1,P2,V1,V2,T1,T2,n1,n2;
-    let GAS1;
-    let opc = rndi(1,3);
-    
-    QTN = "";
-    ANS = 1;
-
-	if(opc===1){
-		
-		T1 = rndi(250,500); // K
-		
-		while(1){
-            V1 = rndi(1,80); // L
-			V2 = rndi(1,80);
-			if(Math.abs(V1-V2)>10) break;
-		}
-		
-		QTN = "Durante un proceso isobárico, el volumen de un gas cambia de "+V1+ " L a "+V2+" L. Si la temperatura inicial del gas era igual a "+T1+" K, estima la temperatura final del gas.<br><br>";
-		
-		T2 = V2*T1/V1;
-		
-		ANS = T2;
-		uni = "K";
-	}
-
-	if(opc===2){
-		
-		V1 = rndi(1,50); // L
-		while(1){
-            T1 = rndi(250,500); // K
-			T2 = rndi(250,500); // K
-			if(Math.abs(T1-T2)>10) break;
-		}
-		
-        QTN = "Durante un proceso isobárico, la temperatura de un gas cambia de "+T1+ " K a "+T2+" K. Si el volumen inicial del gas era igual a "+V1+" L, estima el volumen final del gas.<br><br>";		
-		
-		V2 = V1*T2/T1;
-		
-		ANS = V2;
-		uni = "L";
-	}
-
-	if(opc===3){
-		
-		let opc2 = rndi(1,3);		
-		
-		T1 = rndi(250,500); // K
-
-		if(opc2===1){
-			QTN = "Durante un proceso isobárico, un gas disminuye su volumen a la mitad. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = T1/2;			
-		}
-		
-		if(opc2===2){
-			QTN = "Durante un proceso isobárico, un gas duplica su volumen. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = 2*T1;			
-		}
-
-		if(opc2===3){
-			QTN = "Durante un proceso isobárico, un gas triplica su volumen. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = 3*T1;			
-		}
-		
-		ANS = T2;
-		uni = "K";
-	}           
-}  
-    
-//------------------------------------------------------------------------------
-function prob_ley_boyle(){
-    
-    let P,V,R,T,M,n,d,m,e;
-    let w,q,dU,dH,dG,dS;
-    let P1,P2,V1,V2,T1,T2,n1,n2;
-    let GAS1;
-    let opc = rndi(1,4);
-    
-    QTN = "";
-    ANS = 1;
-
-	if(opc===1){
-		
-		P1 = rndi(1,20); // atm
-		
-		while(1){
-            V1 = rndi(1,100); // L
-			V2 = rndi(1,100);
-			if(Math.abs(V1-V2)>15) break;
-		}
-		
-		QTN = "Durante un proceso isotérmico, el volumen de un gas cambia de "+V1+ " L a "+V2+" L. Si la presión inicial del gas era igual a "+P1+" atm, estima la presión final del gas.<br><br>";
-		
-		P2 = P1*(V1/V2);
-		
-		ANS = P2;
-		uni = "atm";
-	}
-
-	if(opc===2){
-		
-		V1 = rndi(1,50); // L
-		while(1){
-            P1 = rndi(250,2*760); // mmHg
-			P2 = rndi(250,2*760); // mmHg
-			if(Math.abs(P1-P2)>250) break;
-		}
-		
-        QTN = "Durante un proceso isotérmico, la presión de un gas cambia de "+P1+ " mmHg a "+P2+" mmHg. Si el volumen inicial del gas era igual a "+V1+" L, estima el volumen final del gas.<br><br>";		
-		
-		V2 = V1*(P1/P2);
-		
-		ANS = V2;
-		uni = "L";
-	}
-
-	if(opc===3){
-		
-		let opc2 = rndi(1,3);		
-		
-		P1 = rndi(100,1000); // kPa
-
-		if(opc2===1){
-			QTN = "Durante un proceso isotérmico, un gas disminuye su volumen a la mitad. Si la presión del gas al inicio del proceso es igual a "+P1+" kPa, estima la presión final del gas.<br><br>";		
-			P2 = 2*P1;			
-		}
-		
-		if(opc2===2){
-			QTN = "Durante un proceso isotérmico, un gas duplica su volumen. Si la presión del gas al inicio del proceso es igual a "+P1+" kPa, estima la presión final del gas.<br><br>";		
-			P2 = P1/2;			
-		}
-
-		if(opc2===3){
-			QTN = "Durante un proceso isotérmico, un gas triplica su volumen. Si la presión del gas al inicio del proceso es igual a "+P1+" kPa, estima la presión final del gas.<br><br>";		
-			P2 = P1/3;			
-		}
-		
-		ANS = P2;
-		uni = "kPa";
-	}    
-
-
-	if(opc===4){
-		
-		let opc2 = rndi(1,3);		
-		
-		V1 = rndi(100,1000); // L
-
-		if(opc2===1){
-			QTN = "Durante un proceso isotérmico, un gas disminuye su presión a la mitad. Si volumen del gas al inicio del proceso es igual a "+V1+" L, estima el volumen final del gas.<br><br>";		
-			V2 = 2*V1;			
-		}
-		
-		if(opc2===2){
-			QTN = "Durante un proceso isotérmico, un gas duplica su presión. Si el volumen del gas al inicio del proceso es igual a "+V1+" L, estima el volumen final del gas.<br><br>";		
-			V2 = V1/2;			
-		}
-
-		if(opc2===3){
-			QTN = "Durante un proceso isotérmico, un gas triplica su presión. Si el volumen del gas al inicio del proceso es igual a "+V1+" L, estima el volumen final del gas.<br><br>";		
-			V2 = V1/3;			
-		}
-		
-		ANS = V2;
-		uni = "L";
-	}   
-        
-} 
-
-//------------------------------------------------------------------------------
-function prob_2a_ley_charles(){
-    
-    let P,V,R,T,M,n,d,m,e;
-    let w,q,dU,dH,dG,dS;
-    let P1,P2,V1,V2,T1,T2,n1,n2;
-    let GAS1;
-    let opc = rndi(1,3);
-    
-    QTN = "";
-    ANS = 1;
-
-	if(opc===1){
-		
-		T1 = rndi(250,500); // K
-		
-		while(1){
-            P1 = rndi(1,80); // atm
-			P2 = rndi(1,80);
-			if(Math.abs(P1-P2)>10) break;
-		}
-		
-		QTN = "Durante un proceso isocórico, la presión de un gas cambia de "+P1+ " atm a "+P2+" atm. Si la temperatura inicial del gas era igual a "+T1+" K, estima la temperatura final del gas.<br><br>";
-		
-		T2 = T1*(P2/P1);
-		
-		ANS = T2;
-		uni = "K";
-	}
-
-	if(opc===2){
-		
-		P1 = rndi(1,50); // atm
-		while(1){
-            T1 = rndi(250,500); // K
-			T2 = rndi(250,500); // K
-			if(Math.abs(T1-T2)>10) break;
-		}
-		
-        QTN = "Durante un proceso isocórico, la temperatura de un gas cambia de "+T1+ " K a "+T2+" K. Si la presión inicial del gas era igual a "+P1+" atm, estima la presión final del gas.<br><br>";		
-		
-		P2 = P1*(T2/T1);
-		
-		ANS = P2;
-		uni = "atm";
-	}
-
-	if(opc===3){
-		
-		let opc2 = rndi(1,3);		
-		
-		T1 = rndi(250,500); // K
-
-		if(opc2===1){
-			QTN = "Durante un proceso isocórico, un gas disminuye su presión a la mitad. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = T1/2;			
-		}
-		
-		if(opc2===2){
-			QTN = "Durante un proceso isocórico, un gas duplica su presión. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = 2*T1;			
-		}
-
-		if(opc2===3){
-			QTN = "Durante un proceso isocórico, un gas triplica su presión. Si la temperatura del gas al inicio del proceso es igual a "+T1+" K, estima la temperatura final del gas.<br><br>";		
-			T2 = 3*T1;			
-		}
-		
-		ANS = T2;
-		uni = "K";
-	}           
-}  
-
-//------------------------------------------------------------------------------
-function prob_ley_avogadro(){
-    
-    let P,V,R,T,M,n,d,m,e;
-    let w,q,dU,dH,dG,dS;
-    let P1,P2,V1,V2,T1,T2,n1,n2;
-    let GAS1;
-    let opc = rndi(1,2);
-    
-    QTN = "";
-    ANS = 1;
-
-	if(opc===1){
-		
-		V1 = rndi(1,100); // L
-		
-		while(1){
-            n1 = rndi(1,20); // mol
-			n2 = rndi(1,20);
-			if(Math.abs(n1-n2)>4) break;
-		}
-		
-		QTN = "A cierta temperatura y presión, "+n1+ " mol de gas ocupan un volumen igual a "+V1+" L. Calcula el volumen que ocuparán "+n2+" mol de gas a la misma temperatura y presión.<br><br>";
-		
-		V2 = V1*(n2/n1);
-		
-		ANS = V2;
-		uni = "L";
-	}
-
-	if(opc===2){
-		
-		n1 = rndi(1,20); // mol
-		
-		while(1){
-            V1 = rndi(1,100); // L
-			V2 = rndi(1,100);
-			if(Math.abs(V1-V2)>15) break;
-		}
-		
-		QTN = "A cierta temperatura y presión, "+n1+ " mol de gas ocupan un volumen igual a "+V1+" L. Calcula la cantidad de sustancia necesaria para un volumen igual a "+V2+" L de gas a la misma temperatura y presión.<br><br>";
-		
-		n2 = n1*(V2/V1);
-		
-		ANS = n2;
-		uni = "mol";
-	}
-
-}  
-
-
-
-//------------------------------------------------------------------------------
-function prob_gas_ideal(){
-
-	let P,V,n,R,T,m,M,w,q,Cv,Cp,dU,dH,GAS;
-    let P1,P2,V1,V2,T1,T2;
-    let opc = rndi(1,8);
-    let opc2 = rndi(2,10);
-    
-    if(opc2===1){ GAS = "H<sub>2</sub>"; M = 2*1.01; }
-    if(opc2===2){ GAS = "N<sub>2</sub>"; M = 2*14.01; }
-    if(opc2===3){ GAS = "O<sub>2</sub>"; M = 2*16.0; }
-    if(opc2===4){ GAS = "CO";             M = 12.01+16.0; }
-    if(opc2===5){ GAS = "CO<sub>2</sub>"; M = 12.01+2*16.0; }
-    if(opc2===6){ GAS = "H<sub>2</sub>O"; M = 2*1.01+16.0; }
-    if(opc2===7){ GAS = "CH<sub>4</sub>"; M = 12.01+4*1.01; }
-    if(opc2===8) { GAS = "He"; M = 4.0; }
-    if(opc2===9) { GAS = "Ne"; M = 20.18; }
-    if(opc2===10){ GAS = "Ar"; M = 39.95; }
-    
-    
-    if(opc===1){        
-        while(1){        
-            R = 0.08206;
-            n = rndi(1,10);
-            T = rndi(-100,400); //°C
-            P = rndi(1,20); //atm            
-            V = n*R*(T+273.15)/P;   
-            if(V >= 4) break;
-        }
-        
-        QTN = "Calcula el volumen de "+n+" mol de gas ideal a "+P+" atm y "+T+" °C.";
-        
-        ANS = V;
-        uni = "L";        
-    }
-
-    if(opc===2){        
-        while(1){        
-            R = 8.314; //Pa m3 / mol K
-            m = rndi(10,1000)*10; //gramos
-            n = m/M; //mol
-            T = rndi(150,800); //K
-            P = rndi(1,100); //kPa   
-            V = n*R*T/(1000*P); //m3   
-            if(V >= 1 && n>= 1) break;
-        }
-        
-        QTN = "Suponiendo que el "+GAS+" se comporta como un gas ideal, calcula el volumen de "+m+" gramos de "+GAS+" a "+P+" kPa y "+T+" K.";
-        
-        ANS = V;
-        uni = "m<sup>3</sup>";        
-    }
-
-    if(opc===3){        
-        while(1){        
-            R = 0.08206;
-            n = rndi(1,10);
-            T = rndi(-100,400); //°C
-            V = rndi(1,50); //L
-            P = n*R*(T+273.15)/V;   
-            if(P >= 1) break;
-        }
-        
-        QTN = "Calcula la presión que ejercen "+n+" mol de gas ideal a "+T+" °C en un contenedor de "+V+" L.";
-        
-        ANS = P;
-        uni = "atm";        
-    }
-
-    if(opc===4){        
-        while(1){        
-            R = 8.314; //Pa m3 / mol K
-            m = rndi(10,1000)*10; //gramos
-            n = m/M; //mol
-            T = rndi(150,800); //K
-            V = rndi(1,100); //m3   
-            P = ( n*R*T/V )/1000; // kPa
-            if(P >= 1 && n>= 1) break;
-        }
-        
-        QTN = "Suponiendo que el "+GAS+" se comporta como un gas ideal, calcula la presión que ejercen "+m+" gramos de "+GAS+" a "+T+" K en un contenedor de "+V+" m<sup>3</sup>.";
-        
-        ANS = P;
-        uni = "kPa";        
-    }
-
-    if(opc===5){        
-        while(1){        
-            R = 0.08206;
-            n = rndi(10,100);
-            V = rndi(1,50); //L
-            P = rndi(1,10); //atm   
-            T = P*V/(n*R);    
-            T = T - 273.15;            
-            if(T >= -50) break;
-        }
-                
-        QTN = "Calcula la temperatura de "+n+" mol de gas ideal a "+P+" atm en un contenedor de "+V+" L.";
-                
-        ANS = T;
-        uni = "°C";        
-    }
-
-    if(opc===6){        
-        while(1){        
-            R = 8.314; //Pa m3 / mol K
-            m = rndi(10,100)*10; //gramos
-            n = m/M; //mol
-            P = rndi(1,200); //kPa
-            V = rndi(1,10); //m3   
-            T = 1000*P*V/(n*R);
-            if(T >= 200 && T<= 800&&n>= 1) break;
-        }
-        
-        QTN = "Suponiendo que el "+GAS+" se comporta como un gas ideal, calcula la temperatura de "+m+" gramos de "+GAS+" a "+P+" kPa en un contenedor de "+V+" m<sup>3</sup>.";
-        
-        ANS = T;
-        uni = "K";        
-    }
-
-    if(opc===7){        
-        while(1){        
-            R = 0.08206;
-            d = rndi(1,100); // g/L
-            P = rndi(100,760*2) // mmHg
-            T = rndi(15,30); // °C            
-            M = ( d*R*(T+273.15) )/( P*(1/760) );
-            if(M >= 1 && M <= 300) break;
-        }
-        
-        QTN = "La densidad de un gas desconocido es igual a "+d+" g/L a "+T+" °C y "+P+" mmHg. Estima la masa molar del gas (suponiendo un comportamiento ideal).";
-        
-        ANS = M;
-        uni = "g/mol";        
-    }
-
-    if(opc===8){        
-       while(1){        
-            R = 0.08206;
-            P = rndi(1,10)*760 // mmHg
-            T = rndi(-100,15); // °C   
-            d = (P/760)*M/(R*(T+273.15));
-           if(d >= 1) break;
-       }
-        
-        QTN = "Suponiendo que el "+GAS+" se comporta como un gas ideal, estima su densidad a "+T+" °C y "+P+" mmHg.";
-        
-        ANS = d;
-        uni = "g/L";        
-    }
-
-    
-}
-
 
 
 //------------------------------------------------------------------------------
@@ -757,6 +248,65 @@ function prob_conv_V(){
 
 
 //------------------------------------------------------------------------------
+function prob_conv_E(){
+    
+
+    
+    /*
+    1 cal = 4.186 J
+	1 atm L = 101.325 J
+	1 Pa m3 = 1 J
+    */
+    
+	
+    let opt = rndi(1,4);
+    let E;
+
+	
+	// cal -> J
+	if(opt===1){
+		E = rndi(100,1000);
+		QTN = "Convierte "+E+" cal en kJ.<br><br>";
+		
+		E = E*(4.186/1); // J
+		E = E/1000; // kJ
+				
+		ANS = E; uni = "kJ";
+	}
+
+	// J -> cal
+	if(opt===2){
+		E = rndi(100,1000);
+		QTN = "Convierte "+E+" J en cal.<br><br>";
+		
+		E = E*(1/4.186); // cal
+					
+		ANS = E; uni = "cal";
+	}
+
+	// atmL -> J
+	if(opt===3){
+		E = rndi(10,100);
+		QTN = "Convierte "+E+" atm L en J.<br><br>";
+		
+		E = E*(101.325/1); // J
+					
+		ANS = E; uni = "J";
+	}
+
+	// J -> atm L
+	if(opt===4){
+		E = rndi(100,1000);
+		QTN = "Convierte "+E+" J en atm L.<br><br>";
+		
+		E = E*(1/101.325); // atm L
+					
+		ANS = E; uni = "atm L";
+	}
+    
+}
+
+//------------------------------------------------------------------------------
 function prob_conv_n(){
 
     let opc = rndi(1,2);
@@ -801,1614 +351,229 @@ function prob_conv_n(){
 
 
 //------------------------------------------------------------------------------
-function prob_P_abs(){
+function prob_conv_d(){
+
+    let opc = rndi(1,3);
     
-    let Pabs, Pmano, Patm;
-    let opc = rndi(1,2);
+    let d, V, n, m, M, COMP;
     
-    QTN = "";
-    ANS = 1;
+    let opc2 = rndi(1,7);
+	
 
-
-    // manometro tubo U cerrado.
-	if(opc===1){
-		
-		Pmano = rndi(10,720); // mmHg
-        Patm = rndi(740,760); // mmHg
-		Pabs = Pmano;
-		
-		QTN = "Se desea medir la presión absoluta de un gas confinado. La lectura del manómetro de tubo en U (cerrado) es igual a "+Pmano+ " mmHg. La lectura del barómetro es igual a "+Patm+" mmHg. Calcula la presión absoluta del gas confinado.<br><br>";
-		
-		ANS = Pabs;
-		uni = "mmHg";
-	}
-
-    // manometro tubo U abierto.
-	if(opc===2){
-		
-        while(1){
-            Pmano = rndi(300,2*760); // mmHg
-            Patm = rndi(740,760); // mmHg
-            Pabs = Pmano + Patm;            
-            if(Pabs > Patm) break;
-        }
-
-		
-		QTN = "Se desea medir la presión absoluta de un gas confinado. La lectura del manómetro de tubo en U (abierto) es igual a "+Pmano+ " mmHg. La lectura del barómetro es igual a "+Patm+" mmHg. Calcula la presión absoluta del gas confinado.<br><br>";
-		
-		Pabs = Pmano + Patm;
-		
-		ANS = Pabs;
-		uni = "mmHg";
-	}    
-
-
-
-    
-}
-
-
-
-//------------------------------------------------------------------------------
-function prob_frac_molar(){
-
-	//Fracción molar
-	    
-    let M=[];
-    let GAS=[];
-    let gas_A,gas_B,gas_C;
-    let m_A, m_B, m_C;
-    let n_A, n_B, n_C, n_total;
-    let X_A, X_B, X_C;
-    
-    GAS[1] = "N<sub>2</sub>"; M[1] = 28.02;
-    GAS[2] = "O<sub>2</sub>"; M[2] = 32.0;
-    GAS[3] = "Ne";            M[3] = 20.18;
-    GAS[4] = "Ar";            M[4] = 39.95;
-    GAS[5] = "CO";            M[5] = 28.01;
-    GAS[6] = "CO<sub>2</sub>"; M[6] = 44.01;
-    GAS[7] = "CH<sub>4</sub>"; M[7] = 16.05;
-    
-	let op = rndi(1,2);
-
-	if(op===1){      
+	// densidades en g/mL
+	
+	if(opc2===1){ COMP = "N<sub>2</sub>"; M = 2*14.01; d = 0.81 } 
+	if(opc2===2){ COMP = "O<sub>2</sub>"; M = 2*16.0;  d = 1.43 } 
+	if(opc2===3){ COMP = "aire";          M = 28.97;   d = 1.30e-3 }
+	if(opc2===4){ COMP = "agua";          M = 18.0;    d = 1.00 }    
+	if(opc2===5){ COMP = "NaOH";          M = 40.0;    d = 2.13 } 
+	if(opc2===6){ COMP = "H<sub>2</sub>SO<sub>4</sub>";   M = 98.01;    d = 1.83 } 
+	if(opc2===7){ COMP = "C<sub>3</sub>H<sub>6</sub>";    M = 42.01;    d = 1.74 } 
+     
+    if(opc===1){
         
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
+        m = rndi(10,200)*10;      
+
+        QTN  = "Si la densidad del "+COMP+" es igual a "+d+" g/mL, ";
+		QTN += "calcula el volumen que ocupan " + m + " gramos de " + COMP +"."
 		
-		while(1){
-			m_A = rndi(1,10)*10; // gramos
-			m_B = rndi(1,10)*10; // gramos
-			
-			n_A = m_A/M[gas_A];
-			n_B = m_B/M[gas_B];
-			
-			n_total = n_A + n_B;
-			
-			X_A = n_A/n_total;
-			X_B = n_B/n_total;           
-			
-			if(X_A >= 0.1 && X_B >= 0.1) break;
+		V = m/d;
+		
+		if(V<1000){
+			ANS = V;
+			uni = "mL";  
+		}else{
+			ANS = V/1000;
+			uni = "L";  
 		}
-		
-		// console.log("X_A: ", X_A);
-        // console.log("X_B: ", X_B);
-		
-        QTN = "Se mezclan "+m_A+" g de "+GAS[gas_A]+" y "+m_B+" g de "+GAS[gas_B]+". <br>Calcular la fracción molar de "+GAS[gas_A]+".<br><br>";		
-        ANS = X_A; uni = "";
-	}
-	
-	if(op===2){       
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            gas_C = rndi(1,7);
-            if(gas_A !== gas_B && gas_A !== gas_C && gas_B !==gas_C) break;
-        }
-		
-		while(1){
-			X_A = rndi(20,85)/100;
-			X_B = rndi(20,85)/100;
-			if((X_A+X_B)<0.8) break;
-		}
-		
-		X_C = 1 - X_A - X_B;
 				
-		X_A = round2(X_A);
-		X_B = round2(X_B);
-		X_C = round2(X_C);
+    }
 
-		// console.log("X_A: ", X_A);
-        // console.log("X_B: ", X_B);
-		// console.log("X_C: ", X_C);       
-		// console.log("SUMA: ",X_A+X_B+X_C);
+    if(opc===2){
+        
+        n = rndi(1,10)*10;
+        m = n*M;            
+
+        QTN  = "Si la densidad del "+COMP+" es igual a "+d+" g/mL, ";
+		QTN += "calcula el volumen que ocupan " + n + " moles de " + COMP +"."
 		
-        QTN = "Una mezcla de gases se compone de "+GAS[gas_A]+", "+GAS[gas_B]+" y "+GAS[gas_C]+". La fracción molar del "+GAS[gas_A]+" y del "+GAS[gas_B]+" es igual a "+X_A+" y "+X_B+", respectivamente. Calcula la fracción molar del "+GAS[gas_C]+".<br>"
-        ANS = X_C; uni = "";
+		V = m/d;
+		
+		if(V<1000){
+			ANS = V;
+			uni = "mL";  
+		}else{
+			ANS = V/1000;
+			uni = "L";  
+		}      
+    }
 
-	}
+
+    if(opc===3){
+        
+        V = rndi(1,1000);	
+		
+        QTN  = "Si la densidad del "+COMP+" es igual a "+d+" g/mL, ";
+		QTN += "calcula la masa de " + V + " L de " + COMP +"."
+		
+		V = V*1000; //mL
+		m = d*V;
+		
+		if(m<1000){
+			ANS = m;
+			uni = "g";  
+		}else{
+			ANS = m/1000;
+			uni = "kg";  
+		}      
+    }
+
 
 }
 
 
+
 //------------------------------------------------------------------------------
-function prob_ley_Dalton(){
-
-	//Ley de Dalton
-
-    let M=[];
-    let GAS=[];
-    let gas_A,gas_B,gas_C;
-    let m_A, m_B, m_C;
-    let n_A, n_B, n_C, n_total;
-    let X_A, X_B, X_C;
-    let P_A, P_B, P_C, P_total;    
+function prob_conv_Vm(){
     
-    GAS[1] = "N<sub>2</sub>"; M[1] = 28.02;
-    GAS[2] = "O<sub>2</sub>"; M[2] = 32.0;
-    GAS[3] = "Ne";            M[3] = 20.18;
-    GAS[4] = "Ar";            M[4] = 39.95;
-    GAS[5] = "CO";            M[5] = 28.01;
-    GAS[6] = "CO<sub>2</sub>"; M[6] = 44.01;
-    GAS[7] = "CH<sub>4</sub>"; M[7] = 16.05;
+    let d, V, n, m, M, COMP, Vm;
+    
+
+	// densidades en g/mL
+	let opc2 = rndi(1,10);
+	if(opc2===1){ COMP = "N<sub>2</sub>"; M = 2*14.01; d = 0.81 } 
+	if(opc2===2){ COMP = "O<sub>2</sub>"; M = 2*16.0;  d = 1.43 } 
+	if(opc2===3){ COMP = "aire";          M = 28.97;   d = 1.30e-3 }
+	if(opc2===4){ COMP = "agua";          M = 18.0;    d = 1.00 }    
+	if(opc2===5){ COMP = "hielo";         M = 18.0;    d = 0.92 } 
+	if(opc2===6){ COMP = "NaOH";          M = 40.0;    d = 2.13 } 
+	if(opc2===7){ COMP = "H<sub>2</sub>SO<sub>4</sub>";   M = 98.01;    d = 1.83 } 
+	if(opc2===8){ COMP = "C<sub>3</sub>H<sub>6</sub>";    M = 42.01;    d = 1.74 } 
+	if(opc2===9){ COMP = "CH<sub>3</sub>OH";              M = 32.04;    d = 0.792 } 
 	
-    let op = rndi(1,5);
-    
-	if(op===1){
-		
-		let T = rndi(5,150); // °C
-		let V = rndi(20,80); // L
-		let R = 0.08206;
+	if(opc2===10){ COMP = "C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>";   M = 180.2;    d = 1.54 } 
+     
 
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        while(1){
-            n_A = rndi(1,8);
-            n_B = rndi(1,8);
-            if(n_A !== n_B) break;
-        }		
         
-		QTN = "Se mezclan (a "+T+" °C) "+n_A+" mol de "+GAS[gas_A]+" y "+n_B+" mol de "+GAS[gas_B]+" en un recipiente rígido de "+V+" L. Suponiedo que los gases se comportan idealmente,  estima la presión total de la mezcla.";
-		
-		P_A = n_A*R*(T+273.15)/V; //atm
-		P_B = n_B*R*(T+273.15)/V; //atm
-		
-		P_total = P_A + P_B;
-		
-		ANS = P_total; uni = " atm";
-		
-	}    
+	m = rndi(10,200)*10;      
 
-	if(op===2){
-		
-		let T = rndi(300,400); //K
-		let V = rndi(20,80); //L
-		let R = 0.08206;
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        
-        m_A = rndi(1,20)*10; // gramos
-        m_B = rndi(1,20)*10; // gramos
-        
-        n_A = m_A/M[gas_A];
-        n_B = m_B/M[gas_B];
-
-        P_A = n_A*R*T/V; //atm
-        P_B = n_B*R*T/V; //atm
-        
-        P_total = P_A + P_B;
-        
-        
-		
-		QTN = "Se mezclan (a "+T+" K) "+m_A+" g de "+GAS[gas_A]+" y "+m_B+" g de "+GAS[gas_B]+" en un recipiente rígido de "+V+" L. Suponiedo que los gases se comportan idealmente, estima la presión total de la mezcla.";
-				
-		ANS = P_total; uni = " atm";
-		
-	}
-
-
-	if(op===3){
-		
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-		X_A = rndi(10,90)/100;
-		X_B = 1 - X_A;
-
-        P_total = rndi(200,760*2); //mmHg
-        
-		QTN = "Se mezclan (a temperatura y volumen constantes) los siguientes gases: "+GAS[gas_A]+" y "+GAS[gas_B]+". La presión total de la mezcla es igual a "+P_total+" mmHg. Si la fracción molar del "+GAS[gas_A]+" es igual a "+X_A+", estima la presión parcial del "+GAS[gas_B]+" considerando un comportamiento de gas ideal.";
-		
-        P_B = X_B * P_total;
-		
-		ANS = P_B; uni = " mmHg";
-		
-	}   
-
-
-	if(op===4){		
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        while(1){
-            n_A = rndi(1,10);
-            n_B = rndi(1,10);
-            if(n_A !== n_B) break;
-        }		
-        
-        X_A = n_A/(n_A + n_B);
-        
-        P_total = rndi(200,760*3); //mmHg
-        
-		QTN = "Se mezclan (a temperatura y volumen constantes) "+n_A+" mol de "+GAS[gas_A]+" y "+n_B+" mol de "+GAS[gas_B]+". La presión total de la mezcla de los dos gases es igual a "+P_total+" mmHg. Estima la presión parcial del "+GAS[gas_A]+" considerando un comportamiento de gas ideal.";
-		
-		P_A = X_A * P_total;
-		
-		ANS = P_A; uni = " mmHg";
-		
-	} 
-
-
-	if(op===5){		
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        m_A = rndi(1,20)*10; // gramos
-        m_B = rndi(1,20)*10; // gramos
-        
-        n_A = m_A/M[gas_A];
-        n_B = m_B/M[gas_B];		
-        
-        X_A = n_A/(n_A + n_B);
-        
-        P_total = rndi(200,760*3); //mmHg
-        
-		QTN = "Se mezclan (a temperatura y volumen constantes) "+m_A+" g de "+GAS[gas_A]+" y "+m_B+" g de "+GAS[gas_B]+". La presión total de la mezcla de los dos gases es igual a "+P_total+" mmHg. Estima la presión parcial del "+GAS[gas_A]+" considerando un comportamiento de gas ideal.";
-		
-		P_A = X_A * P_total;
-		
-		ANS = P_A; uni = " mmHg";
-		
-	} 
-
-}
-
-//------------------------------------------------------------------------------
-function prob_ley_Amagat(){
-
-	//Ley de Amagat
-
-    let M=[];
-    let GAS=[];
-    let gas_A,gas_B,gas_C;
-    let m_A, m_B, m_C;
-    let n_A, n_B, n_C, n_total;
-    let X_A, X_B, X_C;
-    let V_A, V_B, V_C, V_total;    
-    
-    GAS[1] = "N<sub>2</sub>"; M[1] = 28.02;
-    GAS[2] = "O<sub>2</sub>"; M[2] = 32.0;
-    GAS[3] = "Ne";            M[3] = 20.18;
-    GAS[4] = "Ar";            M[4] = 39.95;
-    GAS[5] = "CO";            M[5] = 28.01;
-    GAS[6] = "CO<sub>2</sub>"; M[6] = 44.01;
-    GAS[7] = "CH<sub>4</sub>"; M[7] = 16.05;
+	QTN  = "Si la densidad del "+COMP+" es igual a "+d+" g/mL, ";
+	QTN += "calcula el volumen molar del " + COMP +"."
 	
-    let op = rndi(1,5);
-    
-	if(op===1){
-		
-		let T = rndi(5,150); // °C
-		let P = rndi(1,10); // atm
-		let R = 0.08206;
+	Vm = M/d;
 
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        while(1){
-            n_A = rndi(1,8);
-            n_B = rndi(1,8);
-            if(n_A !== n_B) break;
-        }		
-        
-		QTN = "Se mezclan (a "+T+" °C) "+n_A+" mol de "+GAS[gas_A]+" y "+n_B+" mol de "+GAS[gas_B]+". La presión de la mezcla de gases es igual a "+P+" atm. Suponiedo que los gases se comportan idealmente,  estima el volumen total de la mezcla.";
-		
-		V_A = n_A*R*(T+273.15)/P; // L
-		V_B = n_B*R*(T+273.15)/P; // L
-		
-		V_total = V_A + V_B;
-		
-		ANS = V_total; uni = " L";
-		
-	}    
-
-	if(op===2){
-		
-		let T = rndi(300,400); //K
-		let P = rndi(1,10); // atm
-		let R = 0.08206;
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        
-        m_A = rndi(1,20)*10; // gramos
-        m_B = rndi(1,20)*10; // gramos
-        
-        n_A = m_A/M[gas_A];
-        n_B = m_B/M[gas_B];
-
-        V_A = n_A*R*T/P; // L
-        V_B = n_B*R*T/P; // L
-        
-        V_total = V_A + V_B;               
-		
-		QTN = "Se mezclan (a "+T+" K) "+m_A+" g de "+GAS[gas_A]+" y "+m_B+" g de "+GAS[gas_B]+". La presión de la mezcla de gases es igual a "+P+" atm. Suponiedo que los gases se comportan idealmente,  estima el volumen total de la mezcla.";
-				
-		ANS = V_total; uni = " L";
-		
-	}
-
-
-	if(op===3){
-		
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-		X_A = rndi(10,90)/100;
-		X_B = 1 - X_A;
-
-        V_total = rndi(10,1000); // L
-        
-		QTN = "Se mezclan (a temperatura y presión constantes) los siguientes gases: "+GAS[gas_A]+" y "+GAS[gas_B]+". El volumen total de la mezcla es igual a "+V_total+" L. Si la fracción molar del "+GAS[gas_A]+" es igual a "+X_A+", estima el volumen parcial del "+GAS[gas_B]+" considerando un comportamiento de gas ideal.";
-		
-        V_B = X_B * V_total;
-		
-		ANS = V_B; uni = " L";
-		
-	}   
-
-
-	if(op===4){
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        while(1){
-            n_A = rndi(1,10);
-            n_B = rndi(1,10);
-            if(n_A !== n_B) break;
-        }		
-        
-        X_A = n_A/(n_A + n_B);
-        
-        V_total = rndi(10,1000); // L
-        
-		QTN = "Se mezclan (a temperatura y presión constantes) "+n_A+" mol de "+GAS[gas_A]+" y "+n_B+" mol de "+GAS[gas_B]+". El volumen de la mezcla de los dos gases es igual a "+V_total+" L. Estima el volumen parcial del "+GAS[gas_A]+" considerando un comportamiento de gas ideal.";
-		
-        V_A = X_A * V_total;
-		
-		ANS = V_A; uni = " L";
-		
-	} 
-
-
-	if(op===5){		
-
-        while(1){
-            gas_A = rndi(1,7);
-            gas_B = rndi(1,7);
-            if(gas_A !== gas_B) break;
-        }
-		
-        m_A = rndi(1,20)*10; // gramos
-        m_B = rndi(1,20)*10; // gramos
-        
-        n_A = m_A/M[gas_A];
-        n_B = m_B/M[gas_B];		
-        
-        X_A = n_A/(n_A + n_B);
-        
-        V_total = rndi(10,1000); // L
-        
-		QTN = "Se mezclan (a temperatura y presión constantes) "+m_A+" g de "+GAS[gas_A]+" y "+m_B+" g de "+GAS[gas_B]+". El volumen de la mezcla de los dos gases es igual a "+V_total+" L. Estima el volumen parcial del "+GAS[gas_A]+" considerando un comportamiento de gas ideal.";
-		
-        V_A = X_A * V_total;
-		
-		ANS = V_A; uni = " L";
-		
-	} 
-
-}
-
-//------------------------------------------------------------------------------
-function prob_Z(){
-    
-    // PV = ZnRT
-
-	let P, V, n, R, T, Z;
-    let Vmi, Vm;
-
-    let op = rndi(1,2);
-
-	if(op===1){
-        
-        T = rndi(10,500); //°C
-        P = rndi(1,10); //atm
-        R = 0.08206;        
-        
-        if(coin()===1)
-            Z = rndi(50,90)/100.0;
-        else
-            Z = rndi(110,180)/100.0;
-        
-        Vmi = 1*R*(T+273.15)/P;  
-        Vm = Z*Vmi;
-		
-		QTN = "A "+T+" °C y "+P+" atm, el volumen molar de un gas real es igual a "+round2(Vm)+" L/mol. Calcula el factor de compresibilidad del gas.";
-		
-		ANS = Z;
-		uni = "";
-	}
-
-	if(op===2){
-        
-        T = rndi(10,500); //°C
-        P = rndi(1,10); //atm
-        R = 0.08206;        
-        
-        if(coin()===1)
-            Z = rndi(50,90)/100.0;
-        else
-            Z = rndi(110,180)/100.0;
-        
-        Vmi = 1*R*(T+273.15)/P;  
-        Vm = Z*Vmi;
-		
-        QTN = "A "+T+" °C y "+P+" atm, el factor de compresibilidad de cierto gas real es "+Z+"; "+
-              "calcula el volumen molar del gas en las condiciones mencionadas.";
-		
+	if(Vm<1000){
 		ANS = Vm;
-		uni = " L";
-	}
-    
-}
-
-//------------------------------------------------------------------------------
-function prob_Van_der_Waals(){
+		uni = "mL/mol"; 
+	}else{
+		ANS = Vm/1000;
+		uni = "L/mol"; 
+	}  	
 
 	
-	    
-    let V, V_, P, P_, T, R, n;
-    let UnGas, aa, bb;
-    
-    let chooseGas = rndi(1,6);
-    
-    if(chooseGas===1){ UnGas = "N<sub>2</sub>";  aa = 1.39;  bb = 0.0391; }
-    if(chooseGas===2){ UnGas = "CO<sub>2</sub>"; aa = 3.59;  bb = 0.0427; }
-    if(chooseGas===3){ UnGas = "CH<sub>4</sub>"; aa = 2.25;  bb = 0.0428; }
-    if(chooseGas===4){ UnGas = "O<sub>2</sub>";  aa = 1.36;  bb = 0.0318; }
-    if(chooseGas===5){ UnGas = "Ar";             aa = 1.34;  bb = 0.0322; }
-    if(chooseGas===6){ UnGas = "Ne";             aa = 0.211; bb = 0.0171; }
-
-    let op = rndi(1,2);
-
-	if(op===1){
-        
-        T = rndi(300,800); //K
-        n = rndi(1,10); //mol
-        V = rndi(5,50); //L
-        R = 0.08206;
-        
-        V_ = n*bb;
-        P_ = aa*(n*n)/(V*V);
-        
-        P = (n*R*T)/(V - V_) - P_;
-		
-        QTN = "Mediante la ecuación de van der Waals "+
-              "(a = "+aa+" atm L<sup>2</sup>/mol<sup>2</sup>, b  = "+bb+"L/mol) "+
-              "calcula la presión de "+n+" mol de "+UnGas+
-              " a "+T+" K dentro de un recipiente de "+V+" L.";
-
-        ANS = P; uni = " atm";
-	}
-
-	if(op===2){
-        
-        
-        while(1){
-                        
-            P = rndi(1,10); //atm
-            n = rndi(1,10); //mol
-            V = rndi(50,100); //L
-            R = 0.08206;
-            
-            V_ = n*bb;
-            P_ = aa*(n*n)/(V*V);
-            
-            T = (P + P_)*(V - V_)/(n*R);
-            
-            if(T <= 1000) break;
-            
-        }
-		
-        QTN = "Mediante la ecuación de van der Waals "+
-              "(a = "+aa+" atm L<sup>2</sup>/mol<sup>2</sup>, b  = "+bb+"L/mol) "+
-              "calcula la temperatura de "+n+" mol de "+UnGas+
-              " a "+P+" atm dentro de un recipiente de "+V+" L.";
-
-        ANS = T; uni = " K";
-	}
-}
-
-
-//------------------------------------------------------------------------------
-function prob_1a_ley(){
-    
-    let op = rndi(1,8);
-    
-    let w, q, dU;
-
-    if(op===1) // expansion
-    {
-        
-        while(1){
-            w = rndi(10,90); //kJ
-            q = rndi(2,4)*w; //kJ
-            dU = q + (-w);
-            if(dU%2 === 0) break;
-        }
-                
-        QTN  = "Un gas ideal absorbe "+q+" kJ en forma de calor. ";
-        QTN += "Debido a esto, el gas se expande y realiza "+w+" kJ de trabajo. ";
-        QTN += "Calcula el cambio en la energía interna del gas.";
-
-        
-        
-        ANS = dU; uni=" kJ";
-
-    }
-
-    if(op===2) // compresion
-    {
-        while(1){
-            w = rndi(10,90); //kJ
-            q = rndi(2,4)*w; //kJ
-            dU = w + (-q);
-            if(dU%2 === 0) break;
-        }
-                
-        QTN  = "Los alrededores realizan "+w+" kJ de trabajo sobre un gas ideal. ";
-        QTN += "Debido a esto, el gas se comprime y libera "+q+" kJ en forma de calor. ";
-        QTN += "Calcula el cambio en la energía interna del gas.";            
-                       
-        ANS = dU; uni=" kJ";
-        
-    }
-
-
-    if(op===3) // expansion
-    {
-        
-        while(1){
-            w = rndi(10,90); //kJ
-            dU = 0
-            q = dU - (-w); //kJ
-            if(q%2===0) break;
-        }
-                
-        QTN  = "Un gas ideal se expande manteniendo su energía interna constante. ";
-        QTN += "El trabajo asociado al proceso es igual a "+w+" kJ. ";
-        QTN += "Calcula cuánto calor absorbe el gas.";        
-
-        ANS = q; uni=" kJ";
-        
-    }
-
-
-    if(op===4) // compresión
-    {
-        
-        while(1){
-            w = rndi(10,90); //kJ
-            dU = 0
-            q = dU - w; //kJ
-            if(q%2 === 0) break;
-            
-        }
-        
-        QTN  = "Un gas ideal se comprime manteniendo su energía interna constante. ";
-        QTN += "El trabajo asociado al proceso es igual a "+w+" kJ. ";
-        QTN += "Calcula cuánto calor pierde el gas.";      
-                
-        ANS = q; uni=" kJ";
-        
-    }    
-
-    if(op===5) // expansión
-    {
-        
-        while(1){
-            dU = rndi(100, 250);        
-            q =  rndi(300, 500);        
-            w = dU - q;   
-            
-            if(w%2 === 0) break;
-        }
-        
-        QTN  = "Un gas ideal se expande al recibir "+q+" kJ en forma de calor. ";
-        QTN += "Calcula la cantidad trabajo que debe realizar el gas ";
-        QTN += "para que el cambio en su energía interna sea igual a "+dU+" kJ.";    
-        
-		ANS = w; uni=" kJ";
-        
-        
-    }    
-
-    if(op===6) // compresion
-    {
-        
-        while(1){
-            dU = rndi(300, 500);        
-            q =  rndi(100, 250);        
-            w = dU - (-q);    
-            if(w%2 === 0) break;
-        }
-        
-        QTN  = "Un gas ideal se comprime liberando "+q+" kJ en forma de calor. ";
-        QTN += "Calcula la cantidad de trabajo que debe realizar el gas ";
-        QTN += "para que el cambio en su energía interna sea igual a "+dU+" kJ.";    
-        
-		ANS = w; uni=" kJ";
-        
-    }
-
-    if(op===7) // expansión
-    {
-        while(1){
-            dU = rndi(300, 500);        
-            w =  rndi(100, 250);        
-            q = dU - (-w);  
-            if(q%2===0) break;
-        }
-        
-        QTN  = "Un gas ideal se expande realizando "+w+" kJ de trabajo. ";
-        QTN += "El cambio en la energía interna es igual a "+dU+" kJ. ";    
-        QTN += "Calcula la cantidad de calor que absorbió el gas.";
-        
-		ANS = q; uni=" kJ";
-        
-        
-    }  
-
-    if(op===8) // compresión
-    {
-        while(1){
-            dU = -rndi(300, 500);        
-            w =  rndi(100, 250); // w > 0        
-            q = dU - w;  // q < 0
-            if(q%2===0) break;
-        }
-        
-        QTN  = "Los alrededores realizan "+w+" kJ de trabajo para comprimir un gas ideal. ";
-        QTN += "El cambio en la energía interna del gas es igual a "+dU+" kJ. ";    
-        QTN += "Calcula la cantidad de calor que perdió el gas.";
-        
-		ANS = q; uni=" kJ";
-        
-        
-    } 
-
 }
 
 //------------------------------------------------------------------------------
-function prob_Cp_Cv(){
+function prob_calor(){
     
-    let op = rndi(1,2);
-    
-    let Cp, Cv, dU, dH, T2, T1, dT, n, R, T;
-    
-    R = 8.314; // J / mol K
-    
-    
-    if( op === 1 ){
-        
-        T = rndi(5, 50);
-        
-        let op2 = rndi(1,7);
-        
-        if( op2 === 1 ){ GAS = "H<sub>2</sub>"; Cp = (7/2)*R; }
-        if( op2 === 2 ){ GAS = "N<sub>2</sub>"; Cp = (7/2)*R; }
-        if( op2 === 3 ){ GAS = "O<sub>2</sub>"; Cp = (7/2)*R; }
-        if( op2 === 4 ){ GAS = "CO";            Cp = (7/2)*R; }
-        
-        if( op2 === 5 ){ GAS = "He";            Cp = (5/2)*R; }        
-        if( op2 === 6 ){ GAS = "Ar";            Cp = (5/2)*R; }
-        if( op2 === 7 ){ GAS = "Ne";            Cp = (5/2)*R; }
-                          
-        QTN  = "Estima la capacidad calorífica (a presión constante) de 1 mol del gas "+GAS;
-        QTN += " a "+T+" °C considerando un comportamiento ideal.";
-
-        ANS = Cp; uni=" J / K";        
-        
-    }
-
-    if( op === 2 ){
-        
-        T = rndi(5, 50);
-        
-        let op2 = rndi(1,7);
-        
-        if( op2 === 1 ){ GAS = "H<sub>2</sub>"; Cv = (5/2)*R; }
-        if( op2 === 2 ){ GAS = "N<sub>2</sub>"; Cv = (5/2)*R; }
-        if( op2 === 3 ){ GAS = "O<sub>2</sub>"; Cv = (5/2)*R; }
-        if( op2 === 4 ){ GAS = "CO";            Cv = (5/2)*R; }
-        
-        if( op2 === 5 ){ GAS = "He";            Cv = (3/2)*R; }        
-        if( op2 === 6 ){ GAS = "Ar";            Cv = (3/2)*R; }
-        if( op2 === 7 ){ GAS = "Ne";            Cv = (3/2)*R; }
-                          
-        QTN  = "Estima la capacidad calorífica (a volumen constante) de 1 mol del gas "+GAS;
-        QTN += " a "+T+" °C considerando un comportamiento ideal.";
-
-        ANS = Cv; uni=" J / K";        
-        
-    }       
-    
-}
-
-
-//------------------------------------------------------------------------------
-function prob_calor_isobarico(){
-    
-    let q_p, C_p, n, R, T1, T2, dT, P, V1, V2;
-    
-    R = 8.314;
-    
-    let op = rndi(1,2);
-    
-    if( op === 1 ){
-        
-            
-        n = 1; //rndi(2,10);
-        P = rndi(100,500); //kPa
-        
-        C_p = (5/2)*n*R;
-        
-        T1 = rndi( 5, 25);
-        T2 = rndi(40, 80);
-        
-        q_p = C_p * (T2 - T1);
-            
-        
-        if( coin() === 1 ){        
-            QTN  = n+" mol de gas ideal monoatómico se calienta desde "+T1+" °C hasta "+T2+" °C, manteniendo la presión constante.";
-            QTN += " Calcula la cantidad de calor que absorbió el gas.";
-            
-        }else{
-            QTN  = n+" mol de gas ideal monoatómico se calienta desde "+T1+" °C hasta "+T2+" °C, manteniendo la presión constante.";
-            QTN += " Calcula el cambio de entalpía del gas.";  
-        }
-                       
-        ANS = q_p; uni = " J"                
-        
-    }
-
-    if( op === 2 ){
-        
-        while(1){
-            
-            console.log('calor isobárico, 2');
-            
-            n = 1;
-            P = rndi(10,50); //kPa            
-            C_p = (5/2)*n*R;
-            
-            V1 = rndi( 1, 10);
-            V2 = rndi(15, 20);            
-            q_p = ( C_p*P*1000/(n*R) )*(V2 - V1);
-            q_p = q_p/1000;
-            
-            if ( q_p%2 === 0 || q_p%5 === 0 ) break;
-            
-        }
-        
-        if( coin() === 1 ){        
-            QTN  = n+" mol de gas ideal monoatómico se somete a un proceso isobárico ("+P+" kPa). El volumen del gas cambia desde "+V1+" m<sup>3</sup> hasta "+V2+" m<sup>3</sup>.";
-            QTN += " Calcula la cantidad de calor que absorbió el gas.";
-            
-        }else{
-            QTN  = n+" mol de gas ideal monoatómico se somete a un proceso isobárico ("+P+" kPa). El volumen del gas cambia desde "+V1+" m<sup>3</sup> hasta "+V2+" m<sup>3</sup>.";
-            QTN += " Calcula el cambio de entalpía del gas.";
-        }             
-        
-        ANS = q_p; uni = " kJ"                
-        
-    }    
-    
-}
-
-//------------------------------------------------------------------------------
-function prob_calor_isocorico(){
-    
-    let q_v, C_v, n, R, P1, P2, V, T1, T2;
-    
-    R = 8.314;
-    
-    let op = rndi(1,2);
-    
-    if( op === 1 ){
-        
-            
-        n = 1; //rndi(2,10);
-        
-        C_v = (3/2)*n*R;
-        
-        T1 = rndi( 5, 25);
-        T2 = rndi(40, 80);
-        
-        q_v = C_v * (T2 - T1);
-            
-        
-        if( coin() === 1 ){        
-            QTN  = n+" mol de gas ideal monoatómico se calientan desde "+T1+" °C hasta "+T2+" °C, manteniendo el volumen constante.";
-            QTN += " Calcula la cantidad de calor que absorbió el gas.";
-            
-        }else{
-            QTN  = n+" mol de gas ideal monoatómico se calientan desde "+T1+" °C hasta "+T2+" °C, manteniendo el volumen constante.";
-            QTN += " Calcula el cambio de la energía interna del gas.";  
-        }
-                       
-        ANS = q_v; uni = " J"                
-        
-    }
-
-    if( op === 2 ){       
-            
-        console.log('calor isocórico, 2');
-        
-        n = 1;
-        V = rndi(10,50); // m3
-        C_v = (3/2)*n*R;
-        
-        P1 = rndi( 10, 100);
-        P2 = rndi(150, 200); //kPa
-        
-        q_v = ( C_v*V/(n*R) )*(P2*1000 - P1*1000);
-        
-        q_v = q_v/1000;            
-        
-        if( coin() === 1 ){        
-            QTN  = n+" mol de gas ideal monoatómico se somete a un proceso isocórico ("+V+" m<sup>3</sup>). La presión del gas cambia desde "+P1+" kPa hasta "+P2+" kPa.";
-            QTN += " Calcula la cantidad de calor que absorbió el gas.";
-            
-        }else{
-            QTN  = n+" mol de gas ideal monoatómico se somete a un proceso isocórico ("+V+" m<sup>3</sup>). La presión del gas cambia desde "+P1+" kPa hasta "+P2+" kPa.";
-            QTN += " Calcula el cambio de la energía interna del gas.";
-        }             
-        
-        ANS = q_v; uni = " kJ"                
-        
-    }  
-
-}    
-
-//------------------------------------------------------------------------------
-function prob_trabajo_isobarico(){
-    
-    let P, V1, V2, T1, T2, R, n;
-    
-    let op = rndi(1,2);
-    
-    if( op === 1 ){
-        
-        P = rndi(10,100)*10; // kPa
-        
-        while(1){
-            V1 = rndi(1,20); // m3
-            V2 = rndi(1,20); // m3
-            if( Math.abs(V2 - V1) > 0 ) break;
-        }
-        
-        w = -P*(V2 - V1);
-        
-        QTN  = "Un gas ideal se somete a un proceso isobárico ("+P+" kPa). ";
-        QTN += "El volumen del gas cambia desde "+V1+" m<sup>3</sup> hasta "+V2+" m<sup>3</sup>. ";
-        QTN += "Calcula el trabajo PV asociado al gas. ";
-        
-        ANS = w; uni = " kJ";
-        
-    }
-    
-    if( op === 2 ){
-        
-        n = rndi(2,10);
-        R = 8.314;
-        
-        while(1){
-            T1 = rndi(5, 80);
-            T2 = rndi(5, 80);
-            if( Math.abs(T2 - T1) > 10 ) break;
-        }
-        
-        w = -n*R*(T2 - T1);
-
-        QTN  = n+" mol de gas ideal se someten a un proceso isobárico. ";
-        QTN += "La temperatura del gas cambia desde "+T1+" °C hasta "+T2+" °C. ";
-        QTN += "Calcula el trabajo PV. ";
-        
-        ANS = w; uni = " J";        
-        
-    }
-}
-
-
-//----------------------------------------------------- PROCESO ISOTERMICO
-function prob_trabajo_calor_isotermico(){
-	
-	let P1, P2;
-	let V1, V2;
-	let q, w;
-	let T;
-    let NAME, ans;
-
-    let op = rndi(1,8);
-
-    if(op===1)
-    {
-        while(1)
-        {
-            V1 = rndi(1,20)*100.0; //L
-            V2 = rndi(1,20)*100.0; //L
-            if(Math.abs(V2-V1)>=300) break;
-        }
-
-        T = rndi(25,400); //°C
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(V2/V1); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "El volumen del gas cambia desde "+V1+" L hasta "+V2+" L. ";
-        QTN += "Calcular el "+NAME+" asociado al proceso.";
-
-		ANS = round4(ans); uni=" kJ";
-    }
-
-    if(op===2)
-    {
-        while(1)
-        {
-            P1 = rndi(1,10)*10.0; //kPa
-            P2 = rndi(1,10)*10.0; //kPa
-            if(Math.abs(P1-P2)>=20) break;
-        }
-
-        T = rndi(25,400); //°C
-
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(P1/P2); //J
-		w = w/1000.0; //J -> kJ
-
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-        
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "La presión del gas cambia desde "+P1+" kPa hasta "+P2+" kPa. ";
-        QTN += "Calcular el "+NAME+" asociado al proceso.";
-
-		ANS = round4(ans); uni=" kJ";
-		
-    }
-
-    if(op===3)
-    {
-
-        T = rndi(25,400); //°C
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(2); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "El volumen del gas se duplica. ";
-        QTN += "Calcular el "+NAME+" asociado al proceso.";
-
-		ANS = round4(ans); uni=" kJ";
-    }
-
-    if(op===4)
-    {
-
-        T = rndi(25,400); //°C
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(1/2); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "El volumen del gas se reduce a la mitad. ";
-        QTN += "Calcular el "+NAME+" asociado al proceso.";
-
-		ANS = round4(ans); uni=" kJ";
-    }
-
-    if(op===5)
-    {
-        while(1)
-        {
-            V1 = rndi(1,20)*100.0; //L
-            V2 = rndi(1,20)*100.0; //L
-            if(Math.abs(V2-V1)>=300) break;
-        }
-
-        while(1)
-        {
-            T = rndi(25,400); //°C
-            if( T%2===0 ) break;        
-        }
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(V2/V1); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible. ";
-        QTN += "El volumen del gas cambia desde "+V1+" L hasta "+V2+" L. ";
-        QTN += "El "+NAME+" asociado al proceso es igual a "+round4(ans)+" kJ. ";
-        QTN += "Calcula la temperatura a la cual se llevó el proceso."
-        
-        //T = T - 273.15;
-
-		ANS = T; uni=" °C";
-    }
-
-    if(op===6)
-    {
-        while(1)
-        {
-            V1 = rndi(1,20)*100.0; //m3
-            V2 = rndi(1,20)*100.0; //m3
-            if(Math.abs(V2-V1)>=300 && V2%2===0) break;
-        }
-
-
-        T = rndi(25,400); //°C
-
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(V2/V1); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "El volumen inicial del gas es igual a "+V1+" m<sup>3</sup>. ";
-        QTN += "El "+NAME+" asociado al proceso es igual a "+round4(ans)+" kJ. ";
-        QTN += "Calcula el volumen final del gas."
-
-		ANS = V2; uni=" m<sup>3</sup>";
-    }
-
-    if(op===7)
-    {
-        while(1)
-        {
-            V1 = rndi(1,20)*100.0; //m3
-            V2 = rndi(1,20)*100.0; //m3
-            if(Math.abs(V2-V1)>=300 && V2%2===0) break;
-        }
-
-
-        T = rndi(25,400); //°C
-
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(V2/V1); //J
-		w = w/1000.0; //J -> kJ
-        
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "El volumen final del gas es igual a "+V2+" m<sup>3</sup>. ";
-        QTN += "El "+NAME+" asociado al proceso es igual a "+round4(ans)+" kJ. ";
-        QTN += "Calcula el volumen inicial del gas."
-
-		ANS = V1; uni=" m<sup>3</sup>";
-    }
-
-    if(op===8)
-    {
-        while(1)
-        {
-            P1 = rndi(1,10)*10.0; //kPa
-            P2 = rndi(1,10)*10.0; //kPa
-            if(Math.abs(P1-P2)>=20) break;
-        }
-
-        T = rndi(25,400); //°C
-
-        R = 8.314; 
-        w = -1*R*(T+273.15)*Math.log(P1/P2); //J
-		w = w/1000.0; //J -> kJ
-
-        if( coin()===1 ) { NAME = 'trabajo'; ans =  w; }
-        else             { NAME = 'calor';   ans = -w; }
-        
-        QTN  = "Un mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-        QTN += "La presión inicial del gas es igual a "+P1+" kPa. ";
-        QTN += "El "+NAME+" asociado al proceso es igual a "+round4(ans)+" kJ. ";
-        QTN += "Calcula la presión final del gas."
-
-		ANS = P2; uni=" kPa";
-		
-    }
-
-	
-}
-
-
-//----------------------------------------------------- PROCESO ADIABATICO
-function prob_trabajo_adiabatico(){
-	
-	let T1, T2;
-	let P1, P2;
-	let Cp, Cv, c, g;
-	let deltaU, w;
-	let V1, V2;
-	let R = 8.314;
-    
-    let op = rndi(1,2);
-
-    if(op===1)
-    {
-        while(1)
-        {
-            T1 = rndi(10,500); //°C
-            T2 = rndi(10,500); //°C
-            if(Math.abs(T1-T2) >= 50.0) break;
-        }
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;
-
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) se somete a un proceso adiabático y su temperatura cambia desde "+T1+" °C hasta "+T2+" °C. ";
-        QTN += "Calcular el cambio en la energía interna del gas.";    
-                
-        T1 = T1 + 273.15;//K
-        T2 = T2 + 273.15;//K
-        
-        deltaU = Cv*(T2-T1); //J
-		deltaU = deltaU/1000.0; // J-> kJ
-        
-		ANS = round2(deltaU); uni=" kJ";
-	}
-	
-
-    if(op===2)
-    {
-        while(1)
-        {
-            T1 = rndi(10,500); //°C
-            T2 = rndi(10,500); //°C
-            if(Math.abs(T1-T2) >= 50.0) break;
-        }
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;
-
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) se somete a un proceso adiabático y su temperatura cambia desde "+T1+" °C hasta "+T2+" °C. ";
-        QTN += "Calcular el trabajo asociado al proceso.";      
-                
-        T1 = T1 + 273.15;//K
-        T2 = T2 + 273.15;//K
-        
-        w = Cv*(T2-T1); //J
-		w = w/1000.0; // J-> kJ
-        
-		ANS = round2(w); uni=" kJ";
-	}
-
-
-}
-
-//------------------------------------------------------------------------------
-function prob_ecs_adiabaticas(){
-
-	let T1, T2;
-	let P1, P2;
-	let Cp, Cv, c, g;
-	let deltaU, w;
-	let V1, V2;
-	let R = 8.314;
+    let q, C, c, Cm, T1, T2, dT, m, M, n;
     
     let op = rndi(1,4);
-
-    if(op===1)
-    {
-        while(1)
-        {
-            V1 = rndi(10,150); //dm**3, L
-            V2 = rndi(10,150); //dm**3, L
-            if(Math.abs(V1-V2) >= 50.0) break;
-        }
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;
-        
-        T1 = rndi(200,900); //K
-
-        c = Cv/R;
-        
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) ocupa "+V1+" L a "+T1+" K. ";
-        QTN += "El gas se somete a un proceso adiabático y su volumen cambia a "+V2+" L. ";
-        QTN += "Estima la temperatura final del gas.";      
-                		
-        T2 = T1 * Math.pow(V1/V2, 1.0/c); //K
-        
-        ANS = round2(T2); uni=" K";
-				
-	}
-
-    if(op===2)
-    {
-        while(1)
-        {
-            T1 = rndi(200,900); //K
-            T2 = rndi(200,900); //K
-            if(Math.abs(T1 - T2) >= 50.0) break;
-        }
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;
-        
-        V1 = rndi(10,150); //dm**3, L
-
-        c = Cv/R;
-        
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) ocupa "+V1+" L a "+T1+" K. ";
-        QTN += "El gas se somete a un proceso adiabático y su temperatura cambia a "+T2+" K. ";
-        QTN += "Estima el volumen final del gas.";      
-                		
-        V2 = V1 * Math.pow(T1/T2, c); //L
-        
-        ANS = round2(V2); uni=" L";
-				
-	}
-
-    if(op===3)
-    {
-        
-        while(1)
-        {
-            V1 = rndi(10,150); //dm**3, L
-            V2 = rndi(10,150); //dm**3, L
-            if(Math.abs(V1-V2) >= 50.0) break;
-        }
-
-        R = 8.314; //J/mol/K
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;        
-        
-        Cp = Cv + R;
-                
-		P1 = rndi(10,90)*10.0; //kPa		
-        
-        g = Cp/Cv;
-        
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) ocupa "+V1+" L cuando la presión es igual a "+P1+" kPa. ";
-        QTN += "El gas se somete a un proceso adiabático y su volumen cambia a "+V2+" L. ";
-        QTN += "Calcular la presión final del gas.";  
-		
-		P2 = P1 * Math.pow(V1/V2, g); //K
-		
-		ANS = round2(P2); uni=" kPa";
-
-
-	}	
-	
-    if(op===4)
-    {
-        
-        while(1)
-        {
-            P1 = rndi(1,100)/10.0; //atm
-            P2 = rndi(1,100)/10.0; //atm
-            if(Math.abs(P1-P2) >= 2.0) break;
-        }
-
-        R = 8.314; // J/mol/K
-
-        if( coin()===1 )
-            Cv = (3/2)*R; //J/K
-        else
-            Cv = (5/2)*R;        
-        
-        Cp = Cv + R;
-                
-			
-        V1 = rndi(10,150); //dm**3, L        
-        
-        g = Cp/Cv;
-        
-        QTN  = "Un mol de gas ideal (C<sub>v</sub> = "+Cv+" J/K) ocupa "+V1+" L cuando la presión es igual a "+P1+" atm. ";
-        QTN += "El gas se somete a un proceso adiabático y su presión cambia a "+P2+" atm. ";
-        QTN += "Estimar el volumen final del gas.";  
-		
-		V2 = V1 * Math.pow(P1/P2, 1.0/g); //K
-		
-		ANS = round2(V2); uni=" L";
-
-
-	}		
-
-}
-
-
-//------------------------------------------------------------------------------
-function prob_epsilon(){ 
-
-	let eps, T_cold, T_hot, q_in, w_out, op;
-
-    q_in =  rndi(60,90)*10;
-    w_out = rndi(5,45)*10;  
-    q_out = q_in - w_out;
-    eps = (w_out/q_in)*100;
-    
-    op = rndi(1,9);
-    
-    if( op===1 ){
-        QTN = "Una máquina térmica se alimenta con "+q_in+" kJ de calor "
-        QTN += "produciendo "+w_out+" kJ de trabajo. Calcula la eficiencia de la máquina."; 
-        
-        ANS = round2(eps);
-        uni = "%";   
-        negativos='no';
-    }
-    
-    if( op===2 ){
-        QTN = "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "calcula el trabajo producido cuando se alimenta con "+q_in+" kJ de calor.";
-        
-        ANS = w_out;
-        uni = "kJ"; 
-        negativos='no';
-    }
-
-    if( op===3 ){
-        QTN = "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "calcula el calor necesario para producir "+w_out+" kJ de trabajo.";
-        
-        ANS = q_in;
-        uni = "kJ"; 
-        negativos='no';
-    }
-    
-    if( op===4 ){
-        QTN = "Una máquina térmica se alimenta con "+q_in+" kJ de calor y "
-        QTN += "desprende "+q_out+" kJ de calor. Calcula la eficiencia de la máquina."; 
-        
-        ANS = round2(eps);
-        uni = "%";   
-        negativos='no';
-    }
-
-    if( op===5 ){
-        QTN =  "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "Calcula el calor que desprende cuando se alimenta con "+q_in+" kJ de calor."; 
-        
-        ANS = q_out;
-        uni = "kJ";   
-        negativos='no';
-    }
-
-    if( op===6 ){
-        QTN =  "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "Calcula el calor que debe alimentarse para que desprenda "+q_out+" kJ de calor."; 
-        
-        ANS = q_in;
-        uni = "kJ";   
-        negativos='no';
-    }
-
-    if( op===7 ){
-        
-
-        T_hot =  rndi(50,100)*10;
-        T_cold = rndi(10, 40)*10;
-        
-        eps = ( 1 - (T_cold+273.15)/(T_hot+273.15) )*100;
-       
-        
-        QTN  = "Una máquina térmica opera entre las siguientes ";
-        QTN += "temperaturas: "+T_hot+" °C y "+T_cold+" °C; "
-        QTN += "calcula la eficiencia de la máquina."; 
-        
-        ANS = eps;
-        uni = "%";  
-        negativos='no';
-    }
-
-
-    if( op===8 ){
-        
-
-        T_hot =  rndi(50,100)*10;
-        T_cold = rndi(10, 40)*10;
-        
-        eps = ( 1 - (T_cold+273.15)/(T_hot+273.15) )*100;
-       
-        QTN =  "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "Calcula a qué temperatura sale el calor de la máquina si entra a "+T_hot+" °C.";
-        
-        ANS = T_cold;
-        uni = "°C";  
-        negativos='no';
-    }
-
-    if( op===9 ){
-        
-
-        T_hot =  rndi(50,100)*10;
-        T_cold = rndi(10, 40)*10;
-        
-        eps = ( 1 - (T_cold+273.15)/(T_hot+273.15) )*100;
-       
-        QTN =  "La eficiencia de una máquina térmica es igual a "+round2(eps)+"%; "
-        QTN += "Calcula a qué temperatura ingresa el calor a la máquina si sale a "+T_cold+" °C.";
-        
-        ANS = T_hot;
-        uni = "°C";  
-        negativos='no';
-    }
-    
-}
-
-
-//------------------------------------------------------------------------------
-function prob_entropia(){
-    
-    let dS, q, C, Cpv, n, R, T, T1, T2, dT, P, V1, V2, P1, P2;
-    let PROCESO;
-    let GAS;
-    
-    R = 8.314;
-    
-    let op = rndi(1,2);
     
     if( op === 1 ){
-                    
-        n = 1; //rndi(2,10);
         
-        if( coin()===1 ){
-            PROCESO = "isobárico";
-			Cpv = "C<sub>p</sub>";
-        }else{
-            PROCESO = "isocórico";
-			Cpv = "C<sub>v</sub>";
-		}
-        
-        if( coin()===1 ){
-            GAS = "monoatómico";
-            if(PROCESO==="isocórico") C = n*3/2*R;
-            if(PROCESO==="isobárico") C = n*5/2*R;
-        }else{
-            GAS = "diatómico";
-            if(PROCESO==="isocórico") C = n*5/2*R;
-            if(PROCESO==="isobárico") C = n*7/2*R;            
-        }
-        
-        while(1){
-            T1 = rndi(1, 300);
-            T2 = rndi(1, 300);            
-            if(Math.abs(T2-T1)>=20) break;
-        }
-
-        QTN  = "Durante un proceso "+PROCESO+" la temperatura de un mol de gas ideal ( "+Cpv+" = "+C+" J/mol K ) cambia desde "+T1+" °C hasta "+T2+" °C.";
-        QTN += " Calcula el cambio de entropía del gas.";
-
-        T1 = T1 + 273.15;
-        T2 = T2 + 273.15;
-
-        q = C * (T2 - T1);
-        
-        T = (T1 + T2)/2;
-        
-        dS = q/T;
-
-        ANS = dS; uni = "J/K"                
+            
+		 m = rndi(1,10)*10;
+		 T1 = rndi(1,99);
+		 T2 = T1 + rndi(2,8);
+		 
+		 dT = T2 - T1;
+		 
+		 q = rndi(50,100)*10;
+		 
+		 C = q / (m * dT);
+             
+		QTN  = m+" g de cierta sustancia se calienta desde "+T1+" °C hasta "+T2+" °C, ";
+		QTN += "absorbiendo " + q +" cal de calor. ";
+		QTN += " Calcula el calor específico de la sustancia. <br><br>";
+            
+        ANS = C; uni = "cal / g °C"                
         
     }
+	
+	
+	if(op ===2){
+		
+		m = rndi(10,100)*10; // gramos
+		
+		T1 = rndi(1,25);
+		T2 = T1 + rndi(10,50);
+		dT = T2 - T1;		
+		
+		c = 1; // cal / g °C
+		
+		q = m*c*dT; // cal
+		
+		q = q*(4.186/1); // J
+		
+		q = q/1000.0; //kJ
+		
+		QTN  = "Calcula el calor necesario para calentar "+ m +" g de agua líquida (c = 1 cal/g °C) "
+		QTN += "desde "+ T1 + " °C hasta " + T2 + " °C.<br><br>";
+		
+		ANS = q; uni = "kJ"
+		
+	}
+    
+	if(op ===3){
+		
+		n = rndi(10,50)*10; // moles
+		
+		m = 18*n; // gramos
+		
+		T1 = rndi(1,25);
+		T2 = T1 + rndi(10,50);
+		dT = T2 - T1;		
+		
+		c = 1; // cal / g °C
+		
+		q = m*c*dT; // cal
+		
+		q = q/1000.0; // kcal
+		
+		
+		QTN  = "Calcula el calor necesario para calentar "+ n +" moles de agua líquida (c = 1 cal/g °C) "
+		QTN += "desde "+ T1 + " °C hasta " + T2 + " °C.<br><br>";
+		
+		ANS = q; uni = "kcal"
+		
+	}	
+	
+	if(op ===4){
+		
+		m = rndi(10,100)*10; // gramos
+				
+		T1 = rndi(1,25);
+		T2 = T1 + rndi(10,50);
+		dT = T2 - T1;		
+		
+		c = 1; // cal / g °C
+		
+		q = m*c*dT; // cal
+		
+		q = q/1000.0; // kcal
+		
+		//T2 = q*1000/(m*c) + T1;		
+		
+		QTN  =  m +" gramos de agua líquida (c = 1 cal/g °C) "
+		QTN += "absorben " + q + " kcal de calor. Si la temperatura inical eran "
+		QTN += T1 + " °C ¿Cuál es la temperatura final? <br><br>";
+		
+		ANS = T2; uni = "°C ";
 
-    if(op===2)
-    {
-        while(1)
-        {
-            V1 = rndi(1,20)*100.0; //L
-            V2 = rndi(1,20)*100.0; //L
-            if(Math.abs(V2-V1)>=300) break;
-        }
-
-        while(1)
-        {
-            P1 = rndi(1,20)*10.0; //atm
-            P2 = rndi(1,20)*10.0; //atm
-            if(Math.abs(P2-P1)>=10) break;
-        }
-
-        n = rndi(2,10);
-        T = rndi(1,400); //°C
-        R = 8.314; 
-      
-        if(coin()===1){
-            QTN  =  n+" mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-            QTN += "El volumen del gas cambia desde "+V1+" L hasta "+V2+" L. ";
-            QTN += "Calcula el cambio de entropía del gas.";
-            dS = n * R * Math.log(V2/V1); 
-        }else{
-            QTN  =  n+" mol de gas ideal se somete a un proceso isotérmico reversible ("+T+" °C). ";
-            QTN += "La presión del gas cambia desde "+P1+" atm hasta "+P2+" atm. ";
-            QTN += "Calcula el cambio de entropía del gas.";
-            dS = n * R * Math.log(P1/P2); 
-        }
-
-		ANS = round2(dS); uni=" J/K";
-    }
+		//console.log(T2);
+		
+	}		
     
 }
 
@@ -2684,22 +849,22 @@ function showAns(){
     if( negativos==='yes'){
         if( ANS%2 === 0){
             fkans[0] = round2( ANS / 2) +" "+ uni;	
-            fkans[1] = round2(-ANS / 2) +" "+ uni;
+            fkans[1] = round2(-ANS / 4) +" "+ uni;
             fkans[2] = round2( ANS * 2) +" "+ uni;
-            fkans[3] = round2(-ANS * 1   ) +" "+ uni;
+            fkans[3] = round2(-ANS * 3   ) +" "+ uni;
             trueANS =  round2( ANS       ) +" "+ uni;   
         }else if(ANS%5 === 0){        
             fkans[0] = round2( ANS / 5) +" "+ uni;	
-            fkans[1] = round2(-ANS / 5) +" "+ uni;
+            fkans[1] = round2(-ANS / 10) +" "+ uni;
             fkans[2] = round2( ANS * 2) +" "+ uni;
-            fkans[3] = round2(-ANS * 1   ) +" "+ uni;
+            fkans[3] = round2(-ANS * 3   ) +" "+ uni;
             trueANS =  round2( ANS       ) +" "+ uni;         
         
         }else{
             fkans[0] = round2( ANS * 0.75) +" "+ uni;	
-            fkans[1] = round2(-ANS * 0.75) +" "+ uni;
+            fkans[1] = round2(-ANS * 0.50) +" "+ uni;
             fkans[2] = round2( ANS * 1.50) +" "+ uni;
-            fkans[3] = round2(-ANS       ) +" "+ uni;
+            fkans[3] = round2(-ANS * 1.75) +" "+ uni;
             trueANS =  round2( ANS       ) +" "+ uni;  
         }  
     }else{
@@ -2955,7 +1120,7 @@ function gameover(){
     document.getElementById("restart").style.display = "block";
 
 	
-    resumen +="Examen "+act+" (ejercicios).<br>";
+    resumen +="Examen "+ act +" (ejercicios).<br>";
 	resumen +="Estudiante: "+uname+"<br>";
 	resumen +="Calificación: "+score+"<br>";
 	resumen +="Aciertos: "+oks+"<br>";
