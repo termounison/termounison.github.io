@@ -90,7 +90,7 @@ function test(){
 	
 	let prob = rndi(1,100);
 	
-    
+    /*
  	if(prob<25){
 		let prob2 = rndi(10,12);
 		//if(prob2===1) prob_conv_T();
@@ -113,9 +113,11 @@ function test(){
         if(prob2===3) prob_ec_clausius_clapeyron_evaporacion();
 		if(prob2===4) prob_ec_antonie_evaporacion();
 	}
-   
+   */
 
 	//pruebame...
+    prob_ec_antonie_evaporacion();
+    
 	
 
 	document.getElementById("question").innerHTML = QTN;
@@ -983,85 +985,6 @@ function prob_ec_clapeyron_fusion(){
 
 }
 
-//------------------------------------------------------------------------------
-function prob_ec_clapeyron_simplificada_fusion(){
-    
-    let dH,dP,dV,dT,T1,T2,Tprom,P1,P2,V1,V2,X;
-    
-    let op = rndi(1,2);
-    
-    if(op===1){
-        
-        T1 = 273.15;
-        T2 = T1 - rndi(10,80)/10;    
-        P1 = 101325
-        
-        V1 = 0.000020;  // m3/mol  volumen molar hielo
-        V2 = 0.000018;  // m3/mol  volumen molar agua
-
-        dH = 6023.52; // J/mol
-        
-        QTN  = "Utiliza la ecuación de Clapeyron (simplificada) para ";
-        QTN += "calcular la presión necesaria para fundir agua a " + round2(T2-273.15) + " °C. <br>";
-        QTN += "Considera los siguientes datos para el agua: <br>";
-        QTN += "d<sub>liq</sub> = 1 g/mL, d<sub>sol</sub> = 0.9 g/mL,";
-        QTN += " &Delta;H<sub>fus</sub> = 80 cal/g";  
-
-        Tprom = (T2 + T1)/2;        
-        
-        dT = T2 - T1;
-        dV = V2 - V1;
-                       
-        P2 = P1 + dT*dH/(Tprom*dV);
-        
-        negativos="no";
-        
-        ANS = P2/101325; uni = "atm";     
-
-        
-
-      
-        
-    }else{
-        
-        T1 = 273.15;
-        T2 = T1 - rndi(10,80)/10;    
-        P1 = 101325
-        
-        V1 = 0.000020;  // m3/mol  volumen molar hielo
-        V2 = 0.000018;  // m3/mol  volumen molar agua
-
-        dH = 6023.52; // J/mol
-        
-        Tprom = (T2 + T1)/2;        
-        
-        dT = T2 - T1;
-        dV = V2 - V1;
-                       
-        P2 = P1 + dT*dH/(Tprom*dV);        
-        
-        P2 = P2/101325;
-        
-        QTN  = "Utiliza la ecuación de Clapeyron (simplificada) para ";
-        QTN += "calcular el punto de fusión del agua a " + round2(P2) + " atm. <br>";        
-        QTN += "Considera los siguientes datos para el agua: <br>";
-        QTN += "d<sub>liq</sub> = 1 g/mL, d<sub>sol</sub> = 0.9 g/mL,";
-        QTN += " &Delta;H<sub>fus</sub> = 80 cal/g";        
-        
-        ANS = T2 - 273.15; uni = " °C";    
-        
-        RespuestaEspecial = "yes";
-
-        //despejando:        
-        //dP = P2*101325 - P1; 
-        //T2 = T1 * ( (-2*dH - dP*dV )/( -2*dH + dP*dV )  );
-
-        
-    }
-    
-
-}
-
 
 
 //------------------------------------------------------------------------------
@@ -1101,33 +1024,7 @@ function prob_ec_clapeyron_evaporacion(){
 
         RespuestaEspecial = 'yes';
         ANS = P2; uni = "mmHg";
-        
-        
-        
-       
-        /*
-        //Las otras ecuaciones:
-         P2 = P2*101325/760/1000;
-        console.log("Clapeyron:");
-	    console.log(P2);
-        
-		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );		
-        P2 = P2/1000;      
-        console.log("Clausius-Clapeyron:");
-	    console.log(P2);  
-
-            let A = 8.14019;
-            let B = 1810.94;
-            let C = 244.485;
-        P2 = 10**( A - B/(C + (T2-273.15))); 
-        P2 = P2*101325/760/1000;        
-        console.log("Antonie:");
-	    console.log(P2); 
-		*/
-          
-        
-                           
-
+                                 
 
 	}
 
@@ -1168,88 +1065,6 @@ function prob_ec_clapeyron_evaporacion(){
 	
 }
 
-//------------------------------------------------------------------------------
-function prob_ec_clapeyron_simplificada_evaporacion(){
-    
-    let dH,dP,dV,dT,T1,T2,P1,P2,V1,V2,d1,d2,R;
-    
-    let op = rndi(1,2);
-    
-    if(op===1){
-
-                
-        V1 = 0.000018;  // m3/mol  volumen molar agua
-        V2 = 0.03;      // vapor
-        dV = V2 -V1;
-                
-        dH = 40658.76; // J/mol
-
-        T1 = 373.15;
-        
-        if(coin()==1)
-            T2 = T1 + rndi(1,100);
-        else
-            T2 = T1 - rndi(1,25);                  
-            
-        P1 = 101325;   
-                 
-        dT = T2-T1;
-        P2 = P1 + dT*dH/( 0.5*(T1+T2) *dV);
-        P2 = P2*(760.0/101325.0);
-
-
-        QTN  = "Utiliza la ecuación de Clapeyron (simplificada) para ";
-        QTN += "calcular la presión necesaria para evaporar agua a " + (T2-273.15) + " °C.<br>";
-        QTN += "Considera los siguientes datos para el agua: <br>";
-        QTN += "d<sub>liq</sub> = 1 g/mL, d<sub>gas</sub> = 0.6 g/L,";
-        QTN += " &Delta;H<sub>vap</sub> = 540 cal/g"; 
-
-        RespuestaEspecial = 'yes';
-        ANS = P2; uni = "mmHg";
-        
-                                 
-
-
-	}
-
-    if(op===2){
-
-        V1 = 0.000018;  // m3/mol  volumen molar agua
-        V2 = 0.03;      // vapor
-        dV = V2 -V1;
-                
-        dH = 40658.76; // J/mol
-
-        T1 = 373.15;
-        
-        if(coin()==1)
-            T2 = T1 + rndi(1,100);
-        else
-            T2 = T1 - rndi(1,25);
-        
-        T2 = 102 + 273.15;              
-            
-        P1 = 101325;   
-                 
-        P2 = P1 + dH/dV * Math.log(T2/T1);       
-        P2 = P2*(760.0/101325.0);
-        
-        QTN  = "Utiliza la ecuación de Clapeyron (simplificada) para ";
-        QTN += "calcular el punto de ebullición del agua a " + round2(P2) + " mmHg. <br>";
-        QTN += "Considera los siguientes datos para el agua: <br>";
-        QTN += "d<sub>liq</sub> = 1 g/mL, d<sub>gas</sub> = 0.6 g/mL,";
-        QTN += " &Delta;H<sub>vap</sub> = 540 cal/g"; 
-		
-        RespuestaEspecial = 'yes';
-        ANS = T2 - 273.15; uni = " °C";
-        
-
-		
-
-	}
-	
-}
-
 
 //------------------------------------------------------------------------------
 function prob_ec_clausius_clapeyron_evaporacion(){
@@ -1269,11 +1084,12 @@ function prob_ec_clausius_clapeyron_evaporacion(){
             T2 = T1 + rndi(1,100);
         else
             T2 = T1 - rndi(1,25);
-                    
+                            
             
-        P1 = 101325;    
+        P1 = 101325;   
+        R = 8.314;
 
-		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );		
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );		
         P2 = P2*(760.0/101325.0);          
 	
 
@@ -1284,7 +1100,6 @@ function prob_ec_clausius_clapeyron_evaporacion(){
 		
         RespuestaEspecial = 'yes';
         ANS = P2; uni = "mmHg"; 
-
 
 		
 	}
@@ -1306,6 +1121,9 @@ function prob_ec_clausius_clapeyron_evaporacion(){
 		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );		
         P2 = P2*(760.0/101325.0); 
         
+        //despeje:
+        //T2 = 1/(  1/T1 - R*Math.log(P2/P1)/dH );
+        
         QTN  = "Utiliza la ecuación de Clausius-Clapeyron para ";
         QTN += "calcular el punto de ebullición del agua a " + round2(P2) + " mmHg. <br>";
         QTN += "Considera los siguientes datos para el agua: <br>";
@@ -1324,7 +1142,7 @@ function prob_ec_antonie_evaporacion(){
     
     let P, T, A, B, C;
     
-    let op = rndi(1,2);
+    let op = 1; //rndi(1,2);
     
     if(op===1){
 
@@ -1343,8 +1161,9 @@ function prob_ec_antonie_evaporacion(){
             C = 244.485;
             
         }
-        
 
+        
+        P = 10**(A - B/(C+T));
 
                
         QTN  = "Utiliza la ecuación de Antonie para ";
@@ -1353,7 +1172,7 @@ function prob_ec_antonie_evaporacion(){
         QTN += "A = " + A + ", B = " + B + " y C = " + C;
 		
         RespuestaEspecial = 'yes';
-        ANS = P; uni = "mmHg";  
+        ANS = P; uni = "mmHg";          
 
 
 		
@@ -1376,14 +1195,12 @@ function prob_ec_antonie_evaporacion(){
             B = 1810.94;
             C = 244.485;
             
-        }
-        
-        T = 94;
-            A = 8.07131;
-            B = 1730.63;
-            C = 233.426;        
+        }              
         
         P = 10**( A - B/(C + T) );
+        
+        //despeje:
+        //T = B/(-Math.log10(P) + A) - C;
 
                
         QTN  = "Utiliza la ecuación de Antonie para ";
