@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<!-- /*
+
+(C) 2024 Dr. Octavio Juárez
+octavio.juarez@unison.mx
+
+Todos los derechos reservados.
+
+*/ -->
+
+<html>
+<head>
+    <html lang="es">
+	<meta charset="utf-8">
+    <title>Termodinamica</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="../css/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Architects Daughter" >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredoka One" >
+    <style>
+        .w3-architects {font-family: 'Architects Daughter';}
+        .w3-freedoka {font-family: 'Fredoka One';}
+        .questionpanel{display: none;} 
+        .restart{display: none;} 
+        .resumenpanel{display: none;} 
+        body{
+            -webkit-user-select: none; /* Safari 3.1+ */
+            -moz-user-select: none; /* Firefox 2+ */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }        
+    </style>
+	    
+</head>
+
+<body>
+
+    <div class="w3-container w3-center w3-blue mytitle" id="mytitle">
+      <h1 class="w3-freedoka">Cinética Química</h1>
+    </div>
+
+	 <div class="w3-panel">
+		<div class="w3-panel w3-center w3-card-4 w3-round-large"  >
+			<p class="w3-xlarge" id="QTN">Ejercicios de Cinética Química</p>
+		</div>
+	</div>
+	
+    <div class="w3-panel w3-center"   >
+        <button class="w3-btn w3-red w3-round-large w3-large" id="ANS" onclick="start()">ClickMe :D</button>
+    </div>	
+
+<center>   
+<br> <br> <br>
+<h4> &#169; 2024 Dr. Octavio Juárez </h4>
+<h5> octavio.juarez@unison.mx </h5>   
+</center>
+
+    <script src="../exes/global.js"></script>
+	<script src="../exes/exes.js"></script>
+    
+	<script>    
+
+        /*
+
+        (C) 2024 Dr. Octavio Juárez
+        octavio.juarez@unison.mx
+
+        Todos los derechos reservados.
+
+        */
+    
+        function start(){
+            
+            let prob2 = rndi(1,5);
+            
+            if(prob2===1) prob_ec_cinetica();
+            if(prob2===2) prob_ec_cinetica_tabla();
+            if(prob2===3) prob_ec_cinetica_vida_media();
+            if(prob2===4) prob_ec_cinetica_tabla_2();
+            if(prob2===5) prob_ec_Arrhenius();
+                
+            ANS = round4(ANS);
+                
+            document.getElementById("QTN").innerHTML = QTN;
+            document.getElementById("ANS").innerHTML = "RESPUESTA: <br>"+ANS+" "+uni;
+                
+            console.log(ANS);
+
+           
+        }    
+    
+    </script>
+
+</body>
+</html>
+
+
+            
