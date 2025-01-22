@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<!-- /*
+
+(C) 2024 Dr. Octavio Juárez
+octavio.juarez@unison.mx
+
+Todos los derechos reservados.
+
+*/ -->
+
+<html>
+<head>
+    <html lang="es">
+	<meta charset="utf-8">
+    <title>Termodinamica</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="./w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Architects Daughter" >
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredoka One" >
+    <style>
+        .w3-architects {font-family: 'Architects Daughter';}
+        .w3-freedoka {font-family: 'Fredoka One';}
+        .questionpanel{display: none;} 
+        .restart{display: none;} 
+        .resumenpanel{display: none;} 
+        body{
+            -webkit-user-select: none; /* Safari 3.1+ */
+            -moz-user-select: none; /* Firefox 2+ */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }        
+    </style>
+    
+    <script>
+    
+    var ESTADO = 0;
+    console.log("ESTADO: ", ESTADO);
+    
+    </script>    
+	    
+</head>
+
+<body>
+
+    <div class="w3-container w3-center w3-blue mytitle" id="mytitle">
+      <h1 class="w3-freedoka">Ejercicios para practicar</h1>
+    </div>
+
+	 <div class="w3-panel">
+		<div class="w3-panel w3-center w3-card-4 w3-round-large"  >
+			<p class="w3-xlarge" id="QTN">Ejercicios</p>
+		</div>
+	</div>
+	
+    <div class="w3-panel w3-center"   >
+        <button class="w3-btn w3-red w3-round-large w3-large" id="boton" onclick="start()">ClickMe :D</button>
+    </div>
+
+<center>   
+<br> <br> <br>
+<h4> &#169; 2024 Dr. Octavio Juárez </h4>
+<h5> octavio.juarez@unison.mx </h5>   
+</center>
+
+    <script src="./global.js"></script>
+	<script src="./exes.js"></script>
+    
+	<script>    
+
+        /*
+
+        (C) 2024 Dr. Octavio Juárez
+        octavio.juarez@unison.mx
+
+        Todos los derechos reservados.
+
+        */
+    
+        function start(){
+
+            if(ESTADO===2){
+                ESTADO = 0;
+                console.log("ESTADO: ", ESTADO);
+            }
+        
+            if(ESTADO===1){
+                document.getElementById("QTN").innerHTML  = QTN;
+                document.getElementById("QTN").innerHTML += "<br><br>"+ANS+" "+UNI+"<br>";
+                document.getElementById("boton").innerHTML = "Siguiente<br>Ejercicio";  
+                ESTADO++;
+                console.log("ESTADO: ", ESTADO);
+            }        
+
+            if(ESTADO===0){
+            
+                ESTADO++;
+                console.log("ESTADO: ", ESTADO);
+
+                let prob2 = 1; //rndi(1,2);
+                
+                if(prob2===1) exe_Van_der_Waals();
+                    
+                ANS = round4(ANS);
+                console.log("RESPUESTA: ", ANS);
+                    
+                document.getElementById("QTN").innerHTML = QTN;   
+                document.getElementById("boton").innerHTML = "Mostrar<br>RESPUESTA";                
+            
+            }        
+            
+        }    
+
+    </script>
+
+</body>
+</html>
+
+
+            
