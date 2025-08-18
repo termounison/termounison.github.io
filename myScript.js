@@ -136,7 +136,7 @@ function updateScore(){
 //------------------------------------------------------------------------------
 function showAns(){
 	
-	//console.log("ANS: ", ANS);    
+	console.log("ANS: ", ANS);    
 
 	TRUEANS = "";
     
@@ -155,7 +155,7 @@ function showAns(){
     
     }else{
         FAKEANS[0] = round2( ANS * 0.50 + rndi(1,10)/10.0 ) +" "+ UNI;		
-        FAKEANS[1] = round2( ANS * 0.75 + rndi(1,10)/10.0 ) +" "+ UNI;
+        FAKEANS[1] = round2( ANS * 0.25 + rndi(1,10)/10.0 ) +" "+ UNI;
         FAKEANS[2] = round2( ANS * 1.50 + rndi(1,10)/10.0 ) +" "+ UNI;
         FAKEANS[3] = round2( ANS * 2.0  + rndi(1,10)/10.0 ) +" "+ UNI;
         TRUEANS =  round2( ANS       ) +" "+ UNI;  
