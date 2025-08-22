@@ -3725,19 +3725,14 @@ function exe_ec_clapeyron_fusion_(){
 //------------------------------------------------------------------------------
 function exe_ec_clausius_clapeyron(){
 	
-	//ec_ClauClap_P2(P1,T1,T1,dH)
-	//ec_ClauClap_T2(T1,T2,T1,dH)
-	//ec_ClauClap_dH(T1,T2,P1,P2)
-
     let dH,dP,dT,T1,T2,P1,P2,R;
 
-    let op = rndi(1,3);
+    let op = rndi(1,6);
 
     if(op===1){
 
 
         dH = 40668; // J/mol
-
         T1 = 373.15;
 
         if(coin()==1)
@@ -3745,26 +3740,48 @@ function exe_ec_clausius_clapeyron(){
         else
             T2 = T1 - rndi(1,25);
 
-
         P1 = 101325;
         R = 8.314;
 
 		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
-        P2 = P2*(760.0/101325.0);
 
 
-        QTN  = "Mediante la ecuación de Clausius-Clapeyron, ";
-        QTN += "calcula la presión necesaria para evaporar agua a " + (T2-273.15) + " °C. ";
-        QTN += "Emplea los siguientes datos: ";
-        QTN += " &Delta;H<sub>vap</sub> = 40.668 kJ/mol";
+		QTN = "Si la entalpía de evaporación del agua es 40.668 kJ/mol, ";
+		QTN+= "estima la presión necesaria para evaporar agua a " + (T2-273.15) + " °C. ";
 
-        RespuestaEspecial = 'yes';
-        ANS = P2; UNI = "mmHg";
+		
 
+
+        ANS = P2; UNI = "Pa";
 
 	}
+	
+	if(op===2){
 
-    if(op===2){
+
+		dH = 46693; // J/mol
+
+		T1 = 273.16;
+
+		T2 = -rndi(1,20);
+
+		T2 = T2 + 273.15;
+
+		P1 = 611.657;
+		R = 8.314;
+
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
+		
+		QTN = "Si la entalpía de sublimación del agua es 46.639 kJ, ";
+		QTN+= "estima la presión necesaria para sublimar agua a " + (T2-273.15) + " °C. ";		
+
+
+		ANS = P2; UNI = "Pa";
+
+
+	}	
+
+    if(op===3){
 
 
         dH = 40668; // J/mol
@@ -3784,19 +3801,45 @@ function exe_ec_clausius_clapeyron(){
         //despeje:
         //T2 = 1/(  1/T1 - R*Math.log(P2/P1)/dH );
 
-        QTN  = "Mediante la ecuación de Clausius-Clapeyron, ";
-        QTN += "calcula el punto de ebullición del agua a " + round2(P2) + " mmHg. ";
-        QTN += "Emplea los siguientes datos: ";
-        QTN += " &Delta;H<sub>vap</sub> = 40.668 kJ/mol";
+		QTN = "Si la entalpía de evaporación del agua es 40.668 kJ/mol, ";
+		QTN+= "estima la temperatura de ebullición del agua a " + round2(P2) + " mmHg. ";
 
-        RespuestaEspecial = 'yes';
+
+
         ANS = T2 - 273.15; UNI = " °C";
 
 	}
 
-    if(op===3){
+	if(op===4){
 
 
+		dH = 46693.44; // J/mol
+
+		T1 = 273.16;
+
+		T2 = -rndi(1,20);
+
+		T2 = T2 + 273.15;
+
+		P1 = 611.657;
+		R = 8.314;
+
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
+
+		//despeje:
+		//T2 = 1/(  1/T1 - R*Math.log(P2/P1)/dH );
+
+
+		QTN = "Si la entalpía de sublimación del agua es 46.639 kJ, ";
+		QTN+= "estima la temperatura de sublimación del agua a " + round2(P2) + " Pa. ";
+
+
+		ANS = T2 - 273.15; UNI = " °C";
+
+	}
+
+
+    if(op===5){
 
         dH = rndi(10,100)*100; // J/mol
 
@@ -3819,15 +3862,241 @@ function exe_ec_clausius_clapeyron(){
 
         QTN  = "Cierta sustancia hierve a " + T1 + " °C cuando su presión de vapor es igual a ";
         QTN += P1 + " mmHg. Pero cuando la presión de vapor es igual a "+ P2 + " mmHg, la sustancia ";
-        QTN += "se evapora a " + T2 + " °C. Utiliza la ecuación de Clausius-Clapeyron para calcular ";
+        QTN += "se evapora a " + T2 + " °C. Estima ";
+        QTN += "el calor de evaporación de dicha sustancia desconocida.";
+
+
+        ANS = dH; UNI = " J/mol";
+
+    }
+	
+	if(op===6){
+
+
+
+		dH = rndi(10,100)*100; // J/mol
+
+		T1 = -rndi(1,4);
+		T2 = T1 - rndi(5,15);
+
+
+		T1 = T1 + 273.15;
+		T2 = T2 + 273.15;
+		P1 = rndi(40,60)*10; //Pa
+		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );
+		P2 = round2(P2);
+
+		T1 = T1 - 273.15;
+		T2 = T2 - 273.15;
+
+		QTN  = "Cierta sustancia sublima a " + T1 + " °C cuando su presión de vapor es igual a ";
+		QTN += P1 + " Pa. Pero cuando la presión de vapor es igual a "+ P2 + " Pa, la sustancia ";
+		QTN += "se sublima a " + T2 + " °C. Utiliza la ecuación de Clausius-Clapeyron para calcular ";
+		QTN += "el calor de sublimación de dicha sustancia desconocida.";
+
+
+		ANS = dH; UNI = " J/mol";
+
+	}	
+
+}
+
+//-----------------------------------------------------------------SELECCIONAR
+function seleccionar(listaDePalabras) {
+  // Genera un índice aleatorio basado en la longitud de la lista.
+  const indiceAleatorio = Math.floor(Math.random() * listaDePalabras.length);
+
+  // Retorna la palabra que se encuentra en el índice aleatorio.
+  return listaDePalabras[indiceAleatorio];
+}
+
+//------------------------------------------------------------------------------
+function exe_ec_clausius_clapeyron_nuevo(){
+	
+
+    let dH,dP,dT,T1,T2,P1,P2,R;
+	
+	let PROCESO1, PROCESO2, SUSTANCIA
+
+    let op = 1; //rndi(1,6);
+
+    if(op===1){
+		
+		let PROCESO = seleccionar(["evaporación", "sublimación"]);
+		
+		console.log(PROCESO);
+		
+		/*
+		let op3 = rndi(1,2);
+		
+		if(op2===1){ PROCESO1 = "evapora"; PROCESO2 = "evaporación"; P1 = 101325;  T1 = 100; T2 = rndi(75,125)}
+		if(op2===2){ PROCESO1 = "sublima"; PROCESO2 = "sublimación"; P1 = 611.657; T1 =0.01; T2 = rndi(-20,-1)}
+		
+		if(op3===1) {SUSTANCIA = "agua";    dH= 40668;}
+		if(op3===2) {SUSTANCIA = "agüita";  dH= 40668;}
+        
+        R = 8.314;
+
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
+		
+		*/
+
+
+/*
+		QTN = "Si la entalpía de evaporación del agua es 40.668 kJ/mol, ";
+		QTN+= "estima la presión necesaria para evaporar agua a " + T2 + " °C. ";
+*/
+        RespuestaEspecial = 'yes';
+        ANS = 1; UNI = "mmHg";
+
+	}
+	
+	if(op===2){
+
+
+		dH = 46693; // J/mol
+
+		T1 = 273.16;
+
+		T2 = -rndi(1,20);
+
+		T2 = T2 + 273.15;
+
+		
+		R = 8.314;
+
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
+		
+		QTN = "Si la entalpía de sublimación del agua es 46.639 kJ, ";
+		QTN+= "estima la presión necesaria para sublimar agua a " + (T2-273.15) + " °C. ";		
+
+		RespuestaEspecial = 'yes';
+		ANS = P2; UNI = "Pa";
+
+
+	}	
+
+    if(op===3){
+
+
+        dH = 40668; // J/mol
+
+        T1 = 373.15;
+
+        if(coin()==1)
+            T2 = T1 + rndi(1,100);
+        else
+            T2 = T1 - rndi(1,25);
+
+        P1 = 101325;
+
+		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );
+        P2 = P2*(760.0/101325.0);
+
+        //despeje:
+        //T2 = 1/(  1/T1 - R*Math.log(P2/P1)/dH );
+
+		QTN = "Si la entalpía de evaporación del agua es 40.668 kJ/mol, ";
+		QTN+= "estima la temperatura de ebullición del agua a " + round2(P2) + " mmHg. ";
+
+
+        RespuestaEspecial = 'yes';
+        ANS = T2 - 273.15; UNI = " °C";
+
+	}
+
+	if(op===4){
+
+
+		dH = 46693.44; // J/mol
+
+		T1 = 273.16;
+
+		T2 = -rndi(1,20);
+
+		T2 = T2 + 273.15;
+
+		P1 = 611.657;
+		R = 8.314;
+
+		P2 = P1*Math.exp( -(dH/R)*( 1/T2 - 1/T1 ) );
+
+		//despeje:
+		//T2 = 1/(  1/T1 - R*Math.log(P2/P1)/dH );
+
+
+		QTN = "Si la entalpía de sublimación del agua es 46.639 kJ, ";
+		QTN+= "estima la temperatura de sublimación del agua a " + round2(P2) + " Pa. ";
+
+		RespuestaEspecial = 'yes';
+		ANS = T2 - 273.15; UNI = " °C";
+
+	}
+
+
+    if(op===5){
+
+        dH = rndi(10,100)*100; // J/mol
+
+        T1 = rndi(50,110);
+        T2 = T1 + rndi(5,50);
+
+
+        T1 = T1 + 273.15;
+        T2 = T2 + 273.15;
+        P1 = 101325;
+		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );
+
+
+        P1 = P1*(760.0/101325.0);
+        P2 = round2(P2*(760.0/101325.0));
+        T1 = T1 - 273.15;
+        T2 = T2 - 273.15;
+
+
+
+        QTN  = "Cierta sustancia hierve a " + T1 + " °C cuando su presión de vapor es igual a ";
+        QTN += P1 + " mmHg. Pero cuando la presión de vapor es igual a "+ P2 + " mmHg, la sustancia ";
+        QTN += "se evapora a " + T2 + " °C. Estima ";
         QTN += "el calor de evaporación de dicha sustancia desconocida.";
 
         //RespuestaEspecial = 'yes';
         ANS = dH; UNI = " J/mol";
 
     }
+	
+	if(op===6){
+
+
+
+		dH = rndi(10,100)*100; // J/mol
+
+		T1 = -rndi(1,4);
+		T2 = T1 - rndi(5,15);
+
+
+		T1 = T1 + 273.15;
+		T2 = T2 + 273.15;
+		P1 = rndi(40,60)*10; //Pa
+		P2 = P1/Math.exp( (dH/8.134)*( 1/T2 - 1/T1 ) );
+		P2 = round2(P2);
+
+		T1 = T1 - 273.15;
+		T2 = T2 - 273.15;
+
+		QTN  = "Cierta sustancia sublima a " + T1 + " °C cuando su presión de vapor es igual a ";
+		QTN += P1 + " Pa. Pero cuando la presión de vapor es igual a "+ P2 + " Pa, la sustancia ";
+		QTN += "se sublima a " + T2 + " °C. Utiliza la ecuación de Clausius-Clapeyron para calcular ";
+		QTN += "el calor de sublimación de dicha sustancia desconocida.";
+
+		//RespuestaEspecial = 'yes';
+		ANS = dH; UNI = " J/mol";
+
+	}	
 
 }
+
+
 
 
 //------------------------------------------------------------------------------

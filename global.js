@@ -34,3 +34,4 @@ var PUNTOS;
 var TIMELEFT=MAXTIME;
 var GAMEOVER=false;
 var NEXAMEN;
+var MIRAME;
