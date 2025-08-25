@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Equilibrio Físico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        .menu-item, .btn {
+            display: block;
+            width: 100%;
+            margin: 15px auto;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .menu-item:hover, .btn:hover {
+            background-color: #0056b3;
+        }
+        #ejercicio-container {
+            display: none;
+        }
+        .ejercicio-titulo {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #pregunta-texto {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        #respuesta {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 15px;
+            visibility: hidden;
+        }
+        .buttons-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="menu-container">
+        <h1>Ejercicios de Equilibrio Físico</h1>
+        <div class="menu-section">
+            <button class="menu-item" onclick="iniciarEjercicio('clausius-clapeyron')">Ecuación de Clausius-Clapeyron</button>
+        </div>
+    </div>
+
+    <div id="ejercicio-container">
+        <h2 class="ejercicio-titulo"></h2>
+        <div id="pregunta-texto"></div>
+        <div id="respuesta"></div>
+        <div class="buttons-container">
+            <button class="btn" onclick="mostrarRespuesta()">Mostrar Respuesta</button>
+            <button class="btn" onclick="mostrarSiguienteEjercicio()">Siguiente Ejercicio</button>
+            <button class="btn" onclick="volverAlMenu()">Volver al Menú</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let tipoActual;
+        
+        // Constantes
+        const deltaH_agua_J = 40.7 * 1000; // en J/mol
+        const R_J = 8.314; // Constante de los gases ideales en J/(mol·K)
+        const R_cal = 1.987; // Constante de los gases ideales en cal/(mol·K)
+
+        // Puntos de referencia del agua
+        const T_ref_K = 373.15; // 100°C en K
+        const P_ref_Pa = 101325; // 1 atm en Pa
+        
+        const generarUnidades = () => {
+            const unidades = Math.random() < 0.5 ? 'SI' : 'Comunes';
+            if (unidades === 'SI') {
+                return {
+                    pregunta: { T: 'K', P: 'Pa', Q: 'J/mol', R: R_J },
+                    respuesta: { T: '°C', P: 'atm', Q: 'cal/mol' }
+                };
+            } else {
+                return {
+                    pregunta: { T: '°C', P: 'atm', Q: 'cal/mol', R: R_cal },
+                    respuesta: { T: 'K', P: 'Pa', Q: 'J/mol' }
+                };
+            }
+        };
+
+        const ejercicios = {
+            // Calcular P2 (Presión final) para el agua
+            'cp-p2': () => {
+                const unidades = generarUnidades();
+                
+                const T2_K = (Math.random() * 50) + 273.15;
+                const P2_Pa = P_ref_Pa * Math.exp((deltaH_agua_J / R_J) * ((1 / T_ref_K) - (1 / T2_K)));
+
+                let pregunta;
+                let respuesta;
+
+                if (unidades.pregunta.P === 'Pa') {
+                    pregunta = `Calcula la presión de vapor (en ${unidades.respuesta.P}) del agua a ${T2_K.toFixed(2)} K.`;
+                    respuesta = `P₂ = ${(P2_Pa / 101325).toFixed(2)} ${unidades.respuesta.P}`;
+                } else {
+                    const T2_C = T2_K - 273.15;
+                    pregunta = `Calcula la presión de vapor (en ${unidades.respuesta.P}) del agua a ${T2_C.toFixed(2)} °C.`;
+                    respuesta = `P₂ = ${P2_Pa.toFixed(2)} ${unidades.respuesta.P}`;
+                }
+
+                return {
+                    titulo: "Ecuación de Clausius-Clapeyron (Calcular P₂)",
+                    pregunta: pregunta,
+                    respuesta: respuesta
+                };
+            },
+
+            // Calcular T2 (Temperatura final) para el agua
+            'cp-t2': () => {
+                const unidades = generarUnidades();
+                
+                const P2_Pa = (Math.random() * 20000) + 1000;
+                const T2_real_K = 1 / (1 / T_ref_K - (R_J / deltaH_agua_J) * Math.log(P2_Pa / P_ref_Pa));
+                
+                let pregunta;
+                let respuesta;
+
+                if (unidades.pregunta.T === 'K') {
+                    pregunta = `Calcula la temperatura (en ${unidades.respuesta.T}) de ebullición del agua si la presión de vapor es de ${P2_Pa.toFixed(2)} Pa.`;
+                    respuesta = `T₂ = ${(T2_real_K - 273.15).toFixed(2)} ${unidades.respuesta.T}`;
+                } else {
+                    const P2_atm = P2_Pa / 101325;
+                    pregunta = `Calcula la temperatura (en ${unidades.respuesta.T}) de ebullición del agua si la presión de vapor es de ${P2_atm.toFixed(2)} atm.`;
+                    respuesta = `T₂ = ${T2_real_K.toFixed(2)} ${unidades.respuesta.T}`;
+                }
+                
+                return {
+                    titulo: "Ecuación de Clausius-Clapeyron (Calcular T₂)",
+                    pregunta: pregunta,
+                    respuesta: respuesta
+                };
+            },
+
+            // Calcular Q (Entalpía de vaporización) para una sustancia ficticia
+            'cp-q': () => {
+                const unidades = generarUnidades();
+                
+                const deltaH_real_J = (Math.random() * 50 + 10) * 1000; // Valor entre 10 y 60 kJ/mol en J/mol
+                const T1_K = (Math.random() * 30) + 280; // T1 entre 280 K y 310 K
+                const T2_K = (Math.random() * 30) + T1_K; // T2 entre T1 y T1 + 30 K
+                
+                const ln_P2_div_P1 = (deltaH_real_J / R_J) * ((1 / T1_K) - (1 / T2_K));
+                const P1_Pa = (Math.random() * 50000) + 5000;
+                const P2_Pa = P1_Pa * Math.exp(ln_P2_div_P1);
+                
+                let pregunta;
+                let respuesta;
+
+                if (unidades.pregunta.Q === 'J/mol') {
+                    pregunta = `Cierta sustancia tiene una presión de vapor de ${P1_Pa.toFixed(2)} Pa a ${T1_K.toFixed(2)} K y de ${P2_Pa.toFixed(2)} Pa a ${T2_K.toFixed(2)} K. Estima el calor de evaporación de dicha sustancia en ${unidades.respuesta.Q}.`;
+                    respuesta = `ΔHvap = ${(deltaH_real_J / 4184).toFixed(2)} kcal/mol`;
+                } else {
+                    const T1_C = T1_K - 273.15;
+                    const P1_atm = P1_Pa / 101325;
+                    const T2_C = T2_K - 273.15;
+                    const P2_atm = P2_Pa / 101325;
+                    pregunta = `Cierta sustancia tiene una presión de vapor de ${P1_atm.toFixed(2)} atm a ${T1_C.toFixed(2)} °C y de ${P2_atm.toFixed(2)} atm a ${T2_C.toFixed(2)} °C. Estima el calor de evaporación de dicha sustancia en ${unidades.respuesta.Q}.`;
+                    respuesta = `ΔHvap = ${(deltaH_real_J / 1000).toFixed(2)} kJ/mol`;
+                }
+
+                return {
+                    titulo: "Ecuación de Clausius-Clapeyron (Calcular ΔHvap)",
+                    pregunta: pregunta,
+                    respuesta: respuesta
+                };
+            },
+        };
+        
+        window.iniciarEjercicio = (tipo) => {
+            tipoActual = tipo;
+            document.getElementById('menu-container').style.display = 'none';
+            document.getElementById('ejercicio-container').style.display = 'block';
+            mostrarSiguienteEjercicio();
+        };
+
+        window.mostrarSiguienteEjercicio = () => {
+            const tiposDeEjercicios = ['cp-p2', 'cp-t2', 'cp-q'];
+            const tipoAleatorio = tiposDeEjercicios[Math.floor(Math.random() * tiposDeEjercicios.length)];
+            const ejercicio = ejercicios[tipoAleatorio]();
+            
+            document.querySelector('.ejercicio-titulo').innerText = ejercicio.titulo;
+            document.getElementById('pregunta-texto').innerText = ejercicio.pregunta;
+            document.getElementById('respuesta').innerText = ejercicio.respuesta;
+            document.getElementById('respuesta').style.visibility = 'hidden';
+        };
+
+        window.volverAlMenu = () => {
+            document.getElementById('menu-container').style.display = 'block';
+            document.getElementById('ejercicio-container').style.display = 'none';
+        };
+
+        window.mostrarRespuesta = () => {
+            document.getElementById('respuesta').style.visibility = 'visible';
+        };
+    });
+</script>
+
+</body>
+</html>
