@@ -83,9 +83,9 @@
         <h1>Ejercicios de Equilibrio Físico</h1>
         <div class="menu-section">
             <button class="menu-item" onclick="iniciarEjercicio('clausius-clapeyron')">Ecuación de Clausius-Clapeyron</button>
-            <button class="menu-item" onclick="iniciarEjercicio('henry')">Ley de Henry</button>
+            <button class="menu-item" onclick="iniciarEjercicio('henry')">Ley de Henry (solubilidad)</button>
             <button class="menu-item" onclick="iniciarEjercicio('concentraciones')">Concentraciones</button>
-            <button class="menu-item" onclick="iniciarEjercicio('raoult')">Ley de Raoult</button>
+            <button class="menu-item" onclick="iniciarEjercicio('raoult')">Ley de Raoult (soluciones ideales)</button>
             <button class="menu-item" onclick="iniciarEjercicio('coligativas')">Propiedades coligativas</button>
         </div>
     </div>
@@ -116,6 +116,7 @@
         const CONV_C_A_K = 273.15;
         const CONV_PA_A_ATM = 101325;
         const CONV_KCAL_A_J = 4184;
+        const CONV_MMHG_A_PA = 133.322;
 
         // Puntos de referencia del agua
         const T_ref_K = 373.15; // 100°C en K
@@ -163,6 +164,40 @@
             { nombre: 'oxígeno', formula: 'O<sub>2</sub>', MM: 32.00, kH_g_L_atm: 1.3e-3 },
             { nombre: 'amoníaco', formula: 'NH<sub>3</sub>', MM: 17.03, kH_g_L_atm: 5.8e-1 },
             { nombre: 'metano', formula: 'CH<sub>4</sub>', MM: 16.04, kH_g_L_atm: 1.4e-3 }
+        ];
+
+        // Datos para Concentraciones
+        const CONCENTRACION_DATOS = {
+            solventes: [
+                { nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02 },
+                { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11 },
+                { nombre: 'metanol', formula: 'CH<sub>3</sub>OH', MM: 32.04 }
+            ],
+            solutos: [
+                { nombre: 'etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', MM: 46.07 },
+                { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14 },
+                { nombre: 'cloroformo', formula: 'CHCl<sub>3</sub>', MM: 119.38 },
+                { nombre: 'acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', MM: 58.08 },
+                { nombre: 'glicerina', formula: 'C<sub>3</sub>H<sub>8</sub>O<sub>3</sub>', MM: 92.09 },
+                { nombre: 'sal (cloruro de sodio)', formula: 'NaCl', MM: 58.44 },
+                { nombre: 'azúcar (sacarosa)', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3 }
+            ]
+        };
+        
+        // Pares de sustancias que forman soluciones ideales para la Ley de Raoult
+        const RAOULT_PARES_IDEALES = [
+            { // Benceno y Tolueno
+                compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
+                compB: { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14, P_vap_pura_mmHg: 28.4 }
+            },
+            { // Hexano y Heptano
+                compA: { nombre: 'hexano', formula: 'C<sub>6</sub>H<sub>14</sub>', MM: 86.18, P_vap_pura_mmHg: 151 },
+                compB: { nombre: 'heptano', formula: 'C<sub>7</sub>H<sub>16</sub>', MM: 100.21, P_vap_pura_mmHg: 45.8 }
+            },
+            { // Benceno y Ciclohexano
+                compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
+                compB: { nombre: 'ciclohexano', formula: 'C<sub>6</sub>H<sub>12</sub>', MM: 84.18, P_vap_pura_mmHg: 97.6 }
+            }
         ];
 
         const ejercicios = {
@@ -268,6 +303,133 @@
                     const pregunta = `La solubilidad de ${sustancia.nombre} es de ${C_g_L.toExponential(2)} g/L y su constante de Henry a 25°C es de ${kH_g_L_atm.toExponential(2)} g/(L·atm). Calcula la presión parcial de este gas.`;
                     const respuesta = `${formatearPresion(P_pa_calc)}`;
                     return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
+                }
+            },
+
+            // Concentraciones
+            'concentraciones': {
+                'fraccion-molar': () => {
+                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+                    
+                    const masaSolvente_g = (Math.random() * 500) + 500;
+                    const masaSoluto_g = (Math.random() * 200) + 50;
+
+                    const n_solvente = masaSolvente_g / solvente.MM;
+                    const n_soluto = masaSoluto_g / soluto.MM;
+                    const n_total = n_solvente + n_soluto;
+
+                    const X_solvente = n_solvente / n_total;
+                    const X_soluto = n_soluto / n_total;
+
+                    let pregunta, respuesta;
+
+                    if (Math.random() > 0.5) {
+                        pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). Calcula la fracción molar de ${soluto.nombre}.`;
+                        respuesta = `${X_soluto.toFixed(4)}`;
+                    } else {
+                        pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). Calcula la fracción molar de ${solvente.nombre}.`;
+                        respuesta = `${X_solvente.toFixed(4)}`;
+                    }
+
+                    return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
+                },
+
+                'molaridad': () => {
+                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+
+                    const masaSoluto_g = (Math.random() * 200) + 50;
+                    const volumenSolucion_L = (Math.random() * 0.8) + 0.2;
+
+                    const n_soluto = masaSoluto_g / soluto.MM;
+                    const molaridad = n_soluto / volumenSolucion_L;
+
+                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol) para formar una solución con un volumen final de ${volumenSolucion_L.toFixed(2)} L. Calcula la molaridad de la solución.`;
+                    const respuesta = `${molaridad.toFixed(3)} M`;
+
+                    return { titulo: "Molaridad", pregunta: pregunta, respuesta: respuesta };
+                },
+
+                'fraccion-molar-2': () => {
+                    const X1 = (Math.random() * 0.8) + 0.1; // Fracción molar entre 0.1 y 0.9
+                    const X2 = 1 - X1;
+
+                    const pregunta = `En una mezcla de dos componentes, la fracción molar del primer componente es ${X1.toFixed(3)}. Calcula la fracción molar del otro componente.`;
+                    const respuesta = `${X2.toFixed(3)}`;
+
+                    return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
+                },
+                
+                'molalidad': () => {
+                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+
+                    const masaSoluto_g = (Math.random() * 200) + 50;
+                    const masaSolvente_g = (Math.random() * 1000) + 200;
+                    const densidad_g_ml = (Math.random() * 0.5) + 1; // 1.0 a 1.5 g/mL
+
+                    const n_soluto = masaSoluto_g / soluto.MM;
+                    const masaSolvente_kg = masaSolvente_g / 1000;
+                    const molalidad = n_soluto / masaSolvente_kg;
+
+                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). La densidad de la solución es de ${densidad_g_ml.toFixed(2)} g/mL. Calcula la molalidad de la solución.`;
+                    const respuesta = `${molalidad.toFixed(3)} m`;
+
+                    return { titulo: "Molalidad", pregunta: pregunta, respuesta: respuesta };
+                }
+            },
+            
+            // Ley de Raoult
+            'raoult': {
+                'raoult-Psolucion': () => {
+                    const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
+                    const compA = par.compA;
+                    const compB = par.compB;
+                    
+                    const T_C = 25;
+                    const masaA_g = (Math.random() * 100) + 50;
+                    const masaB_g = (Math.random() * 100) + 50;
+
+                    const n_A = masaA_g / compA.MM;
+                    const n_B = masaB_g / compB.MM;
+                    const n_total = n_A + n_B;
+
+                    const X_A = n_A / n_total;
+                    const X_B = n_B / n_total;
+
+                    const P_parcial_A_mmHg = X_A * compA.P_vap_pura_mmHg;
+                    const P_parcial_B_mmHg = X_B * compB.P_vap_pura_mmHg;
+                    const P_total_mmHg = P_parcial_A_mmHg + P_parcial_B_mmHg;
+                    const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
+
+                    const pregunta = `Se mezclan ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, MM = ${compA.MM.toFixed(2)} g/mol) con ${masaB_g.toFixed(2)} g de ${compB.nombre} (${compB.formula}, MM = ${compB.MM.toFixed(2)} g/mol) a una temperatura de ${T_C} °C. Las presiones de vapor de los componentes puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, respectivamente. Calcula la presión de vapor total de la solución.`;
+                    const respuesta = `${formatearPresion(P_total_Pa)}`;
+
+                    return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+                },
+
+                'raoult-Xmolar': () => {
+                    const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
+                    const compA = par.compA;
+                    const compB = par.compB;
+
+                    const T_C = 25;
+                    const masaA_g = (Math.random() * 100) + 50;
+                    
+                    const X_B_valida = Math.random() * (0.9 - 0.1) + 0.1; 
+                    const X_A_valida = 1 - X_B_valida;
+
+                    const n_A = masaA_g / compA.MM;
+                    const n_B = (X_B_valida * n_A) / X_A_valida;
+
+                    const P_total_mmHg = (X_A_valida * compA.P_vap_pura_mmHg) + (X_B_valida * compB.P_vap_pura_mmHg);
+                    const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
+
+                    const pregunta = `Se prepara una solución a ${T_C} °C mezclando ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, MM = ${compA.MM.toFixed(2)} g/mol) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, MM = ${compB.MM.toFixed(2)} g/mol). La presión de vapor de la solución es de ${formatearPresion(P_total_Pa)}. Sabiendo que las presiones de vapor de los líquidos puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, ¿cuál es la fracción molar del ${compB.nombre} en la solución?`;
+                    const respuesta = `${X_B_valida.toFixed(4)}`;
+
+                    return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
                 }
             }
         };
