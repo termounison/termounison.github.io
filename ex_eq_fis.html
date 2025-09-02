@@ -108,358 +108,571 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let tipoActual;
+    
+    let tipoActual;
 
-        // Constantes globales
-        const R_J = 8.314; // Constante de los gases ideales en J/(mol·K)
-        const CONV_C_A_K = 273.15;
-        const CONV_PA_A_ATM = 101325;
-        const CONV_KCAL_A_J = 4184;
-        const CONV_MMHG_A_PA = 133.322;
+    const R_J = 8.314;
+    const R_L_ATM = 0.08206;
+    const CONV_C_A_K = 273.15;
+    const CONV_PA_A_ATM = 101325;
+    const CONV_KCAL_A_J = 4184;
+    const CONV_MMHG_A_PA = 133.322;
+    const CONV_L_A_M3 = 1000;
+    
+    const ClauClapSustancias = [
+        { nombre: 'Agua', formula: 'H<sub>2</sub>O', Tb_C: 100, deltaH_kcal: 9.73, Ttriple_C: 0.01, Ptriple_atm: 0.006037, deltaHsub_kcal: 12.21 },
+        { nombre: 'Tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', Tb_C: 110.6, deltaH_kcal: 7.93, Ttriple_C: -94.95, Ptriple_atm: 2.96e-11, deltaHsub_kcal: 9.51 },
+        { nombre: 'Metanol', formula: 'CH<sub>3</sub>OH', Tb_C: 64.7, deltaH_kcal: 8.44, Ttriple_C: -97.55, Ptriple_atm: 0.0279, deltaHsub_kcal: 9.19 },
+        { nombre: 'Acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', Tb_C: 56.5, deltaH_kcal: 6.96, Ttriple_C: -94.7, Ptriple_atm: 0.0256, deltaHsub_kcal: 8.32 },
+        { nombre: 'Benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', Tb_C: 80.1, deltaH_kcal: 7.36, Ttriple_C: 5.35, Ptriple_atm: 0.0469, deltaHsub_kcal: 10.34 },
+        { nombre: 'Etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', Tb_C: 78.37, deltaH_kcal: 9.23, Ttriple_C: -114.35, Ptriple_atm: 5.65e-10, deltaHsub_kcal: 10.40 }
+    ];
 
-        // Puntos de referencia del agua
-        const T_ref_K = 373.15; // 100°C en K
-        const P_ref_Pa = 101325; // 1 atm en Pa
+    const ClauClapSubSustancias = ClauClapSustancias.filter(sustancia =>
+        sustancia.nombre !== 'Tolueno' && sustancia.nombre !== 'Etanol'
+    );
 
-        // Datos para Clausius-Clapeyron
-        const ClauClapSustancias = [
-            { nombre: 'Agua', formula: 'H<sub>2</sub>O', Tb_C: 100, deltaH_kcal: 9.73, Ttriple_C: 0.01, Ptriple_atm: 0.006037, deltaHsub_kcal: 12.21 },
-            { nombre: 'Tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', Tb_C: 110.6, deltaH_kcal: 7.93, Ttriple_C: -94.95, Ptriple_atm: 2.96e-11, deltaHsub_kcal: 9.51 },
-            { nombre: 'Metanol', formula: 'CH<sub>3</sub>OH', Tb_C: 64.7, deltaH_kcal: 8.44, Ttriple_C: -97.55, Ptriple_atm: 0.0279, deltaHsub_kcal: 9.19 },
-            { nombre: 'Acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', Tb_C: 56.5, deltaH_kcal: 6.96, Ttriple_C: -94.7, Ptriple_atm: 0.0256, deltaHsub_kcal: 8.32 },
-            { nombre: 'Benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', Tb_C: 80.1, deltaH_kcal: 7.36, Ttriple_C: 5.35, Ptriple_atm: 0.0469, deltaHsub_kcal: 10.34 },
-            { nombre: 'Etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', Tb_C: 78.37, deltaH_kcal: 9.23, Ttriple_C: -114.35, Ptriple_atm: 5.65e-10, deltaHsub_kcal: 10.40 }
-        ];
+    const HENRY_SUSTANCIAS = [
+        { nombre: 'dióxido de carbono', formula: 'CO<sub>2</sub>', MM: 44.01, kH_g_L_atm: 3.4e-2 },
+        { nombre: 'nitrógeno', formula: 'N<sub>2</sub>', MM: 28.01, kH_g_L_atm: 7.2e-5 },
+        { nombre: 'oxígeno', formula: 'O<sub>2</sub>', MM: 32.00, kH_g_L_atm: 1.3e-3 },
+        { nombre: 'amoníaco', formula: 'NH<sub>3</sub>', MM: 17.03, kH_g_L_atm: 5.8e-1 },
+        { nombre: 'metano', formula: 'CH<sub>4</sub>', MM: 16.04, kH_g_L_atm: 1.4e-3 }
+    ];
+    
+    const CONCENTRACION_DATOS = {
+        solventes: [
+            { nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02 },
+            { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11 },
+            { nombre: 'metanol', formula: 'CH<sub>3</sub>OH', MM: 32.04 }
+        ],
+        solutos: [
+            { nombre: 'etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', MM: 46.07 },
+            { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14 },
+            { nombre: 'cloroformo', formula: 'CHCl<sub>3</sub>', MM: 119.38 },
+            { nombre: 'acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', MM: 58.08 },
+            { nombre: 'glicerina', formula: 'C<sub>3</sub>H<sub>8</sub>O<sub>3</sub>', MM: 92.09 },
+            { nombre: 'sal (cloruro de sodio)', formula: 'NaCl', MM: 58.44 },
+            { nombre: 'azúcar (sacarosa)', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3 }
+        ]
+    };
 
-        // Nueva lista de sustancias para sublimación, excluyendo Tolueno y Etanol
-        const ClauClapSubSustancias = ClauClapSustancias.filter(sustancia =>
-            sustancia.nombre !== 'Tolueno' && sustancia.nombre !== 'Etanol'
-        );
+    const RAOULT_PARES_IDEALES = [
+        {
+            compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
+            compB: { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14, P_vap_pura_mmHg: 28.4 }
+        },
+        {
+            compA: { nombre: 'hexano', formula: 'C<sub>6</sub>H<sub>14</sub>', MM: 86.18, P_vap_pura_mmHg: 151 },
+            compB: { nombre: 'heptano', formula: 'C<sub>7</sub>H<sub>16</sub>', MM: 100.21, P_vap_pura_mmHg: 45.8 }
+        },
+        {
+            compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
+            compB: { nombre: 'ciclohexano', formula: 'C<sub>6</sub>H<sub>12</sub>', MM: 84.18, P_vap_pura_mmHg: 97.6 }
+        }
+    ];
 
-        // Funciones de utilidad
-        const formatearPresion = (P_Pa) => {
-            if (P_Pa >= 1e9) return (P_Pa / 1e9).toFixed(2) + ' GPa';
-            if (P_Pa >= 1e6) return (P_Pa / 1e6).toFixed(2) + ' MPa';
-            if (P_Pa >= 1e3) return (P_Pa / 1e3).toFixed(2) + ' kPa';
-            return P_Pa.toFixed(2) + ' Pa';
-        };
-
-        const formatearEnergia = (E_J) => {
-            if (E_J >= 1e9) return (E_J / 1e9).toFixed(2) + ' GJ/mol';
-            if (E_J >= 1e6) return (E_J / 1e6).toFixed(2) + ' MJ/mol';
-            if (E_J >= 1e3) return (E_J / 1e3).toFixed(2) + ' kJ/mol';
-            return E_J.toFixed(2) + ' J/mol';
-        };
-
-        const formatearKHenry = (kH_kg_m3_pa) => {
-            const kH_g_L_atm = kH_kg_m3_pa * CONV_PA_A_ATM;
-            return kH_g_L_atm.toExponential(2) + ' g/(L·atm)';
-        };
-
-        // Datos y constantes para la Ley de Henry
-        const HENRY_SUSTANCIAS = [
-            { nombre: 'dióxido de carbono', formula: 'CO<sub>2</sub>', MM: 44.01, kH_g_L_atm: 3.4e-2 },
-            { nombre: 'nitrógeno', formula: 'N<sub>2</sub>', MM: 28.01, kH_g_L_atm: 7.2e-5 },
-            { nombre: 'oxígeno', formula: 'O<sub>2</sub>', MM: 32.00, kH_g_L_atm: 1.3e-3 },
-            { nombre: 'amoníaco', formula: 'NH<sub>3</sub>', MM: 17.03, kH_g_L_atm: 5.8e-1 },
-            { nombre: 'metano', formula: 'CH<sub>4</sub>', MM: 16.04, kH_g_L_atm: 1.4e-3 }
-        ];
-
-        // Datos para Concentraciones
-        const CONCENTRACION_DATOS = {
-            solventes: [
-                { nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02 },
-                { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11 },
-                { nombre: 'metanol', formula: 'CH<sub>3</sub>OH', MM: 32.04 }
+    const COLIGATIVAS_DATOS = {
+        solventes: [
+            { nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02, P_vap_pura_mmHg: 23.8, Tb_C: 100, Tf_C: 0, Kc: 1.86, Ke: 0.512 },
+            { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1, Tb_C: 80.1, Tf_C: 5.5, Kc: 5.07, Ke: 2.53 },
+            { nombre: 'ciclohexano', formula: 'C<sub>6</sub>H<sub>12</sub>', MM: 84.18, P_vap_pura_mmHg: 97.6, Tb_C: 80.7, Tf_C: 6.5, Kc: 20.8, Ke: 2.92 },
+            { nombre: 'cloroformo', formula: 'CHCl<sub>3</sub>', MM: 119.38, P_vap_pura_mmHg: 196, Tb_C: 61.2, Tf_C: -63.5, Kc: 4.68, Ke: 3.88 }
+        ],
+        solutos: {
+            noElectrolitos: [
+                { nombre: 'sacarosa', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3, i: 1 },
+                { nombre: 'glucosa', formula: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>', MM: 180.16, i: 1 },
+                { nombre: 'urea', formula: 'CO(NH<sub>2</sub>)<sub>2</sub>', MM: 60.06, i: 1 },
+                { nombre: 'glicerina', formula: 'C<sub>3</sub>H<sub>8</sub>O<sub>3</sub>', MM: 92.09, i: 1 },
+                { nombre: 'naftaleno', formula: 'C<sub>10</sub>H<sub>8</sub>', MM: 128.17, i: 1 }
             ],
-            solutos: [
-                { nombre: 'etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', MM: 46.07 },
-                { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14 },
-                { nombre: 'cloroformo', formula: 'CHCl<sub>3</sub>', MM: 119.38 },
-                { nombre: 'acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', MM: 58.08 },
-                { nombre: 'glicerina', formula: 'C<sub>3</sub>H<sub>8</sub>O<sub>3</sub>', MM: 92.09 },
-                { nombre: 'sal (cloruro de sodio)', formula: 'NaCl', MM: 58.44 },
-                { nombre: 'azúcar (sacarosa)', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3 }
+            electrolitos: [
+                { nombre: 'cloruro de sodio', formula: 'NaCl', MM: 58.44, i: 2 },
+                { nombre: 'bromuro de sodio', formula: 'NaBr', MM: 102.89, i: 2 },
+                { nombre: 'cloruro de potasio', formula: 'KCl', MM: 74.55, i: 2 },
+                { nombre: 'nitrato de sodio', formula: 'NaNO<sub>3</sub>', MM: 84.99, i: 2 },
+                { nombre: 'hidróxido de sodio', formula: 'NaOH', MM: 39.99, i: 2 },
+                { nombre: 'cloruro de calcio', formula: 'CaCl<sub>2</sub>', MM: 110.98, i: 3 },
+                { nombre: 'sulfato de sodio', formula: 'Na<sub>2</sub>SO<sub>4</sub>', MM: 142.04, i: 3 }
             ]
-        };
-        
-        // Pares de sustancias que forman soluciones ideales para la Ley de Raoult
-        const RAOULT_PARES_IDEALES = [
-            { // Benceno y Tolueno
-                compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
-                compB: { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14, P_vap_pura_mmHg: 28.4 }
+        }
+    };
+
+    const TODOS_LOS_SOLUTOS = [
+        ...COLIGATIVAS_DATOS.solutos.noElectrolitos,
+        ...COLIGATIVAS_DATOS.solutos.electrolitos
+    ];
+
+    const formatearPresion = (P_Pa) => {
+        if (P_Pa >= 1e9) return (P_Pa / 1e9).toFixed(2) + ' GPa';
+        if (P_Pa >= 1e6) return (P_Pa / 1e6).toFixed(2) + ' MPa';
+        if (P_Pa >= 1e3) return (P_Pa / 1e3).toFixed(2) + ' kPa';
+        return P_Pa.toFixed(2) + ' Pa';
+    };
+
+    const formatearEnergia = (E_J) => {
+        if (E_J >= 1e9) return (E_J / 1e9).toFixed(2) + ' GJ/mol';
+        if (E_J >= 1e6) return (E_J / 1e6).toFixed(2) + ' MJ/mol';
+        if (E_J >= 1e3) return (E_J / 1e3).toFixed(2) + ' kJ/mol';
+        return E_J.toFixed(2) + ' J/mol';
+    };
+
+    const formatearKHenry = (kH_kg_m3_pa) => {
+        const kH_g_L_atm = kH_kg_m3_pa * CONV_PA_A_ATM;
+        return kH_g_L_atm.toExponential(2) + ' g/(L·atm)';
+    };
+
+    const formatDeltaP = (value) => {
+        if (Math.abs(value) < 0.01) {
+            return value.toExponential(2) + ' Pa';
+        }
+        return value.toFixed(2) + ' Pa';
+    };
+
+    const formatDeltaT_K = (value) => {
+        return value.toFixed(3) + ' K';
+    };
+    
+    const formatDeltaT_C = (value) => {
+        return value.toFixed(3) + ' °C';
+    };
+
+    const formatTempK = (value) => {
+        return value.toFixed(2) + ' K';
+    };
+    
+    const formatKeKc = (value) => {
+        return value.toFixed(3) + ' °C·kg/mol';
+    };
+    
+    const formatMM = (value) => {
+        return value.toFixed(2) + ' g/mol';
+    };
+
+    const ejercicios = {
+        'clausius-clapeyron': {
+            'CC_P2': () => {
+                const sustancia = ClauClapSustancias[Math.floor(Math.random() * ClauClapSustancias.length)];
+                const T1_K = sustancia.Tb_C + CONV_C_A_K;
+                const P1_Pa = 1 * CONV_PA_A_ATM;
+                const deltaH_J = sustancia.deltaH_kcal * CONV_KCAL_A_J;
+                const T2_K = (Math.random() * 30 - 15) + T1_K;
+                const P2_Pa = P1_Pa * Math.exp((deltaH_J / R_J) * ((1 / T1_K) - (1 / T2_K)));
+                const T2_C = T2_K - CONV_C_A_K;
+                const datosNecesarios = `ΔH<sub>vap</sub> = ${formatearEnergia(deltaH_J)}, T<sub>b</sub> = ${sustancia.Tb_C.toFixed(2)} °C, P<sub>b</sub> = 1 atm`;
+                const pregunta = `Calcula la presión de vapor de ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) a ${T2_C.toFixed(2)} °C.`;
+                const respuesta = formatearPresion(P2_Pa);
+                return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
             },
-            { // Hexano y Heptano
-                compA: { nombre: 'hexano', formula: 'C<sub>6</sub>H<sub>14</sub>', MM: 86.18, P_vap_pura_mmHg: 151 },
-                compB: { nombre: 'heptano', formula: 'C<sub>7</sub>H<sub>16</sub>', MM: 100.21, P_vap_pura_mmHg: 45.8 }
+            'CC_T2': () => {
+                const sustancia = ClauClapSustancias[Math.floor(Math.random() * ClauClapSustancias.length)];
+                const T1_K = sustancia.Tb_C + CONV_C_A_K;
+                const P1_Pa = 1 * CONV_PA_A_ATM;
+                const deltaH_J = sustancia.deltaH_kcal * CONV_KCAL_A_J;
+                const P2_Pa = (Math.random() * 100000) + 10000;
+                const T2_real_K = 1 / (1 / T1_K - (R_J / deltaH_J) * Math.log(P2_Pa / P1_Pa));
+                const datosNecesarios = `ΔH<sub>vap</sub> = ${formatearEnergia(deltaH_J)}, T<sub>b</sub> = ${sustancia.Tb_C.toFixed(2)} °C, P<sub>b</sub> = 1 atm`;
+                const pregunta = `Calcula la temperatura de ebullición (en K) de ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) si la presión de vapor es ${formatearPresion(P2_Pa)}.`;
+                const respuesta = formatTempK(T2_real_K);
+                return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
             },
-            { // Benceno y Ciclohexano
-                compA: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P_vap_pura_mmHg: 95.1 },
-                compB: { nombre: 'ciclohexano', formula: 'C<sub>6</sub>H<sub>12</sub>', MM: 84.18, P_vap_pura_mmHg: 97.6 }
+            'CC_dH': () => {
+                const deltaH_real_J = (Math.random() * 50 + 10) * 1000;
+                const T1_K = (Math.random() * 30) + 280;
+                const T2_K = (Math.random() * 30) + T1_K;
+                const ln_P2_div_P1 = (deltaH_real_J / R_J) * ((1 / T1_K) - (1 / T2_K));
+                const P1_Pa = (Math.random() * 50000) + 5000;
+                const P2_Pa = P1_Pa * Math.exp(ln_P2_div_P1);
+                const T1_C = T1_K - CONV_C_A_K;
+                const T2_C = T2_K - CONV_C_A_K;
+                const pregunta = `Cierta sustancia tiene una presión de vapor de ${formatearPresion(P1_Pa)} a ${T1_C.toFixed(2)} °C y de ${formatearPresion(P2_Pa)} a ${T2_C.toFixed(2)} °C. Estima el calor de evaporación de dicha sustancia.`;
+                const respuesta = formatearEnergia(deltaH_real_J);
+                return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
+            },
+            'CC_sub_P2': () => {
+                const sustancia = ClauClapSubSustancias[Math.floor(Math.random() * ClauClapSubSustancias.length)];
+                const Ttriple_K = sustancia.Ttriple_C + CONV_C_A_K;
+                const Ptriple_Pa = sustancia.Ptriple_atm * CONV_PA_A_ATM;
+                const deltaHsub_J = sustancia.deltaHsub_kcal * CONV_KCAL_A_J;
+                const T2_K = Ttriple_K - (Math.random() * 20);
+                const P2_Pa = Ptriple_Pa * Math.exp((deltaHsub_J / R_J) * ((1 / Ttriple_K) - (1 / T2_K)));
+                const T2_C = T2_K - CONV_C_A_K;
+                const datosNecesarios = `ΔH<sub>sub</sub> = ${formatearEnergia(deltaHsub_J)}, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
+                const pregunta = `Calcula la presión de vapor del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) a ${T2_C.toFixed(2)} °C.`;
+                const respuesta = formatearPresion(P2_Pa);
+                return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
+            },
+            'CC_sub_T2': () => {
+                const sustancia = ClauClapSubSustancias[Math.floor(Math.random() * ClauClapSubSustancias.length)];
+                const Ttriple_K = sustancia.Ttriple_C + CONV_C_A_K;
+                const Ptriple_Pa = sustancia.Ptriple_atm * CONV_PA_A_ATM;
+                const deltaHsub_J = sustancia.deltaHsub_kcal * CONV_KCAL_A_J;
+                const P2_Pa = (Math.random() * (Ptriple_Pa - 10)) + 10;
+                const T2_real_K = 1 / (1 / Ttriple_K - (R_J / deltaHsub_J) * Math.log(P2_Pa / Ptriple_Pa));
+                const datosNecesarios = `ΔH<sub>sub</sub> = ${formatearEnergia(deltaHsub_J)}, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
+                const pregunta = `Calcula la temperatura de sublimación (en K) del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) si la presión de vapor es ${formatearPresion(P2_Pa)}.`;
+                const respuesta = formatTempK(T2_real_K);
+                return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
             }
-        ];
-
-        const ejercicios = {
-            // Ecuación de Clausius-Clapeyron
-            'clausius-clapeyron': {
-                'cp-p2': () => {
-                    const sustancia = ClauClapSustancias[Math.floor(Math.random() * ClauClapSustancias.length)];
-                    const T1_K = sustancia.Tb_C + CONV_C_A_K;
-                    const P1_Pa = 1 * CONV_PA_A_ATM;
-                    const deltaH_J = sustancia.deltaH_kcal * CONV_KCAL_A_J;
-                    const T2_K = (Math.random() * 30 - 15) + T1_K;
-                    const P2_Pa = P1_Pa * Math.exp((deltaH_J / R_J) * ((1 / T1_K) - (1 / T2_K)));
-                    const T2_C = T2_K - CONV_C_A_K;
-                    const datosNecesarios = `ΔH<sub>vap</sub> = ${sustancia.deltaH_kcal.toFixed(2)} kcal/mol, T<sub>b</sub> = ${sustancia.Tb_C.toFixed(2)} °C, P<sub>b</sub> = 1 atm`;
-                    const pregunta = `Calcula la presión de vapor de ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) a ${T2_C.toFixed(2)} °C.`;
-                    const respuesta = `${formatearPresion(P2_Pa)}`;
-                    return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
-                },
-                'cp-t2': () => {
-                    const sustancia = ClauClapSustancias[Math.floor(Math.random() * ClauClapSustancias.length)];
-                    const T1_K = sustancia.Tb_C + CONV_C_A_K;
-                    const P1_Pa = 1 * CONV_PA_A_ATM;
-                    const deltaH_J = sustancia.deltaH_kcal * CONV_KCAL_A_J;
-                    const P2_Pa = (Math.random() * 100000) + 10000;
-                    const T2_real_K = 1 / (1 / T1_K - (R_J / deltaH_J) * Math.log(P2_Pa / P1_Pa));
-                    const P2_atm = P2_Pa / CONV_PA_A_ATM;
-                    const datosNecesarios = `ΔH<sub>vap</sub> = ${sustancia.deltaH_kcal.toFixed(2)} kcal/mol, T<sub>b</sub> = ${sustancia.Tb_C.toFixed(2)} °C, P<sub>b</sub> = 1 atm`;
-                    const pregunta = `Calcula la temperatura de ebullición de ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) si la presión de vapor es ${P2_atm.toFixed(2)} atm.`;
-                    const respuesta = `${T2_real_K.toFixed(2)} K`;
-                    return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
-                },
-                'cp-dh': () => {
-                    const deltaH_real_J = (Math.random() * 50 + 10) * 1000;
-                    const T1_K = (Math.random() * 30) + 280;
-                    const T2_K = (Math.random() * 30) + T1_K;
-                    const ln_P2_div_P1 = (deltaH_real_J / R_J) * ((1 / T1_K) - (1 / T2_K));
-                    const P1_Pa = (Math.random() * 50000) + 5000;
-                    const P2_Pa = P1_Pa * Math.exp(ln_P2_div_P1);
-                    const T1_C = T1_K - CONV_C_A_K;
-                    const T2_C = T2_K - CONV_C_A_K;
-                    const P1_atm = P1_Pa / CONV_PA_A_ATM;
-                    const P2_atm = P2_Pa / CONV_PA_A_ATM;
-                    const pregunta = `Cierta sustancia tiene una presión de vapor de ${P1_atm.toFixed(2)} atm a ${T1_C.toFixed(2)} °C y de ${P2_atm.toFixed(2)} atm a ${T2_C.toFixed(2)} °C. Estima el calor de evaporación de dicha sustancia.`;
-                    const respuesta = `${formatearEnergia(deltaH_real_J)}`;
-                    return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
-                },
-                'cp-sub-p2': () => {
-                    const sustancia = ClauClapSubSustancias[Math.floor(Math.random() * ClauClapSubSustancias.length)];
-                    const Ttriple_K = sustancia.Ttriple_C + CONV_C_A_K;
-                    const Ptriple_Pa = sustancia.Ptriple_atm * CONV_PA_A_ATM;
-                    const deltaHsub_J = sustancia.deltaHsub_kcal * CONV_KCAL_A_J;
-                    const T2_K = Ttriple_K - (Math.random() * 20);
-                    const P2_Pa = Ptriple_Pa * Math.exp((deltaHsub_J / R_J) * ((1 / Ttriple_K) - (1 / T2_K)));
-                    const T2_C = T2_K - CONV_C_A_K;
-                    const datosNecesarios = `ΔH<sub>sub</sub> = ${sustancia.deltaHsub_kcal.toFixed(2)} kcal/mol, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
-                    const pregunta = `Calcula la presión de vapor del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) a ${T2_C.toFixed(2)} °C.`;
-                    const respuesta = `${formatearPresion(P2_Pa)}`;
-                    return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
-                },
-                'cp-sub-t2': () => {
-                    const sustancia = ClauClapSubSustancias[Math.floor(Math.random() * ClauClapSubSustancias.length)];
-                    const Ttriple_K = sustancia.Ttriple_C + CONV_C_A_K;
-                    const Ptriple_Pa = sustancia.Ptriple_atm * CONV_PA_A_ATM;
-                    const deltaHsub_J = sustancia.deltaHsub_kcal * CONV_KCAL_A_J;
-                    const P2_Pa = (Math.random() * (Ptriple_Pa - 10)) + 10;
-                    const T2_real_K = 1 / (1 / Ttriple_K - (R_J / deltaHsub_J) * Math.log(P2_Pa / Ptriple_Pa));
-                    const P2_atm = P2_Pa / CONV_PA_A_ATM;
-                    const datosNecesarios = `ΔH<sub>sub</sub> = ${sustancia.deltaHsub_kcal.toFixed(2)} kcal/mol, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
-                    const pregunta = `Calcula la temperatura de sublimación del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) si la presión de vapor es ${P2_atm.toPrecision(2)} atm.`;
-                    const respuesta = `${T2_real_K.toFixed(2)} K`;
-                    return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
-                }
+        },
+        'henry': {
+            'LH_C': () => {
+                const sustancia = HENRY_SUSTANCIAS[Math.floor(Math.random() * HENRY_SUSTANCIAS.length)];
+                const kH_g_L_atm = sustancia.kH_g_L_atm;
+                const P_atm = (Math.random() * 5) + 1;
+                const C_g_L = kH_g_L_atm * P_atm;
+                const C_kg_m3 = C_g_L;
+                const pregunta = `Calcula la concentración en masa (en kg/m³) de ${sustancia.nombre} disuelta en una solución a 25°C, sabiendo que su constante de Henry es ${kH_g_L_atm.toExponential(2)} g/(L·atm) y la presión parcial del gas es de ${P_atm.toFixed(2)} atm.`;
+                const respuesta = `${C_kg_m3.toExponential(2)} kg/m³`;
+                return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
             },
-
-            // Ley de Henry
-            'henry': {
-                'henry-c': () => {
-                    const sustancia = HENRY_SUSTANCIAS[Math.floor(Math.random() * HENRY_SUSTANCIAS.length)];
-                    const kH_g_L_atm = sustancia.kH_g_L_atm;
-                    const P_atm = (Math.random() * 5) + 1;
-                    const C_g_L = kH_g_L_atm * P_atm;
-                    const C_kg_m3 = C_g_L; // 1 g/L = 1 kg/m³
-                    const pregunta = `Calcula la concentración en masa de ${sustancia.nombre} disuelta en una solución a 25°C, sabiendo que su constante de Henry es ${kH_g_L_atm.toExponential(2)} g/(L·atm) y la presión parcial del gas es de ${P_atm.toFixed(2)} atm.`;
-                    const respuesta = `${C_kg_m3.toExponential(2)} kg/m³`;
-                    return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
-                },
-                'henry-kh': () => {
-                    // Los valores se generan para que se asemejen a la realidad, pero son aleatorios.
-                    const C_g_L = (Math.random() * 0.1) + 0.01;
-                    const P_atm = (Math.random() * 5) + 0.5;
-                    const kH_g_L_atm_calc = C_g_L / P_atm;
-                    const kH_kg_m3_pa = kH_g_L_atm_calc / CONV_PA_A_ATM;
-                    const pregunta = `Calcula la constante de Henry para una sustancia desconocida si la solubilidad de dicha sustancia es de ${C_g_L.toExponential(2)} g/L a 25 °C cuando su presión parcial es de ${P_atm.toFixed(2)} atm.`;
-                    const respuesta = `${kH_kg_m3_pa.toExponential(2)} (kg/m³)/Pa`;
-                    return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
-                },
-                'henry-p': () => {
-                    const sustancia = HENRY_SUSTANCIAS[Math.floor(Math.random() * HENRY_SUSTANCIAS.length)];
-                    const C_g_L = (Math.random() * 0.1) + 0.01;
-                    const kH_g_L_atm = (Math.random() * 0.1) + 0.01;
-                    const P_atm_calc = C_g_L / kH_g_L_atm;
-                    const P_pa_calc = P_atm_calc * CONV_PA_A_ATM;
-                    const pregunta = `La solubilidad de ${sustancia.nombre} es de ${C_g_L.toExponential(2)} g/L y su constante de Henry a 25°C es de ${kH_g_L_atm.toExponential(2)} g/(L·atm). Calcula la presión parcial de este gas.`;
-                    const respuesta = `${formatearPresion(P_pa_calc)}`;
-                    return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
-                }
+            'LH_kH': () => {
+                const C_g_L = (Math.random() * 0.1) + 0.01;
+                const P_atm = (Math.random() * 5) + 0.5;
+                const kH_g_L_atm_calc = C_g_L / P_atm;
+                const kH_kg_m3_pa = kH_g_L_atm_calc / CONV_PA_A_ATM;
+                const pregunta = `Calcula la constante de Henry (en (kg/m³)/Pa) para una sustancia desconocida si la solubilidad de dicha sustancia es de ${C_g_L.toExponential(2)} g/L a 25 °C cuando su presión parcial es de ${P_atm.toFixed(2)} atm.`;
+                const respuesta = `${kH_kg_m3_pa.toExponential(2)} (kg/m³)/Pa`;
+                return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
             },
+            'LH_P': () => {
+                const sustancia = HENRY_SUSTANCIAS[Math.floor(Math.random() * HENRY_SUSTANCIAS.length)];
+                const C_g_L = (Math.random() * 0.1) + 0.01;
+                const kH_g_L_atm = (Math.random() * 0.1) + 0.01;
+                const P_atm_calc = C_g_L / kH_g_L_atm;
+                const P_pa_calc = P_atm_calc * CONV_PA_A_ATM;
+                const pregunta = `La solubilidad de ${sustancia.nombre} es de ${C_g_L.toExponential(2)} g/L y su constante de Henry a 25°C es de ${kH_g_L_atm.toExponential(2)} g/(L·atm). Calcula la presión parcial de este gas.`;
+                const respuesta = formatearPresion(P_pa_calc);
+                return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
+            }
+        },
+        'concentraciones': {
+            'Conc_X': () => {
+                const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+                const masaSolvente_g = (Math.random() * 500) + 500;
+                const masaSoluto_g = (Math.random() * 200) + 50;
+                const n_solvente = masaSolvente_g / solvente.MM;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const n_total = n_solvente + n_soluto;
+                const X_solvente = n_solvente / n_total;
+                const X_soluto = n_soluto / n_total;
+                let pregunta, respuesta;
+                if (Math.random() > 0.5) {
+                    pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, MM = ${formatMM(soluto.MM)}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, MM = ${formatMM(solvente.MM)}). Calcula la fracción molar del ${soluto.nombre}.`;
+                    respuesta = `${X_soluto.toFixed(4)}`;
+                } else {
+                    pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, MM = ${formatMM(soluto.MM)}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, MM = ${formatMM(solvente.MM)}). Calcula la fracción molar del ${solvente.nombre}.`;
+                    respuesta = `${X_solvente.toFixed(4)}`;
+                }
+                return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
+            },
+            'Conc_M': () => {
+                const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+                const masaSoluto_g = (Math.random() * 200) + 50;
+                const volumenSolucion_L = (Math.random() * 0.8) + 0.2;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const molaridad = n_soluto / volumenSolucion_L;
+                pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, MM = ${formatMM(soluto.MM)}) en ${solvente.nombre} para formar una solución con un volumen final de ${volumenSolucion_L.toFixed(2)} L. Calcula la molaridad de la solución.`;
+                respuesta = `${molaridad.toFixed(3)} M`;
+                return { titulo: "Molaridad", pregunta: pregunta, respuesta: respuesta };
+            },
+            'Conc_m': () => {
+                const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
+                const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
+                const masaSoluto_g = (Math.random() * 200) + 50;
+                const masaSolvente_g = (Math.random() * 1000) + 200;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, MM = ${formatMM(soluto.MM)}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, MM = ${formatMM(solvente.MM)}). Calcula la molalidad de la solución.`;
+                respuesta = `${molalidad.toFixed(3)} m`;
+                return { titulo: "Molalidad", pregunta: pregunta, respuesta: respuesta };
+            }
+        },
+        'raoult': {
+            'LR_P_sol': () => {
+                const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
+                const compA = par.compA;
+                const compB = par.compB;
+                const T_C = 25;
+                const masaA_g = (Math.random() * 100) + 50;
+                const masaB_g = (Math.random() * 100) + 50;
+                const n_A = masaA_g / compA.MM;
+                const n_B = masaB_g / compB.MM;
+                const n_total = n_A + n_B;
+                const X_A = n_A / n_total;
+                const X_B = n_B / n_total;
+                const P_parcial_A_mmHg = X_A * compA.P_vap_pura_mmHg;
+                const P_parcial_B_mmHg = X_B * compB.P_vap_pura_mmHg;
+                const P_total_mmHg = P_parcial_A_mmHg + P_parcial_B_mmHg;
+                const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
+                const pregunta = `Se mezclan ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, ${formatMM(compA.MM)}) con ${masaB_g.toFixed(2)} g de ${compB.nombre} (${compB.formula}, ${formatMM(compB.MM)}) a una temperatura de ${T_C} °C. Las presiones de vapor de los componentes puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, respectivamente. Calcula la presión de vapor total de la solución.`;
+                const respuesta = formatearPresion(P_total_Pa);
+                return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+            },
+            'LR_X_soluto': () => {
+                const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
+                const compA = par.compA;
+                const compB = par.compB;
+                const T_C = 25;
+                const masaA_g = (Math.random() * 100) + 50;
+                const X_B_valida = Math.random() * (0.9 - 0.1) + 0.1; 
+                const X_A_valida = 1 - X_B_valida;
+                const n_A = masaA_g / compA.MM;
+                const n_B = (X_B_valida * n_A) / X_A_valida;
+                const P_total_mmHg = (X_A_valida * compA.P_vap_pura_mmHg) + (X_B_valida * compB.P_vap_pura_mmHg);
+                const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
+                const pregunta = `Se prepara una solución a ${T_C} °C mezclando ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, ${formatMM(compA.MM)}) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, ${formatMM(compB.MM)}). La presión de vapor de la solución es de ${formatearPresion(P_total_Pa)}. Sabiendo que las presiones de vapor de los líquidos puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, ¿cuál es la fracción molar (adimensional) del ${compB.nombre} en la solución?`;
+                const respuesta = `${X_B_valida.toFixed(4)}`;
+                return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+            },
+            'LR_m_soluto': () => {
+                const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
+                const compA = par.compA;
+                const compB = par.compB;
+                const T_C = 25;
+                const masaA_g = (Math.random() * 100) + 50;
+                const P_min_mmHg = Math.min(compA.P_vap_pura_mmHg, compB.P_vap_pura_mmHg);
+                const P_max_mmHg = Math.max(compA.P_vap_pura_mmHg, compB.P_vap_pura_mmHg);
+                const P_total_mmHg = (Math.random() * (P_max_mmHg - P_min_mmHg)) + P_min_mmHg;
+                const X_B_calculada = (P_total_mmHg - compA.P_vap_pura_mmHg) / (compB.P_vap_pura_mmHg - compA.P_vap_pura_mmHg);
+                const n_A = masaA_g / compA.MM;
+                const n_B_real = (X_B_calculada * n_A) / (1 - X_B_calculada);
+                const masaB_real_g = n_B_real * compB.MM;
+                const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
+                const pregunta = `Se mezclan ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, ${formatMM(compA.MM)}) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, ${formatMM(compB.MM)}). La presión de vapor de la solución resultante es de ${formatearPresion(P_total_Pa)} a ${T_C} °C. Las presiones de vapor de los componentes puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, respectivamente. ¿Qué masa (en g) de ${compB.nombre} es necesaria?`;
+                const respuesta = `${masaB_real_g.toFixed(2)} g`;
+                return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+            }
+        },
+        'coligativas': {
+            'PC_dP': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const temperatura_C = 25;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const n_solvente = masaSolvente_g / solvente.MM;
+                const X_soluto_calc = (soluto.i * n_soluto) / (soluto.i * n_soluto + n_solvente);
+                const deltaP_mmHg = X_soluto_calc * solvente.P_vap_pura_mmHg;
+                const deltaP_Pa = deltaP_mmHg * CONV_MMHG_A_PA;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}). Sabiendo que la presión de vapor del ${solvente.nombre} puro es ${solvente.P_vap_pura_mmHg.toFixed(1)} mmHg a ${temperatura_C} °C, calcula el descenso de la presión de vapor de la solución.`;
+                const respuesta = formatDeltaP(deltaP_Pa);
+                return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_P_final': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const temperatura_C = 25;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const n_solvente = masaSolvente_g / solvente.MM;
+                const X_soluto_calc = (soluto.i * n_soluto) / (soluto.i * n_soluto + n_solvente);
+                const P_solucion_mmHg = solvente.P_vap_pura_mmHg * (1 - X_soluto_calc);
+                const P_solucion_Pa = P_solucion_mmHg * CONV_MMHG_A_PA;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}) a ${temperatura_C} °C. Sabiendo que la presión de vapor del ${solvente.nombre} puro es de ${solvente.P_vap_pura_mmHg.toFixed(1)} mmHg, calcula la presión de vapor de la solución.`;
+                const respuesta = formatearPresion(P_solucion_Pa);
+                return { titulo: "Presión de Vapor de la Solución", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_T_ebullicion': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTb = soluto.i * solvente.Ke * molalidad;
+                const Tb_solucion = solvente.Tb_C + deltaTb;
+                const Tb_solucion_K = Tb_solucion + CONV_C_A_K;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}). Sabiendo que el ${solvente.nombre} puro tiene un punto de ebullición de ${solvente.Tb_C.toFixed(2)} °C y una constante ebulloscópica de ${formatKeKc(solvente.Ke)}, calcula la nueva temperatura de ebullición de la solución.`;
+                const respuesta = formatTempK(Tb_solucion_K);
+                return { titulo: "Aumento de la Temperatura de Ebullición", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_dT_ebullicion': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTb = soluto.i * solvente.Ke * molalidad;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}). Sabiendo que la constante ebulloscópica de ${solvente.nombre} es de ${formatKeKc(solvente.Ke)}, calcula el aumento de la temperatura de ebullición de la solución.`;
+                const respuesta = formatDeltaT_K(deltaTb);
+                return { titulo: "Aumento de la Temperatura de Ebullición", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_K_ebullicion': () => {
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const ke_real = (Math.random() * 4.5) + 0.5;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTb_calculado = soluto.i * ke_real * molalidad;
+                const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de un solvente desconocido. La temperatura de ebullición de la solución aumenta en ${formatDeltaT_C(deltaTb_calculado)}. Calcula la constante ebulloscópica de este solvente.`;
+                const respuesta = formatKeKc(ke_real);
+                return { titulo: "Cálculo de la Constante Ebulloscópica", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_dT_congelacion': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTf = soluto.i * solvente.Kc * molalidad;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}). Sabiendo que la constante crioscópica de ${solvente.nombre} es de ${formatKeKc(solvente.Kc)}, calcula el descenso de la temperatura de congelación de la solución.`;
+                const respuesta = formatDeltaT_K(deltaTf);
+                return { titulo: "Descenso de la Temperatura de Congelación", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_T_congelacion': () => {
+                const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTf = soluto.i * solvente.Kc * molalidad;
+                const Tf_solucion = solvente.Tf_C - deltaTf;
+                const Tf_solucion_K = Tf_solucion + CONV_C_A_K;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${formatMM(solvente.MM)}). Sabiendo que el ${solvente.nombre} puro tiene un punto de congelación de ${solvente.Tf_C.toFixed(2)} °C y una constante crioscópica de ${formatKeKc(solvente.Kc)}, calcula la nueva temperatura de congelación de la solución.`;
+                const respuesta = formatTempK(Tf_solucion_K);
+                return { titulo: "Descenso de la Temperatura de Congelación", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_K_congelacion': () => {
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 25) + 5;
+                const masaSolvente_g = (Math.random() * 500) + 100;
+                const kc_real = (Math.random() * 4.5) + 0.5;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const masaSolvente_kg = masaSolvente_g / 1000;
+                const molalidad = n_soluto / masaSolvente_kg;
+                const deltaTf_calculado = soluto.i * kc_real * molalidad;
+                const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en ${masaSolvente_g.toFixed(2)} g de un solvente desconocido. La temperatura de congelación de la solución disminuye en ${formatDeltaT_C(deltaTf_calculado)}. Calcula la constante crioscópica de este solvente.`;
+                const respuesta = formatKeKc(kc_real);
+                return { titulo: "Cálculo de la Constante Crioscópica", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_pi': () => {
+                const soluto = TODOS_LOS_SOLUTOS[Math.floor(Math.random() * TODOS_LOS_SOLUTOS.length)];
+                const masaSoluto_g = (Math.random() * 10) + 1;
+                const volumenSolucion_L = (Math.random() * 0.5) + 0.1;
+                const temperatura_C = (Math.random() * 20) + 15;
+                const temperatura_K = temperatura_C + CONV_C_A_K;
+                const n_soluto = masaSoluto_g / soluto.MM;
+                const C_molar = n_soluto / volumenSolucion_L;
+                const Pi_atm = soluto.i * C_molar * R_L_ATM * temperatura_K;
+                const Pi_Pa = Pi_atm * CONV_PA_A_ATM;
+                const pregunta = `Se prepara una solución disolviendo ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${formatMM(soluto.MM)}, i=${soluto.i}) en agua para obtener un volumen final de ${volumenSolucion_L.toFixed(2)} L. La solución está a ${temperatura_C.toFixed(1)} °C. Calcula la presión osmótica de la solución.`;
+                const respuesta = formatearPresion(Pi_Pa);
+                return { titulo: "Presión Osmótica", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_MM_pi': () => {
+                const masaSoluto_g = (Math.random() * 5) + 0.5;
+                const volumenSolucion_L = (Math.random() * 0.4) + 0.1;
+                const temperatura_C = (Math.random() * 20) + 15;
+                const temperatura_K = temperatura_C + CONV_C_A_K;
+                const vanthoff_real = Math.floor(Math.random() * 3) + 1;
+                const MM_real = (Math.random() * 200) + 50;
+                const n_soluto = masaSoluto_g / MM_real;
+                const C_molar = n_soluto / volumenSolucion_L;
+                const Pi_atm = vanthoff_real * C_molar * R_L_ATM * temperatura_K;
+                const Pi_Pa = Pi_atm * CONV_PA_A_ATM;
+                const vanthoff_info = ` (i=${vanthoff_real})`;
+                const pregunta = `Una solución acuosa que contiene ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en un volumen de ${volumenSolucion_L.toFixed(2)} L tiene una presión osmótica de ${formatearPresion(Pi_Pa)} a ${temperatura_C.toFixed(1)} °C. Sabiendo que el factor de van 't Hoff es de ${vanthoff_real}, calcula la masa molar de la sustancia.`;
+                const respuesta = formatMM(MM_real);
+                return { titulo: "Cálculo de la Masa Molar (Presión Osmótica)", pregunta: pregunta, respuesta: respuesta };
+            },
+            'PC_MM': () => {
+                const opciones = ['ebullición', 'congelación', 'presión osmótica'];
+                const tipo = opciones[Math.floor(Math.random() * opciones.length)];
 
-            // Concentraciones
-            'concentraciones': {
-                'fraccion-molar': () => {
-                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
-                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
-                    
-                    const masaSolvente_g = (Math.random() * 500) + 500;
-                    const masaSoluto_g = (Math.random() * 200) + 50;
+                const MM_desconocida = (Math.random() * 100) + 50; 
+                const vanthoff_real = Math.floor(Math.random() * 2) + 1;
+                const vanthoff_info = ` (i=${vanthoff_real})`;
 
-                    const n_solvente = masaSolvente_g / solvente.MM;
-                    const n_soluto = masaSoluto_g / soluto.MM;
-                    const n_total = n_solvente + n_soluto;
-
-                    const X_solvente = n_solvente / n_total;
-                    const X_soluto = n_soluto / n_total;
-
-                    let pregunta, respuesta;
-
-                    if (Math.random() > 0.5) {
-                        pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). Calcula la fracción molar de ${soluto.nombre}.`;
-                        respuesta = `${X_soluto.toFixed(4)}`;
-                    } else {
-                        pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). Calcula la fracción molar de ${solvente.nombre}.`;
-                        respuesta = `${X_solvente.toFixed(4)}`;
-                    }
-
-                    return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
-                },
-
-                'molaridad': () => {
-                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
-                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
-
-                    const masaSoluto_g = (Math.random() * 200) + 50;
-                    const volumenSolucion_L = (Math.random() * 0.8) + 0.2;
-
-                    const n_soluto = masaSoluto_g / soluto.MM;
-                    const molaridad = n_soluto / volumenSolucion_L;
-
-                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol) para formar una solución con un volumen final de ${volumenSolucion_L.toFixed(2)} L. Calcula la molaridad de la solución.`;
-                    const respuesta = `${molaridad.toFixed(3)} M`;
-
-                    return { titulo: "Molaridad", pregunta: pregunta, respuesta: respuesta };
-                },
-
-                'fraccion-molar-2': () => {
-                    const X1 = (Math.random() * 0.8) + 0.1; // Fracción molar entre 0.1 y 0.9
-                    const X2 = 1 - X1;
-
-                    const pregunta = `En una mezcla de dos componentes, la fracción molar del primer componente es ${X1.toFixed(3)}. Calcula la fracción molar del otro componente.`;
-                    const respuesta = `${X2.toFixed(3)}`;
-
-                    return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
-                },
-                
-                'molalidad': () => {
-                    const solvente = CONCENTRACION_DATOS.solventes[Math.floor(Math.random() * CONCENTRACION_DATOS.solventes.length)];
-                    const soluto = CONCENTRACION_DATOS.solutos[Math.floor(Math.random() * CONCENTRACION_DATOS.solutos.length)];
-
-                    const masaSoluto_g = (Math.random() * 200) + 50;
-                    const masaSolvente_g = (Math.random() * 1000) + 200;
-                    const densidad_g_ml = (Math.random() * 0.5) + 1; // 1.0 a 1.5 g/mL
-
-                    const n_soluto = masaSoluto_g / soluto.MM;
+                if (tipo === 'ebullición') {
+                    const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                    const masaSoluto_g = (Math.random() * 10) + 5;
+                    const masaSolvente_g = (Math.random() * 200) + 100;
+                    const n_soluto = masaSoluto_g / MM_desconocida;
                     const masaSolvente_kg = masaSolvente_g / 1000;
                     const molalidad = n_soluto / masaSolvente_kg;
-
-                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM.toFixed(2)} g/mol) en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM.toFixed(2)} g/mol). La densidad de la solución es de ${densidad_g_ml.toFixed(2)} g/mL. Calcula la molalidad de la solución.`;
-                    const respuesta = `${molalidad.toFixed(3)} m`;
-
-                    return { titulo: "Molalidad", pregunta: pregunta, respuesta: respuesta };
-                }
-            },
-            
-            // Ley de Raoult
-            'raoult': {
-                'raoult-Psolucion': () => {
-                    const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
-                    const compA = par.compA;
-                    const compB = par.compB;
-                    
-                    const T_C = 25;
-                    const masaA_g = (Math.random() * 100) + 50;
-                    const masaB_g = (Math.random() * 100) + 50;
-
-                    const n_A = masaA_g / compA.MM;
-                    const n_B = masaB_g / compB.MM;
-                    const n_total = n_A + n_B;
-
-                    const X_A = n_A / n_total;
-                    const X_B = n_B / n_total;
-
-                    const P_parcial_A_mmHg = X_A * compA.P_vap_pura_mmHg;
-                    const P_parcial_B_mmHg = X_B * compB.P_vap_pura_mmHg;
-                    const P_total_mmHg = P_parcial_A_mmHg + P_parcial_B_mmHg;
-                    const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
-
-                    const pregunta = `Se mezclan ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, MM = ${compA.MM.toFixed(2)} g/mol) con ${masaB_g.toFixed(2)} g de ${compB.nombre} (${compB.formula}, MM = ${compB.MM.toFixed(2)} g/mol) a una temperatura de ${T_C} °C. Las presiones de vapor de los componentes puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, respectivamente. Calcula la presión de vapor total de la solución.`;
-                    const respuesta = `${formatearPresion(P_total_Pa)}`;
-
-                    return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
-                },
-
-                'raoult-Xmolar': () => {
-                    const par = RAOULT_PARES_IDEALES[Math.floor(Math.random() * RAOULT_PARES_IDEALES.length)];
-                    const compA = par.compA;
-                    const compB = par.compB;
-
-                    const T_C = 25;
-                    const masaA_g = (Math.random() * 100) + 50;
-                    
-                    const X_B_valida = Math.random() * (0.9 - 0.1) + 0.1; 
-                    const X_A_valida = 1 - X_B_valida;
-
-                    const n_A = masaA_g / compA.MM;
-                    const n_B = (X_B_valida * n_A) / X_A_valida;
-
-                    const P_total_mmHg = (X_A_valida * compA.P_vap_pura_mmHg) + (X_B_valida * compB.P_vap_pura_mmHg);
-                    const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
-
-                    const pregunta = `Se prepara una solución a ${T_C} °C mezclando ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, MM = ${compA.MM.toFixed(2)} g/mol) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, MM = ${compB.MM.toFixed(2)} g/mol). La presión de vapor de la solución es de ${formatearPresion(P_total_Pa)}. Sabiendo que las presiones de vapor de los líquidos puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, ¿cuál es la fracción molar del ${compB.nombre} en la solución?`;
-                    const respuesta = `${X_B_valida.toFixed(4)}`;
-
-                    return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+                    const deltaT = vanthoff_real * solvente.Ke * molalidad;
+                    const T_final = solvente.Tb_C + deltaT;
+                    const T_pura = solvente.Tb_C;
+                    const constante = solvente.Ke;
+                    const tipoUnidadTemp = 'ebullición';
+                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} puro. La solución resultante tiene un punto de ${tipoUnidadTemp} de ${T_final.toFixed(2)} °C. Sabiendo que el punto de ${tipoUnidadTemp} del ${solvente.nombre} puro es de ${T_pura.toFixed(2)} °C y su constante coligativa es de ${constante.toFixed(2)} °C·kg/mol, determina la masa molar de la sustancia desconocida, cuyo factor de van 't Hoff es ${vanthoff_real}.`;
+                    const respuesta = formatMM(MM_desconocida);
+                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
+                } else if (tipo === 'congelación') {
+                    const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
+                    const masaSoluto_g = (Math.random() * 10) + 5;
+                    const masaSolvente_g = (Math.random() * 200) + 100;
+                    const n_soluto = masaSoluto_g / MM_desconocida;
+                    const masaSolvente_kg = masaSolvente_g / 1000;
+                    const molalidad = n_soluto / masaSolvente_kg;
+                    const deltaT = vanthoff_real * solvente.Kc * molalidad;
+                    const T_final = solvente.Tf_C - deltaT;
+                    const T_pura = solvente.Tf_C;
+                    const constante = solvente.Kc;
+                    const tipoUnidadTemp = 'congelación';
+                    const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} puro. La solución resultante tiene un punto de ${tipoUnidadTemp} de ${T_final.toFixed(2)} °C. Sabiendo que el punto de ${tipoUnidadTemp} del ${solvente.nombre} puro es de ${T_pura.toFixed(2)} °C y su constante coligativa es de ${constante.toFixed(2)} °C·kg/mol, determina la masa molar de la sustancia desconocida, cuyo factor de van 't Hoff es ${vanthoff_real}.`;
+                    const respuesta = formatMM(MM_desconocida);
+                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
+                } else {
+                    const masaSoluto_g = (Math.random() * 5) + 0.5;
+                    const volumenSolucion_L = (Math.random() * 0.4) + 0.1;
+                    const temperatura_C = (Math.random() * 20) + 15;
+                    const temperatura_K = temperatura_C + CONV_C_A_K;
+                    const n_soluto = masaSoluto_g / MM_desconocida;
+                    const C_molar = n_soluto / volumenSolucion_L;
+                    const Pi_atm = vanthoff_real * C_molar * R_L_ATM * temperatura_K;
+                    const Pi_Pa = Pi_atm * CONV_PA_A_ATM;
+                    const pregunta = `Una solución acuosa que contiene ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en un volumen de ${volumenSolucion_L.toFixed(2)} L tiene una presión osmótica de ${formatearPresion(Pi_Pa)} a ${temperatura_C.toFixed(1)} °C. Sabiendo que el factor de van 't Hoff es de ${vanthoff_real}, calcula la masa molar de la sustancia desconocida.`;
+                    const respuesta = formatMM(MM_desconocida);
+                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
                 }
             }
-        };
+        }
+    };
+    
+    window.iniciarEjercicio = (tipo) => {
+        tipoActual = tipo;
+        document.getElementById('menu-container').style.display = 'none';
+        document.getElementById('ejercicio-container').style.display = 'block';
+        mostrarSiguienteEjercicio();
+    };
 
-        window.iniciarEjercicio = (tipo) => {
-            tipoActual = tipo;
-            document.getElementById('menu-container').style.display = 'none';
-            document.getElementById('ejercicio-container').style.display = 'block';
-            mostrarSiguienteEjercicio();
-        };
+    window.mostrarSiguienteEjercicio = () => {
+        const tiposDeEjercicios = Object.keys(ejercicios[tipoActual]);
+        const tipoAleatorio = tiposDeEjercicios[Math.floor(Math.random() * tiposDeEjercicios.length)];
+        const ejercicio = ejercicios[tipoActual][tipoAleatorio]();
+        
+        document.querySelector('.ejercicio-titulo').innerText = ejercicio.titulo;
+        document.getElementById('pregunta-texto').innerHTML = ejercicio.pregunta;
+        document.getElementById('respuesta').innerText = ejercicio.respuesta;
+        document.getElementById('respuesta').style.visibility = 'hidden';
+    };
 
-        window.mostrarSiguienteEjercicio = () => {
-            const tiposDeEjercicios = Object.keys(ejercicios[tipoActual]);
-            const tipoAleatorio = tiposDeEjercicios[Math.floor(Math.random() * tiposDeEjercicios.length)];
-            const ejercicio = ejercicios[tipoActual][tipoAleatorio]();
-            document.querySelector('.ejercicio-titulo').innerText = ejercicio.titulo;
-            document.getElementById('pregunta-texto').innerHTML = ejercicio.pregunta;
-            document.getElementById('respuesta').innerText = ejercicio.respuesta;
-            document.getElementById('respuesta').style.visibility = 'hidden';
-        };
+    window.volverAlMenu = () => {
+        document.getElementById('menu-container').style.display = 'block';
+        document.getElementById('ejercicio-container').style.display = 'none';
+    };
 
-        window.volverAlMenu = () => {
-            document.getElementById('menu-container').style.display = 'block';
-            document.getElementById('ejercicio-container').style.display = 'none';
-        };
+    window.mostrarRespuesta = () => {
+        document.getElementById('respuesta').style.visibility = 'visible';
+    };
 
-        window.mostrarRespuesta = () => {
-            document.getElementById('respuesta').style.visibility = 'visible';
-        };
-    });
 </script>
 
 </body>
