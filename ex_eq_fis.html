@@ -6,14 +6,12 @@
     <title>Ejercicios de Equilibrio Físico</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Verdana, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
             background-color: #f0f0f0;
             margin: 0;
-            position: relative;
             padding-bottom: 70px;
         }
         .container {
@@ -24,6 +22,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 600px;
+            margin: 20px auto;
         }
         .menu-item, .btn {
             display: block;
@@ -46,27 +45,29 @@
         #ejercicio-container {
             display: none;
         }
+        #examen-container {
+            display: none;
+            text-align: left;
+        }
         .ejercicio-titulo {
             font-size: 24px;
             margin-bottom: 20px;
         }
-        #pregunta-texto {
+        .pregunta-texto {
             font-size: 20px;
             margin-bottom: 10px;
         }
-        #respuesta {
+        .respuesta-texto {
             font-weight: bold;
             font-size: 20px;
-            margin-top: 15px;
-            visibility: hidden;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            color: blue;
         }
         .buttons-container {
             margin-top: 20px;
         }
         .footer-text {
-            position: fixed;
-            bottom: 0;
-            left: 0;
             width: 100%;
             background-color: #f0f0f0;
             color: #666;
@@ -83,21 +84,33 @@
         <h1>Ejercicios de Equilibrio Físico</h1>
         <div class="menu-section">
             <button class="menu-item" onclick="iniciarEjercicio('clausius-clapeyron')">Ecuación de Clausius-Clapeyron</button>
-            <button class="menu-item" onclick="iniciarEjercicio('henry')">Ley de Henry (solubilidad)</button>
+            <button class="menu-item" onclick="iniciarEjercicio('henry')">Ley de Henry</button>
             <button class="menu-item" onclick="iniciarEjercicio('concentraciones')">Concentraciones</button>
-            <button class="menu-item" onclick="iniciarEjercicio('raoult')">Ley de Raoult (soluciones ideales)</button>
+            <button class="menu-item" onclick="iniciarEjercicio('raoult')">Ley de Raoult</button>
             <button class="menu-item" onclick="iniciarEjercicio('coligativas')">Propiedades coligativas</button>
+            <button class="menu-item" onclick="iniciarEjercicio('todo')">Todo</button>
+            <button class="menu-item" onclick="iniciarEjercicio('examen')">Examen</button>
+			<button class="menu-item" onclick="window.history.back()">Regresar</button>
         </div>
     </div>
 
     <div id="ejercicio-container">
         <h2 class="ejercicio-titulo"></h2>
-        <div id="pregunta-texto"></div>
-        <div id="respuesta"></div>
+        <div class="pregunta-texto"></div>
+        <div class="respuesta-texto"></div>
         <div class="buttons-container">
             <button class="btn" onclick="mostrarRespuesta()">Mostrar Respuesta</button>
             <button class="btn" onclick="mostrarSiguienteEjercicio()">Siguiente Ejercicio</button>
-            <button class="btn" onclick="volverAlMenu()">Volver al Menú</button>
+            <button class="btn" onclick="volverAlMenu()">Regresar</button>
+        </div>
+    </div>
+
+    <div id="examen-container">
+        <h2>Examen de Práctica</h2>
+        <div id="examen-ejercicios"></div>
+        <div class="buttons-container">
+            <button class="btn" onclick="iniciarExamen()">Generar otro examen</button>
+            <button class="btn" onclick="volverAlMenu()">Regresar</button>
         </div>
     </div>
 </div>
@@ -108,9 +121,6 @@
 </div>
 
 <script>
-    
-    let tipoActual;
-
     const R_J = 8.314;
     const R_L_ATM = 0.08206;
     const CONV_C_A_K = 273.15;
@@ -301,19 +311,19 @@
                 const datosNecesarios = `ΔH<sub>sub</sub> = ${formatearEnergia(deltaHsub_J)}, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
                 const pregunta = `Calcula la presión de vapor del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) a ${T2_C.toFixed(2)} °C.`;
                 const respuesta = formatearPresion(P2_Pa);
-                return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
+                return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
             },
             'CC_sub_T2': () => {
                 const sustancia = ClauClapSubSustancias[Math.floor(Math.random() * ClauClapSubSustancias.length)];
                 const Ttriple_K = sustancia.Ttriple_C + CONV_C_A_K;
+                const P2_Pa = (Math.random() * (sustancia.Ptriple_atm * CONV_PA_A_ATM - 10)) + 10;
                 const Ptriple_Pa = sustancia.Ptriple_atm * CONV_PA_A_ATM;
                 const deltaHsub_J = sustancia.deltaHsub_kcal * CONV_KCAL_A_J;
-                const P2_Pa = (Math.random() * (Ptriple_Pa - 10)) + 10;
                 const T2_real_K = 1 / (1 / Ttriple_K - (R_J / deltaHsub_J) * Math.log(P2_Pa / Ptriple_Pa));
                 const datosNecesarios = `ΔH<sub>sub</sub> = ${formatearEnergia(deltaHsub_J)}, T<sub>triple</sub> = ${sustancia.Ttriple_C.toFixed(2)} °C, P<sub>triple</sub> = ${sustancia.Ptriple_atm.toPrecision(2)} atm`;
                 const pregunta = `Calcula la temperatura de sublimación (en K) del sólido ${sustancia.nombre} (${sustancia.formula}, ${datosNecesarios}) si la presión de vapor es ${formatearPresion(P2_Pa)}.`;
                 const respuesta = formatTempK(T2_real_K);
-                return { titulo: "Ecuación de Clausius-Clapeyron (Sublimación)", pregunta: pregunta, respuesta: respuesta };
+                return { titulo: "Ecuación de Clausius-Clapeyron", pregunta: pregunta, respuesta: respuesta };
             }
         },
         'henry': {
@@ -332,8 +342,8 @@
                 const P_atm = (Math.random() * 5) + 0.5;
                 const kH_g_L_atm_calc = C_g_L / P_atm;
                 const kH_kg_m3_pa = kH_g_L_atm_calc / CONV_PA_A_ATM;
-                const pregunta = `Calcula la constante de Henry (en (kg/m³)/Pa) para una sustancia desconocida si la solubilidad de dicha sustancia es de ${C_g_L.toExponential(2)} g/L a 25 °C cuando su presión parcial es de ${P_atm.toFixed(2)} atm.`;
-                const respuesta = `${kH_kg_m3_pa.toExponential(2)} (kg/m³)/Pa`;
+                const pregunta = `Calcula la constante de Henry (en kg/(m³Pa)) para una sustancia desconocida si la solubilidad de dicha sustancia es de ${C_g_L.toExponential(2)} g/L a 25 °C cuando su presión parcial es de ${P_atm.toFixed(2)} atm.`;
+                const respuesta = `${kH_kg_m3_pa.toExponential(2)} kg/(m³Pa)`;
                 return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
             },
             'LH_P': () => {
@@ -425,7 +435,7 @@
                 const n_B = (X_B_valida * n_A) / X_A_valida;
                 const P_total_mmHg = (X_A_valida * compA.P_vap_pura_mmHg) + (X_B_valida * compB.P_vap_pura_mmHg);
                 const P_total_Pa = P_total_mmHg * CONV_MMHG_A_PA;
-                const pregunta = `Se prepara una solución a ${T_C} °C mezclando ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, ${formatMM(compA.MM)}) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, ${formatMM(compB.MM)}). La presión de vapor de la solución es de ${formatearPresion(P_total_Pa)}. Sabiendo que las presiones de vapor de los líquidos puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, ¿cuál es la fracción molar (adimensional) del ${compB.nombre} en la solución?`;
+                const pregunta = `Se prepara una solución a ${T_C} °C mezclando ${masaA_g.toFixed(2)} g de ${compA.nombre} (${compA.formula}, ${formatMM(compA.MM)}) con una cantidad desconocida de ${compB.nombre} (${compB.formula}, ${formatMM(compB.MM)}). La presión de vapor de la solución es de ${formatearPresion(P_total_Pa)}. Sabiendo que las presiones de vapor de los líquidos puros a esta temperatura son ${compA.P_vap_pura_mmHg.toFixed(1)} mmHg y ${compB.P_vap_pura_mmHg.toFixed(1)} mmHg, ¿cuál es la fracción molar del ${compB.nombre} en la solución?`;
                 const respuesta = `${X_B_valida.toFixed(4)}`;
                 return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
             },
@@ -575,7 +585,9 @@
                 const respuesta = formatearPresion(Pi_Pa);
                 return { titulo: "Presión Osmótica", pregunta: pregunta, respuesta: respuesta };
             },
-            'PC_MM_pi': () => {
+            
+			/*
+			'PC_MM_pi': () => {
                 const masaSoluto_g = (Math.random() * 5) + 0.5;
                 const volumenSolucion_L = (Math.random() * 0.4) + 0.1;
                 const temperatura_C = (Math.random() * 20) + 15;
@@ -591,6 +603,8 @@
                 const respuesta = formatMM(MM_real);
                 return { titulo: "Cálculo de la Masa Molar (Presión Osmótica)", pregunta: pregunta, respuesta: respuesta };
             },
+			*/
+			
             'PC_MM': () => {
                 const opciones = ['ebullición', 'congelación', 'presión osmótica'];
                 const tipo = opciones[Math.floor(Math.random() * opciones.length)];
@@ -613,7 +627,7 @@
                     const tipoUnidadTemp = 'ebullición';
                     const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} puro. La solución resultante tiene un punto de ${tipoUnidadTemp} de ${T_final.toFixed(2)} °C. Sabiendo que el punto de ${tipoUnidadTemp} del ${solvente.nombre} puro es de ${T_pura.toFixed(2)} °C y su constante coligativa es de ${constante.toFixed(2)} °C·kg/mol, determina la masa molar de la sustancia desconocida, cuyo factor de van 't Hoff es ${vanthoff_real}.`;
                     const respuesta = formatMM(MM_desconocida);
-                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
+                    return { titulo: `Cálculo de la Masa Molar`, pregunta: pregunta, respuesta: respuesta };
                 } else if (tipo === 'congelación') {
                     const solvente = COLIGATIVAS_DATOS.solventes[Math.floor(Math.random() * COLIGATIVAS_DATOS.solventes.length)];
                     const masaSoluto_g = (Math.random() * 10) + 5;
@@ -628,7 +642,7 @@
                     const tipoUnidadTemp = 'congelación';
                     const pregunta = `Se disuelven ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en ${masaSolvente_g.toFixed(2)} g de ${solvente.nombre} puro. La solución resultante tiene un punto de ${tipoUnidadTemp} de ${T_final.toFixed(2)} °C. Sabiendo que el punto de ${tipoUnidadTemp} del ${solvente.nombre} puro es de ${T_pura.toFixed(2)} °C y su constante coligativa es de ${constante.toFixed(2)} °C·kg/mol, determina la masa molar de la sustancia desconocida, cuyo factor de van 't Hoff es ${vanthoff_real}.`;
                     const respuesta = formatMM(MM_desconocida);
-                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
+                    return { titulo: `Cálculo de la Masa Molar`, pregunta: pregunta, respuesta: respuesta };
                 } else {
                     const masaSoluto_g = (Math.random() * 5) + 0.5;
                     const volumenSolucion_L = (Math.random() * 0.4) + 0.1;
@@ -640,37 +654,116 @@
                     const Pi_Pa = Pi_atm * CONV_PA_A_ATM;
                     const pregunta = `Una solución acuosa que contiene ${masaSoluto_g.toFixed(2)} g de una sustancia desconocida en un volumen de ${volumenSolucion_L.toFixed(2)} L tiene una presión osmótica de ${formatearPresion(Pi_Pa)} a ${temperatura_C.toFixed(1)} °C. Sabiendo que el factor de van 't Hoff es de ${vanthoff_real}, calcula la masa molar de la sustancia desconocida.`;
                     const respuesta = formatMM(MM_desconocida);
-                    return { titulo: `Cálculo de la Masa Molar (${tipo})`, pregunta: pregunta, respuesta: respuesta };
+                    return { titulo: `Cálculo de la Masa Molar`, pregunta: pregunta, respuesta: respuesta };
                 }
+            }
+        },
+        'todo': {
+            'todo_1': () => {
+                const categorias = Object.keys(ejercicios).filter(cat => cat !== 'todo' && cat !== 'examen');
+                const categoriaAleatoria = categorias[Math.floor(Math.random() * categorias.length)];
+                const ejerciciosDeCategoria = Object.keys(ejercicios[categoriaAleatoria]);
+                const tipoEjercicioAleatorio = ejerciciosDeCategoria[Math.floor(Math.random() * ejerciciosDeCategoria.length)];
+                return ejercicios[categoriaAleatoria][tipoEjercicioAleatorio]();
+            }
+        },
+        'examen': {
+            'examen_1': () => {
+                const categorias = Object.keys(ejercicios).filter(cat => cat !== 'todo' && cat !== 'examen');
+                const categoriaAleatoria = categorias[Math.floor(Math.random() * categorias.length)];
+                const ejerciciosDeCategoria = Object.keys(ejercicios[categoriaAleatoria]);
+                const tipoEjercicioAleatorio = ejerciciosDeCategoria[Math.floor(Math.random() * ejerciciosDeCategoria.length)];
+                return ejercicios[categoriaAleatoria][tipoEjercicioAleatorio]();
             }
         }
     };
     
+    // Función para mezclar un array (algoritmo de Fisher-Yates, según parece...)
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    window.iniciarExamen = () => {
+        const examQuestions = [];
+        const distribucion = [
+            { categoria: 'clausius-clapeyron', cantidad: 2 },
+            { categoria: 'henry', cantidad: 2 },
+            { categoria: 'raoult', cantidad: 2 },
+            { categoria: 'coligativas', cantidad: 4 }
+        ];
+
+        distribucion.forEach(item => {
+            const ejerciciosDeCategoria = Object.values(ejercicios[item.categoria]);
+            shuffleArray(ejerciciosDeCategoria);
+            const selectedExercises = ejerciciosDeCategoria.slice(0, item.cantidad);
+            selectedExercises.forEach(ejercicioFunc => {
+                examQuestions.push(ejercicioFunc());
+            });
+        });
+
+        const examContainer = document.getElementById('examen-ejercicios');
+        examContainer.innerHTML = '';
+        
+        examQuestions.forEach((q, index) => {
+            const ejercicioHTML = `
+                <div class="ejercicio">
+                    <h3>Ejercicio ${index + 1}: ${q.titulo}</h3>
+                    <p class="pregunta-texto">${q.pregunta}</p>
+                    <p class="respuesta-texto">Respuesta: ${q.respuesta}</p>
+                </div>
+                <hr>
+            `;
+            examContainer.innerHTML += ejercicioHTML;
+        });
+
+        document.getElementById('menu-container').style.display = 'none';
+        document.getElementById('ejercicio-container').style.display = 'none';
+        document.getElementById('examen-container').style.display = 'block';
+    };
+
     window.iniciarEjercicio = (tipo) => {
+        if (tipo === 'examen') {
+            iniciarExamen();
+            return;
+        }
         tipoActual = tipo;
         document.getElementById('menu-container').style.display = 'none';
         document.getElementById('ejercicio-container').style.display = 'block';
+        document.getElementById('examen-container').style.display = 'none';
         mostrarSiguienteEjercicio();
     };
 
     window.mostrarSiguienteEjercicio = () => {
-        const tiposDeEjercicios = Object.keys(ejercicios[tipoActual]);
-        const tipoAleatorio = tiposDeEjercicios[Math.floor(Math.random() * tiposDeEjercicios.length)];
-        const ejercicio = ejercicios[tipoActual][tipoAleatorio]();
+        let ejercicio;
+        if (tipoActual === 'todo') {
+            const categorias = Object.keys(ejercicios).filter(cat => cat !== 'todo' && cat !== 'examen');
+            const categoriaAleatoria = categorias[Math.floor(Math.random() * categorias.length)];
+            const ejerciciosDeCategoria = Object.keys(ejercicios[categoriaAleatoria]);
+            const tipoEjercicioAleatorio = ejerciciosDeCategoria[Math.floor(Math.random() * ejerciciosDeCategoria.length)];
+            ejercicio = ejercicios[categoriaAleatoria][tipoEjercicioAleatorio]();
+        } else {
+            const tiposDeEjercicios = Object.keys(ejercicios[tipoActual]);
+            const tipoAleatorio = tiposDeEjercicios[Math.floor(Math.random() * tiposDeEjercicios.length)];
+            ejercicio = ejercicios[tipoActual][tipoAleatorio]();
+        }
         
-        document.querySelector('.ejercicio-titulo').innerText = ejercicio.titulo;
-        document.getElementById('pregunta-texto').innerHTML = ejercicio.pregunta;
-        document.getElementById('respuesta').innerText = ejercicio.respuesta;
-        document.getElementById('respuesta').style.visibility = 'hidden';
+        document.querySelector('#ejercicio-container .ejercicio-titulo').innerText = ejercicio.titulo;
+        document.querySelector('#ejercicio-container .pregunta-texto').innerHTML = ejercicio.pregunta;
+        document.querySelector('#ejercicio-container .respuesta-texto').innerText = "Respuesta: " + ejercicio.respuesta;
+        document.querySelector('#ejercicio-container .respuesta-texto').style.visibility = 'hidden';
     };
 
     window.volverAlMenu = () => {
         document.getElementById('menu-container').style.display = 'block';
         document.getElementById('ejercicio-container').style.display = 'none';
+        document.getElementById('examen-container').style.display = 'none';
     };
 
     window.mostrarRespuesta = () => {
-        document.getElementById('respuesta').style.visibility = 'visible';
+        document.querySelector('#ejercicio-container .respuesta-texto').style.visibility = 'visible';
     };
 
 </script>
