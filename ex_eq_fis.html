@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicios de Equilibrio Físico</title>
     <style>
+	
+	
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
+			font-style: normal italic; /* Define el estilo (normal e itálico) */
+		}
+		
         body {
-            font-family: Verdana, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             display: flex;
             justify-content: center;
             flex-direction: column;
@@ -83,11 +92,11 @@
     <div id="menu-container">
         <h1>Ejercicios de Equilibrio Físico</h1>
         <div class="menu-section">
-            <button class="menu-item" onclick="iniciarEjercicio('clausius-clapeyron')">Ecuación de Clausius-Clapeyron</button>
-            <button class="menu-item" onclick="iniciarEjercicio('henry')">Ley de Henry</button>
-            <button class="menu-item" onclick="iniciarEjercicio('concentraciones')">Concentraciones</button>
-            <button class="menu-item" onclick="iniciarEjercicio('raoult')">Ley de Raoult</button>
+            <button class="menu-item" onclick="iniciarEjercicio('clausius-clapeyron')">Equilibrio líquido-gas</button>
+            <button class="menu-item" onclick="iniciarEjercicio('henry')">Solubilidad de gases en líquidos</button>
+            <button class="menu-item" onclick="iniciarEjercicio('concentraciones')">Concentraciones</button>            
             <button class="menu-item" onclick="iniciarEjercicio('coligativas')">Propiedades coligativas</button>
+			<button class="menu-item" onclick="iniciarEjercicio('raoult')">Soluciones ideales</button>
             <button class="menu-item" onclick="iniciarEjercicio('todo')">Todo</button>
             <button class="menu-item" onclick="iniciarEjercicio('examen')">Examen</button>
 			<button class="menu-item" onclick="window.history.back()">Regresar</button>
