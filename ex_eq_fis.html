@@ -353,7 +353,7 @@
                 let T2 = irand(T1 - 12, T1 + 12); //K
                 let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2))); 
                 
-                let respuesta = T2(2) + " K";
+                let respuesta = T2 + " K";
 
 				//enunciado del ejercicio
 				const info = " ΔH<sub>sub</sub> = " +dH+ " J/mol, T<sub>triple</sub> = " +T1+ "K, P<sub>triple</sub> = " +P1+ " Pa";
@@ -1136,14 +1136,14 @@
     window.iniciarExamen = () => {
         const examQuestions = [];
         const distribucion = [
-            { categoria: 'CC', cantidad: 0 },
-            { categoria: 'HENRY', cantidad: 0 },
-            { categoria: 'CONC', cantidad: 0 },            
-            { categoria: 'DPV', cantidad: 10 },
-            { categoria: 'ATE', cantidad: 0 },
-            { categoria: 'DTC', cantidad: 0 },
-            { categoria: 'PO', cantidad: 0 },
-            { categoria: 'RAOULT', cantidad: 0}
+            { categoria: 'CC', cantidad: 2 },
+            { categoria: 'HENRY', cantidad: 1 },
+            { categoria: 'CONC', cantidad: 1 },            
+            { categoria: 'DPV', cantidad: 1 },
+            { categoria: 'ATE', cantidad: 1 },
+            { categoria: 'DTC', cantidad: 1 },
+            { categoria: 'PO', cantidad: 1 },
+            { categoria: 'RAOULT', cantidad: 2}
         ];
 
         distribucion.forEach(item => {
