@@ -1,13 +1,12 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
-<meta charset="UTF-8">
-<title>Termodinámica</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
+
+    <title>Termodinámica</title>	  
     <style>
 		
 		@font-face {
@@ -15,521 +14,550 @@
 			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
 			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
 			font-style: normal italic; /* Define el estilo (normal e itálico) */
-		}		
-		
-	
+		}
+				
         body {
-            background-color: #f0f2f5;
-            font-family: 'Open Sans', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .card {
-            background-color: #ffffff;
-            border-radius: 20px; /* Ligeramente menos redondeado */         
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            font-size: 22px; /* Ligeramente más pequeño */
-            font-weight: 700;
-            //color: #333;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            font-size: 15px; /* Ligeramente más pequeño */
-            //color: #555;
+			font-family: 'Open Sans', sans-serif;
             line-height: 1.6;
-            margin-bottom: 0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+            color: black;
         }
-
-
+        
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            font-weight: normal;
+            border-bottom: 2px solid black;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 50px;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+        }
+                
+        pre {
+            text-align: center;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        
     </style>
-</head>
-
-
-<body>
-
-
-
-
-
-    <div class="container">
-
-		<center><h1>Equilibrio Físico</h1></center>
-		
-	<div class="card">
-    <h2>IMPORTANTE</h2>
-    
-    <p>Las preguntas y respuestas formuladas en este documento se basan en el capítulo 10 (Equilibrio Físico) del libro <b>Principios de Química</b> de Atkins, Jones y Laverman. Los estudiantes deberían leer dicho capítulo. Si quieres sugerir una pregunta, puedes comentarlo en clases o enviar un email a octavio.juarez@unison.mx</p>
-	
-	</div>		
-
-	<div class="card">
-	<center>
-	<br>
-	<img src="./img/diagrama_fases_agua.jpg" alt="Diagrama de Fases del Agua" style="width: 75%; height: auto;">
-	</center>
-	<br>
-	</div>
-	
-		
-	
-	<div class="card">
-    <h2>¿Qué es un diagrama de fases?</h2>
-    
-    <p>Un diagrama de fases es un mapa que muestra qué fase de una sustancia es la más estable a diferentes presiones y temperaturas. Las líneas en el diagrama representan las condiciones en las que las fases están en equilibrio, como el punto de fusión, la temperatura de ebullición o la sublimación.</p>
-	
-	</div>	
-
-	<div class="card">
-    <h2>¿Qué es una transición de fase?</h2>
-
-    <p>Una transición de fase es cuando un sistema alcanza un equilibrio dinámico entre dos fases. Esto ocurre porque la <var>energía libre molar de Gibbs</var> de la sustancia es la misma en cada fase, lo que elimina cualquier tendencia a que la sustancia cambie de una fase a otra.</p>
-    
-    <p>Por ejemplo, la fusión del hielo es una transición de fase de sólido a líquido. En el punto de fusión, el agua en estado sólido (hielo) y en estado líquido coexisten en equilibrio, ya que la velocidad de congelación es igual a la velocidad de fusión.</p>
-	
-	</div>
-	
-	<div class="card">
-    <h2>¿Qué es el punto triple?</h2>
-
-    <p>El punto triple es el punto específico en un diagrama de fases donde las tres fases (sólido, líquido y vapor) de una sustancia coexisten en equilibrio. Es una combinación única de temperatura y presión en la que los tres estados pueden existir simultáneamente.</p>
-    <p>Para el agua, el punto triple se encuentra a una presión de 4.6 Torr y una temperatura de 0.01 °C.</p>
-	
-	</div>
-	<div class="card">
-    <h2>¿Qué es la temperatura y presión críticas?</h2>
-    <p>La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido, independientemente de la presión que se le aplique. Por encima de esta temperatura, la sustancia solo puede existir en estado gaseoso, sin importar la presión que se ejerza sobre ella.</p>
-    <p>La presión crítica es la presión de vapor que una sustancia tiene a su temperatura crítica.</p>
-    <p>Por ejemplo, la temperatura crítica del agua es de 374 °C. Esto significa que, sin importar cuánta presión se ejerza sobre ella, el agua no se puede licuar si está por encima de esta temperatura.</p>
-    
-	</div>
-    <div class="card">
-    <h2>¿Qué es la presión de vapor?</h2>
-    
-    <p>La presión de vapor es la presión ejercida por el vapor que se encuentra en equilibrio con su fase líquida o sólida en un recipiente cerrado. Este equilibrio ocurre cuando la velocidad de evaporación de las moléculas es igual a la velocidad de condensación.</p>
-    
-    <p>Un ejemplo sencillo es lo que sucede al calentar agua en una olla tapada. El vapor se acumula en el espacio entre la superficie del agua y la tapa, y la presión aumenta hasta que el sistema alcanza un estado de equilibrio dinámico, donde las moléculas que se evaporan son compensadas por las que se condensan de nuevo en líquido. La presión que se registra en ese punto es la presión de vapor.</p>
-	</div>
-	<div class="card">
-    <h2>¿Qué relación hay entre la volatilidad y las fuerzas intermoleculares?</h2>
-
-    <p>La volatilidad y las fuerzas intermoleculares tienen una relación inversa. Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles, lo que les permite escapar fácilmente de la fase líquida a la fase de vapor. Por el contrario, si las fuerzas intermoleculares son fuertes, la sustancia tendrá una volatilidad baja y, por lo tanto, una presión de vapor baja.</p>
-
-    <p>Un claro ejemplo de esto es la diferencia entre el dimetil éter y el etanol, dos compuestos con la misma fórmula molecular (<var>C</var><sub>2</sub><var>H</var><sub>6</sub><var>O</var>). El etanol es menos volátil que el dimetil éter porque las moléculas de etanol pueden formar puentes de hidrógeno entre sí, lo que crea fuerzas intermoleculares mucho más fuertes que las del dimetil éter. Esta diferencia es la razón por la que el etanol es un líquido a temperatura ambiente mientras que el dimetil éter es un gas.</p>
-    
-	</div>
-	<div class="card">
-    <h2>¿Qué relación hay entre la presión de vapor y la temperatura de ebullición?</h2>
-    <p>La presión de vapor y la temperatura de ebullición de un líquido están directamente relacionadas. La ebullición ocurre cuando la presión de vapor de un líquido se iguala a la presión externa que lo rodea.</p>
-    
-    <p>Por ejemplo, en la cima de una montaña, la presión atmosférica es más baja que al nivel del mar. Esto significa que el agua no necesita alcanzar una presión de vapor tan alta para igualar la presión externa, por lo que hierve a una temperatura más baja que los 100°C habituales al nivel del mar.</p>
-
-	</div>
-	<div class="card">
-    <h2>¿Cómo varía la presión de vapor con la temperatura?</h2>
-    <p>La presión de vapor de un líquido aumenta a medida que la temperatura se incrementa. Esto se debe a que, a temperaturas más altas, una mayor fracción de las moléculas del líquido tiene la energía cinética suficiente para escapar de la superficie y pasar a la fase de vapor. Con más moléculas en el estado de vapor, la presión que ejercen también se eleva.</p>
-    
-    <p>Un buen ejemplo de esto es el agua. A 20°C, el agua tiene una presión de vapor relativamente baja. Sin embargo, si calientas el agua, su presión de vapor aumenta. Cuando la temperatura alcanza los 100°C al nivel del mar, la presión de vapor se vuelve lo suficientemente alta como para igualar la presión atmosférica, y el agua comienza a hervir.</p>
-    
-	</div>
-	<div class="card">
-    <h2>¿A cada presión de vapor le corresponde una temperatura de ebullición?</h2>
-    
-    <p>Sí, a cada presión de vapor le corresponde una temperatura de ebullición específica. La temperatura de ebullición de un líquido se define como la temperatura a la cual su presión de vapor se iguala a la presión externa que lo rodea. Esto significa que si la presión externa cambia, la temperatura de ebullición también lo hará.</p>
-    
-    <p>Por ejemplo, en la cima de una montaña, la presión atmosférica es menor, por lo que el agua hierve a una temperatura más baja que los 100°C habituales al nivel del mar.</p>
-    
-	</div>
-	<div class="card">
-    <h2>¿Cuál es la relación entre la temperatura de evaporación y la de condensación?</h2>
-    <p>A una temperatura determinada, la evaporación y la condensación de un líquido en un recipiente cerrado ocurren a la misma velocidad cuando se alcanza el equilibrio. Esto significa que la temperatura de evaporación de una sustancia es la misma que su temperatura de condensación. En este punto de equilibrio, la cantidad de moléculas que pasan del estado líquido al gaseoso es igual a la cantidad de moléculas que pasan del estado gaseoso al líquido.</p>
-    <p>Un ejemplo es lo que sucede en el interior de un recipiente sellado con agua. Si la temperatura se mantiene constante, el agua se evaporará y, a su vez, el vapor de agua se condensará en la misma cantidad, manteniendo la presión de vapor constante.</p>
-
-	</div>
-	<div class="card">
-    <h2>¿Cuál es la relación entre la temperatura de fusión y la de congelación?</h2>
-    <p>La temperatura de fusión de una sustancia es la misma que su temperatura de congelación. Esto se debe a que la fusión (paso de sólido a líquido) y la congelación (paso de líquido a sólido) son procesos reversibles que ocurren a la misma temperatura cuando el sistema está en equilibrio. En este punto, la energía libre de Gibbs de la fase sólida y la fase líquida son iguales.</p>
-    <p>Por ejemplo, el agua se congela a 0°C a presión atmosférica estándar, pero a esta misma temperatura, el hielo también se está derritiendo. En el punto de congelación/fusión, el hielo y el agua coexisten en equilibrio, y las moléculas que se solidifican son reemplazadas por las que se derriten.</p>
-
-	</div>
-	<div class="card">
-    <h2>¿Qué describe la ecuación de Clausius-Clapeyron?</h2>
-    <p>La ecuación de Clausius-Clapeyron describe cómo varía la presión de vapor con la temperatura.
-    
-    <h4>Para el equilibrio líquido-gas:</h4>
-    <p>ln(<var>P</var><sub>2</sub>/<var>P</var><sub>1</sub>) = (-<var>ΔH</var><sub>vap</sub>/<var>R</var>) * (1/<var>T</var><sub>2</sub> - 1/<var>T</var><sub>1</sub>)</p>
-
-    <h4>Para el equilibrio sólido-gas:</h4>
-    <p>ln(<var>P</var><sub>2</sub>/<var>P</var><sub>1</sub>) = (-<var>ΔH</var><sub>sub</sub>/<var>R</var>) * (1/<var>T</var><sub>2</sub> - 1/<var>T</var><sub>1</sub>)</p>
- 
-    
-    <p>Donde:</p>
-    <ul>
-        <li><var>P</var><sub>1</sub> y <var>P</var><sub>2</sub> son las presiones de vapor a las temperaturas <var>T</var><sub>1</sub> y <var>T</var><sub>2</sub>, respectivamente.</li>
-        <li><var>ΔH</var><sub>vap</sub> es la entalpía molar de vaporización.</li>
-		<li><var>ΔH</var><sub>sub</sub> es la entalpía molar de sublimación.</li>
-        <li><var>R</var> es la constante de los gases ideales.</li>
-    </ul>
-
-    
-	</div>
-
-
-<div class="card">
-    <h2>¿Qué es la solubilidad?</h2>
-    <p>La solubilidad es la cantidad máxima de una sustancia (el soluto) que puede disolverse en una cantidad específica de otra sustancia (el solvente), bajo condiciones de temperatura y presión dadas. Es la medida de qué tan bien una sustancia se disuelve en otra para formar una solución homogénea.</p>
-    <p>Para entenderlo, imagina que el solvente es un hotel con un número limitado de habitaciones (su solubilidad). El soluto son los huéspedes que quieren entrar. Si todos los huéspedes encuentran una habitación y se alojan cómodamente, la solución es insaturada. Cuando todas las habitaciones están ocupadas, el hotel está "saturado", y cualquier nuevo huésped que llegue no tendrá dónde quedarse. De manera similar, una vez que una solución alcanza su límite de solubilidad, no puede disolver más soluto, y cualquier exceso de este se precipitará o asentará en el fondo del recipiente.</p>
-</div>
-	
-
-
-
-<div class="card">
-<h2>¿Qué es la solubilidad molar?</h2>
-<p>La solubilidad molar de una sustancia es su concentración molar en una solución saturada. Una solución se considera saturada cuando el soluto disuelto y el no disuelto se encuentran en equilibrio dinámico y no es posible disolver más soluto en ella.</p>
-<p>Por ejemplo, en una solución saturada de azúcar en agua, la solubilidad molar sería la concentración de azúcar que hay en la solución en el momento en el que ya no puedes disolver ni un solo gramo más.</p>
-</div>
-
-
-<div class="card">
-<h2>¿Lo similar disuelve a lo similar?</h2>
-<p>La regla de "lo similar disuelve a lo similar" se basa en el examen de las atracciones que se dan entre las moléculas del soluto y el solvente.</p>
-<p>El principio establece que una sustancia disolverá a otra si sus moléculas tienen fuerzas de atracción similares. Por el contrario, si las fuerzas de atracción son muy diferentes, es poco probable que se disuelvan entre sí.</p>
-<p>Un claro ejemplo de esta regla es la forma en que el agua (una molécula polar) disuelve con facilidad solutos polares como el cloruro de sodio (<var>NaCl</var>). Esto ocurre porque las fuerzas de atracción entre el agua y los iones <var>Na<sup>+</sup></var> y <var>Cl<sup>-</sup></var> son muy fuertes. Sin embargo, el agua no disuelve sustancias no polares como el aceite, ya que la atracción entre el agua y el aceite es mucho más débil que la que existe entre las propias moléculas de agua.</p>
-</div>
-
-
-
-<div class="card">
-    <h2>¿Qué dice la Ley de Henry?</h2>
-    <p>La Ley de Henry establece que la solubilidad de un gas en un líquido a una temperatura determinada es directamente proporcional a la presión parcial de ese gas sobre el líquido. A mayor presión de un gas sobre un solvente, más gas se disolverá en él.</p>
-
-    <p><var>C</var> = <var>k</var><var>P<sub>gas</sub></var></p>
-    <p>Donde:</p>
-    <ul>
-        <li><var>C</var> es la concentración del gas disuelto en el solvente.</li>
-        <li><var>k</var> es la constante de la Ley de Henry, un valor específico para cada par de gas-solvente y temperatura.</li>
-        <li><var>P<sub>gas</sub></var> es la presión parcial del gas sobre el solvente.</li>
-    </ul>
-    <p>Un ejemplo cotidiano de esta ley es una bebida carbonatada. El dióxido de carbono (<var>CO<sub>2</sub></var>) se disuelve en la bebida bajo alta presión. Al abrir la botella, la presión disminuye, lo que reduce la solubilidad del <var>CO<sub>2</sub></var>, causando que el gas escape del líquido en forma de burbujas.</p>
-</div>
-
-<div class="card">
-  <h2>¿Cuál es la relación entre la temperatura y la solubilidad?</h2>
-  <p> Aumentar la temperatura permite que una sustancia se disuelva más rápido, pero no siempre incrementa la cantidad máxima que se puede disolver. Es importante diferenciar la velocidad de disolución de la solubilidad en sí.</p>
-  <p>La mayoría de los gases, como el dióxido de carbono (<var>CO<sub>2</sub></var>) de las bebidas carbonatadas, son menos solubles en agua caliente que en agua fría. Por esta razón, un refresco tibio pierde el gas más rápido que uno que está helado. Por otro lado, la solubilidad de los sólidos muestra un comportamiento más variado.</p>
-</div>
-
-<div class="card">
-  <h2>¿Qué es la entalpía de solución?</h2>
-  <p>La entalpía de solución se refiere al cambio de energía que ocurre cuando un soluto se disuelve en un solvente para formar una solución. Este proceso se puede entender como una suma de dos etapas: la energía necesaria para separar las partículas del soluto (conocida como entalpía de red) y la energía que se libera cuando estas partículas separadas son rodeadas por las moléculas del solvente (la entalpía de hidratación).</p>
-  <p>Por ejemplo, al disolver cloruro de sodio (<var>NaCl</var>) en agua, primero se absorbe energía para romper el cristal de sal, y luego se libera energía cuando los iones <var>Na<sup>+</sup></var> y <var>Cl<sup>-</sup></var> se hidratan con moléculas de agua. La entalpía de solución es el resultado neto de estas dos energías.</p>
-</div>
-
-
-<div class="card">
-  <h2>¿Qué es la energía libre de Gibbs de solución?</h2>
-  <p>La energía libre de Gibbs de solución es el factor que determina si un soluto se disolverá espontáneamente en un solvente, es decir, si el proceso de disolución ocurrirá por sí mismo. Para que un proceso sea espontáneo, la energía libre de Gibbs del sistema debe disminuir. Cuando el soluto ya no se disuelve, el sistema ha alcanzado un estado de equilibrio.</p>
-  <p>Podemos pensar en el proceso de disolver sal (<var>NaCl</var>) en agua. La sal se disolverá espontáneamente hasta que la solución esté saturada. En ese punto, el sistema alcanza el equilibrio, y ya no hay una tendencia a que se disuelva más sal. En este estado, la energía libre de Gibbs molar de la sal sólida es igual a la energía libre de Gibbs molar de la sal disuelta en la solución. El cambio en la energía libre de Gibbs es lo que impulsa el proceso hasta que se llega al equilibrio.
-</p>
-</div>
-
-
-<div class="card">
-    <h2>¿Qué es la molalidad, la molaridad y la fracción mol?</h2>
-    <p>La molalidad (<var>m</var>), la molaridad (<var>M</var>) y la fracción mol (<var>x</var>) son tres formas de medir la concentración de una solución, y cada una de ellas se basa en una relación diferente entre la cantidad de soluto y la cantidad de solvente o de solución.</p>
-
-    <h3>Molaridad</h3>
-    <p>Se define como el número de moles de soluto disueltos en cada litro de solución. La molaridad es la medida más común de concentración. </p>
-
-
-    <h3>Molalidad</h3>
-    <p>La molalidad es el número de moles de soluto disueltos en cada kilogramo de solvente. Se utiliza menos que la molaridad, pero es útil porque a diferencia del volumen, la masa no cambia con la temperatura. Esto la hace ideal para experimentos donde la temperatura varía.</p>
-
-    <h3>Fracción Mol</h3>
-    <p>La fracción mol, o fracción molar, es la proporción de un componente en una mezcla. Se calcula dividiendo el número de moles de un componente (ya sea el soluto o el solvente) entre el número total de moles de todos los componentes en la solución.</p>
-
-</div>
-
-
-<div class="card">
-  <h2>¿Qué dice la Ley de Raoult?</h2>
-  <p>Dice que la presión de vapor parcial de un componente en una mezcla de líquidos es igual a la presión de vapor de ese componente cuando está puro, multiplicada por su fracción molar en la mezcla.</p>
-  
-    <p><var>P<sub>A</sub></var> = <var>x<sub>A</sub></var><var>P<sub>A</sub><sup>*</sup></var></p>
-    <p>Donde:</p>
-    <ul>
-        <li><var>P<sub>A</sub></var> es la presión de vapor del componente <var>A</var> en la solución.</li>
-        <li><var>x<sub>A</sub></var> es la fracción molar del componente <var>A</var> en la solución.</li>
-        <li><var>P<sub>A</sub><sup>*</sup></var> es la presión de vapor del componente <var>A</var> cuando está en estado puro.</li>
-    </ul>
-
-  
-</div>
-
-
-<div class="card">
-  <h2>¿Qué son las propiedades coligativas?</h2>
-  <p>Las propiedades coligativas son aquellas que cambian cuando se disuelve un soluto en un solvente, el cambio depende solo del número de partículas de soluto, y no de la identidad de las partículas.</p>
-  
-
-    <p>Imagina una calle con carros (el solvente) con personas (el soluto) obstruyendo el paso de los carros hacia la fase vapor. </p>
-
-    <ol>
-        <li>
-            Disminución de la presión de vapor:
-            <p>Como las personas (soluto) obstruyen la calle, es más difícil para los carros (solvente) escapar a la fase de vapor. Al haber menos escapes, la presión de vapor sobre el líquido disminuye.</p>
-        </li>
-        <br>
-        <li>
-            Aumento del punto de ebullición:
-            <p>El punto de ebullición es la temperatura a la que la presión de vapor del líquido iguala la presión atmosférica. Como la presión de vapor de nuestra solución se ha reducido por las personas (soluto) que la obstruyen, necesitamos darle más energía (calor) a los  carros (solvente) para que puedan moverse más rápido y romper la barrera. Por eso, la temperatura de ebullición aumenta.</p>
-        </li>
-        <br>
-        <li>
-            Disminución del punto de congelación:
-            <p>Para que un líquido se congele, sus moléculas deben ordenarse en una estructura sólida. La presencia de las personas (soluto) interrumpe este proceso de organización. Las moléculas de solvente tienen que moverse más lentamente (a una temperatura más baja) para poder sortear los obstáculos y formar la estructura cristalina. Por eso, el punto de congelación desciende.</p>
-        </li>
-        <br>
-        <li>
-            Presión osmótica:
-            <p>Imagina una barrera con poros muy pequeños (una membrana semipermeable) que solo deja pasar a los carros (solvente), pero no a las personas (soluto). Si de un lado de la barrera hay agua pura y del otro agua con sal (solución), el agua pura (menos "congestionada") tenderá a moverse a través de los poros hacia el lado de la solución para intentar diluirla y equilibrar la concentración. La presión osmótica es la presión que se necesita aplicar en el lado de la solución para detener este flujo de agua.</p>
-        </li>
-    </ol>
-
-</div>
-
-
-<div class="card">
-    <h2>Ejemplos cotidianos</h2>
-
-    <ol>
-        <li>Hervir agua salada: Cuando añades sal (<var>NaCl</var>) al agua para cocinar, las partículas de sal se disuelven y se interponen en la superficie del líquido. Esto dificulta que las moléculas de agua se evaporen, disminuyendo la presión de vapor. Por eso, el agua salada hierve a una temperatura ligeramente más alta que el agua pura.</li>
-        <br>
-		<li>Preparar un jarabe: Al disolver una gran cantidad de azúcar en agua para hacer un jarabe, estás creando una solución concentrada. La presencia de las moléculas de azúcar reduce la presión de vapor del agua, lo que explica por qué los jarabes no se evaporan tan rápidamente como el agua pura.</li>
-		<br>
-        <li>Uso de anticongelante: Los anticongelantes, como el etilenglicol, se agregan al agua en el radiador de los autos. Este soluto reduce la presión de vapor del agua, lo que ayuda a prevenir que el motor se sobrecaliente al evitar que el agua hierva a la temperatura habitual. Además, esta mezcla tiene un punto de congelación mucho más bajo que el agua pura, lo que previene que el líquido del radiador se congele en climas fríos y dañe el motor del vehículo.</li></li>
-		<br>
-        <li>Sal en las carreteras: En invierno, se esparce sal (<var>NaCl</var>) en las carreteras y aceras. Al disolverse en el hielo, la sal forma una solución de agua salada que tiene un punto de congelación menor a los <var>0°C</var>. Esto hace que el hielo se derrita y evita que el agua se congele nuevamente, mejorando la seguridad en las calles.</li>
-        <br>
-
-        <li>Preparación de helado casero: Para hacer helado de forma artesanal, se coloca una mezcla de hielo, sal y agua alrededor del recipiente que contiene la mezcla de helado. La sal disuelta en el hielo baja la temperatura de fusión de este, creando un baño líquido que está a varios grados bajo cero, lo que permite que la mezcla de helado se congele de manera uniforme.</li>
-<br>
-        <li>Pasas en agua: Si dejas pasas en un vaso de agua, con el tiempo se hinchan. Esto ocurre porque la concentración de azúcares dentro de la pasa es muy alta, mientras que el agua del vaso es casi pura. El agua, por ósmosis, se mueve del exterior al interior de la pasa para igualar la concentración, haciendo que se hidrate y se infle.</li>
-        <br>
-        <li>Carne salada: Al salar la carne o el pescado, el agua se extrae del interior de sus células. La sal que se esparce crea un ambiente con alta concentración de soluto en el exterior, provocando que el agua dentro de las células de la carne (con baja concentración) salga por ósmosis. Este proceso no solo ayuda a preservar la carne, sino que también cambia su textura.</li>
-        <br>
-        <li>Bebidas deportivas: Las bebidas deportivas están diseñadas para rehidratar el cuerpo rápidamente. Contienen una mezcla de agua, electrolitos y azúcares en una concentración específica que es similar a la de las células del cuerpo. Esto facilita que el agua se mueva por ósmosis desde el intestino hacia las células de forma eficiente, reponiendo los fluidos perdidos durante el ejercicio.</li>
-    </ol>
-</div>
-
-
-<div class="card">
-    <h2>¿Qué es el factor de van 't Hoff?</h2>
-    <p>Es un valor que mide el número de partículas que una sustancia produce cuando se disuelve en una solución.</p>
-	
-	
-	<ul>
-	
-	<li> Para solutos que no se disocian, como el azúcar, cada molécula permanece intacta en la solución, por lo tanto <var>i = 1</var>.</li>
-	
-	<li> Para los solutos que se disocian en iones, como las sales y los ácidos, el valor de <var>i</var> es mayor a 1, ya que cada unidad de la fórmula se rompe en múltiples partículas. </li>
-	 
-	 </ul>
-
-</div>
-
-<div class="card">
-    <h2>¿Cómo se calcula la disminución de la presión de vapor?</h2>
-
-    <p><var>ΔP</var> = <var>P<sub>A</sub><sup>*</sup></var> - <var>P<sub>A</sub></var></p>
-    <p><var>ΔP</var>= <var>x<sub>B</sub></var> <var>P<sub>A</sub><sup>*</sup></var></p>
-
-    <p>Donde:</p>
-    <ul>
-		<li><var>ΔP</var> es la la disminución de la presión de vapor.</li>
-        <li><var>P<sub>A</sub></var> es la presión de vapor del solvente en la solución.</li>
-		<li><var>P<sub>A</sub><sup>*</sup></var> es la presión de vapor del solvente puro.</li>
-        <li><var>x<sub>B</sub></var> es la fracción molar del soluto.</li>
-		<li><var>i</var> es el factor de van 't Hoff</li>        
-    </ul>
-	
-	<p>Se  debe tener en cuenta el factor de van ´t Hoff en la fracción molar: </p>
-	
-	<p><var> x<sub>B</sub> =  (i n<sub>B</sub>)/(i n<sub>B</sub> + n<sub>A</sub>)</var></p>
-
-</div>
-
-
-
-<div class="card">
-    <h2>¿Cómo se calcula la elevación del punto de ebullición?</h2>
-
-    <p><var>ΔT<sub>b</sub></var> = <var>iK<sub>b</sub></var><var>m</var></p>
-    <p>Donde:</p>
-    <ul>
-        <li><var>ΔT<sub>b</sub></var> es la elevación del punto de ebullición en grados Celsius.</li>
-        <li><var>K<sub>b</sub></var> es la constante molal de elevación del punto de ebullición del solvente (la cual es un valor conocido para cada solvente).</li>
-        <li><var>m</var> es la molalidad de la solución, que se define como los moles de soluto por kilogramo de solvente.</li>
-		<li><var>i</var> es el factor de van 't Hoff</li>
-    </ul>
-	
-
-	
-</div>
-
-
-<div class="card">
-    <h2>¿Cómo se calcula la disminución del punto de congelación?</h2>
-    <p><var>ΔT<sub>f</sub></var> = <var>iK<sub>f</sub></var><var>m</var></p>
-    <p>Donde:</p>
-    <ul>
-        <li><var>ΔT<sub>f</sub></var> es la disminución del punto de congelación en grados Celsius.</li>
-        <li><var>K<sub>f</sub></var> es la constante molal de disminución del punto de congelación, un valor que es específico para cada solvente.</li>
-        <li><var>m</var> es la molalidad de la solución, que se mide en moles de soluto por kilogramo de solvente.</li>
-		<li><var>i</var> es el factor de van 't Hoff</li>
-    </ul>
-
-</div>
-
-<div class="card">
-    <h2>¿Cómo se calcula la presión osmótica?</h2>
-
-    <p><var>Π</var> = <var>iM</var><var>R</var><var>T</var></p>
-    <p>Donde:</p>
-    <ul>
-        <li><var>Π</var> es la presión osmótica</li>
-        <li><var>M</var> es la molaridad de la solución.</li>
-        <li><var>R</var> es la constante de los gases ideales.</li>
-        <li><var>T</var> es la temperatura absoluta.</li>
-		<li><var>i</var> es el factor de van 't Hoff</li>
-    </ul>
-    
-</div>
-
-
-
-
-<div class="card">
-    <h2>¿Qué es una solución ideal?</h2>
-    <p>En una solución ideal:</p>
-	
-    <ul>
-		<li>Las interacciones entre las moléculas del soluto y del solvente son idénticas a las interacciones entre las moléculas de los componentes puros.</li>
-		<li>Obedece la Ley de Raoult: <var>P<sub>A</sub></var> = <var>x<sub>A</sub></var><var>P<sub>A</sub><sup>*</sup></var></li>
-        <li>No hay liberación ni absorción de calor al mezclar los componentes (el cambio de entalpía de la mezcla es cero).</li>
-        <li>El volumen de la solución es exactamente la suma de los volúmenes de los componentes puros.</li>
-    </ul>
-	
-    <p>En el mundo real, no existen soluciones ideales, pero algunas se acercan mucho a este comportamiento. Un ejemplo clásico es una mezcla de benceno (<var>C<sub>6</sub>H<sub>6</sub></var>) y tolueno (<var>C<sub>7</sub>H<sub>8</sub></var>). Debido a sus estructuras moleculares muy similares, las fuerzas intermoleculares entre ellos son casi idénticas, lo que hace que su comportamiento sea casi ideal y que obedezcan la Ley de Raoult.</p>	
-
-</div>
-
-<div class="card">
-    <h2>¿Cómo calcular la presión de vapor de una solución ideal?</h2>
-    
-	<p>La presión de vapor total de la solución es:</p>
-    <p><var>P<sub>total</sub></var> = <var>P<sub>A</sub></var> + <var>P<sub>B</sub></var>; (Ley de Dalton)</p>
-    <p>Entonces:</p>
-    <p><var>P<sub>total</sub></var> = (<var>x<sub>A</sub></var><var>P<sub>A</sub><sup>*</sup></var>) + (<var>x<sub>B</sub></var><var>P<sub>B</sub><sup>*</sup></var>)</p>
-</div>
-
-
-<div class="card">
-    <h2>¿Cuáles son las desviaciones a la Ley de Raoult?</h2>
-    <p>Una solución real se desvía del comportamiento ideal descrito por la Ley de Raoult cuando las interacciones intermoleculares entre el soluto y el solvente no son iguales a las interacciones entre las moléculas de los componentes puros. Estas desviaciones pueden ser de dos tipos: positivas o negativas.</p>
-
-    <h3>Desviaciones Positivas</h3>
-    <p>Ocurre cuando las fuerzas de atracción entre las moléculas de soluto y solvente son <b>más débiles</b> que las fuerzas de atracción entre las moléculas de los componentes puros. Al mezclarse, las moléculas se "repelen" mutuamente con más facilidad, lo que les permite escapar más fácilmente a la fase de vapor.</p>
-    <ul>
-        <li><b>Efecto:</b> La presión de vapor total de la solución es <b>mayor</b> que la predicha por la Ley de Raoult.</li>
-        <li><b>Ejemplo:</b> Una mezcla de etanol y hexano. El etanol puro tiene fuertes interacciones por puentes de hidrógeno. Al agregar hexano, estas interacciones se rompen, y como las interacciones etanol-hexano son más débiles, las moléculas tienen mayor tendencia a evaporarse.</li>
-    </ul>
-
-    <h3>Desviaciones Negativas</h3>
-    <p>Ocurre cuando las fuerzas de atracción entre las moléculas de soluto y solvente son <b>más fuertes</b> que las de los componentes puros. Al mezclarse, las moléculas se "atraen" con mayor fuerza, lo que dificulta su paso a la fase de vapor.</p>
-    <ul>
-        <li><b>Efecto:</b> La presión de vapor total de la solución es <b>menor</b> que la predicha por la Ley de Raoult.</li>
-        <li><b>Ejemplo:</b> Una mezcla de acetona y cloroformo. El cloroformo puro no forma puentes de hidrógeno, pero al mezclarse con acetona, se forma un puente de hidrógeno entre el hidrógeno del cloroformo y el oxígeno de la acetona. Esta nueva y más fuerte interacción reduce la tendencia de las moléculas a escapar a la fase gaseosa.</li>
-    </ul>
-</div>
-
-
-<div class="card">
-    <h2>¿Qué es un azeótropo?</h2>
-    <p>Un azeótropo es una mezcla de dos o más líquidos que tiene una composición constante y un punto de ebullición fijo, comportándose como si fuera una sola sustancia pura. El vapor que se forma al hervir tiene exactamente la misma composición que la mezcla líquida de la cual proviene. Por lo tanto, un azeótropo no se puede separar en sus componentes por destilación simple.</p>
-
-    <ul>
-        <li>
-            <b>Azeótropo de Ebullición Mínima</b>
-            <p>Se forma en mezclas que tienen una <b>desviación positiva</b> a la Ley de Raoult. Esto sucede cuando las interacciones entre las moléculas de los componentes son más débiles que en sus estados puros. Esta debilidad en la atracción molecular permite que las moléculas escapen más fácilmente a la fase de vapor, lo que resulta en un punto de ebullición más bajo que el de cualquiera de los componentes puros.</p>
-            <p>Un ejemplo clásico es la mezcla de etanol y agua. A una composición de aproximadamente 95.6% de etanol en masa, la mezcla hierve a una temperatura más baja (78.2 °C) que el punto de ebullición del etanol (78.4 °C) o del agua (100 °C).</p>
-        </li>
-        <br>
-        <li>
-            <b>Azeótropo de Ebullición Máxima</b>
-            <p>Se forma en mezclas que tienen una <b>desviación negativa</b> a la Ley de Raoult. Esto ocurre cuando las interacciones entre las moléculas de los componentes son más fuertes que en sus estados puros. Esta atracción más fuerte hace que sea más difícil para las moléculas escapar a la fase de vapor, por lo que la mezcla hierve a una temperatura más alta que la de cualquiera de sus componentes puros.</p>
-            <p>Un ejemplo es la mezcla de ácido clorhídrico y agua. A una concentración de 20.2% de HCl en masa, la mezcla hierve a 110 °C, una temperatura mayor a la del HCl puro (-84 °C) y del agua (100 °C).</p>
-        </li>
-    </ul>
-</div>
-
-
-<div class="card">
-    <h2>¿Qué es la destilación fraccionada?</h2>
-    <p>La <b>destilación fraccionada</b> es un método de separación de mezclas de líquidos que se utiliza cuando los componentes tienen puntos de ebullición cercanos. A diferencia de la destilación simple, que solo vaporiza y condensa una vez, la destilación fraccionada realiza una serie de vaporizaciones y condensaciones sucesivas en un solo proceso. Esto se logra mediante el uso de una <b>columna de fraccionamiento</b>.</p>
-</div>
-
-
-<div class="card">
-    <h2>¿Cómo funciona una columna de  fraccionamiento?</h2>
-
-    <p>La columna de fraccionamiento es una columna vertical, generalmente llena de platos o anillos de vidrio, que proporciona una gran superficie para que el vapor y el líquido interactúen.</p>
-    <p>Cuando la mezcla líquida se calienta, el vapor que se forma asciende por la columna. A medida que sube, se enfría y parte del vapor se condensa. Este líquido que gotea desciende, y al encontrarse con el vapor ascendente más caliente, se produce un <b>intercambio de calor y materia</b>. El líquido goteante se vuelve a calentar y se vaporiza, mientras que el vapor que sube se enfría y se condensa. En cada "plato" o nivel de la columna, este proceso se repite.</p>
-    <p>Con cada ciclo, el vapor que asciende se enriquece con el componente más volátil (el de menor punto de ebullición), y el líquido que desciende se enriquece con el componente menos volátil. Al final del proceso, el vapor que llega a la parte superior de la columna es casi totalmente puro del componente más volátil, el cual luego se condensa y se recoge en un recipiente aparte.</p>
-    <p>Este método es fundamental en la industria, como en las refinerías de petróleo, donde se utiliza para separar el crudo en diferentes fracciones (como la gasolina, el queroseno y el diésel) basándose en sus puntos de ebullición.</p>
-</div>
-
-<div class="card">
-    <h2>¿La destilación fraccionada se usa para separar azeótropos?</h2>
-    <p>No es efectiva para separar un azeótropo, porque un azeótropo hierve a una temperatura constante, el vapor tiene la misma composición que el líquido, por lo que no hay manera de enriquecerlo en la columna de fraccionamiento.</p>
-    <p>Para separar un azeótropo, se requieren otras técnicas más avanzadas. Una de las más comunes es la <b>destilación azeotrópica</b>, donde se añade un tercer componente para romper el azeótropo original, o la <b>destilación por cambio de presión</b>, que aprovecha el hecho de que la composición del azeótropo puede cambiar con la presión.</p>
-</div>
-	
+  </head>
+  <body>
+    <h1>Introducción al Equilibrio Físico</h1>
 
+<h2>Fases y Transiciones de Fase</h2>
+
+<h3>¿Qué es un equilibrio físico?</h3>
+
+<p>Es un estado dinámico donde dos o más fases de una sustancia coexisten en equilibrio a una temperatura y presión dadas. Las velocidades de las transformaciones directa e inversa son iguales.</p>
+
+<h3>¿Qué es la presión de vapor?</h3>
+
+<p>Es la presión ejercida por el vapor en equilibrio con su fase líquida o sólida en un recipiente cerrado a una temperatura determinada. Este equilibrio ocurre cuando la velocidad de evaporación es igual a la de condensación.</p>
+
+<h3>¿Cómo se relaciona la presión de vapor con la volatilidad?</h3>
+
+<p>Una sustancia con alta presión de vapor es más volátil, lo que significa que se evapora más fácilmente.</p>
+
+<h3>¿Cuál es la relación entre la volatilidad y las fuerzas intermoleculares?</h3>
+
+<p>Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles. Por ejemplo, el etanol es menos volátil que el dimetil éter, aunque tienen la misma fórmula molecular (C<sub>2</sub>H<sub>6</sub>O), porque el etanol puede formar puentes de hidrógeno, lo que crea fuerzas intermoleculares más fuertes.</p>
+
+<h3>¿Cómo se relaciona la presión de vapor con la temperatura de ebullición?</h3>
+
+<p>La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa que lo rodea. Por lo tanto, si la presión externa es menor, como en la cima de una montaña, la temperatura de ebullición también será más baja.</p>
+
+<h3>¿Cómo afectan las fuerzas intermoleculares a las transiciones de fase?</h3>
+
+<p>Sustancias con fuerzas intermoleculares más fuertes tienen presiones de vapor más bajas y puntos de ebullición y de fusión más altos.</p>
+
+<h3>¿Cuáles son las transiciones de fase de primer orden?</h3>
+
+<p>Son transiciones donde la energía libre de Gibbs es continua, pero sus primeras derivadas (entropía y volumen) cambian discontinuamente. Incluyen la fusión, vaporización y sublimación.</p>
+
+<h3>¿Qué es la entalpía de vaporización (ΔH<sub>vap</sub>)?</h3>
+
+<p>Es la cantidad de energía necesaria para convertir un mol de una sustancia de la fase líquida a la gaseosa a una temperatura y presión constantes.</p>
+
+<h3>¿Qué es la entalpía de fusión (ΔH<sub>fus</sub>)?</h3>
+
+<p>Es la cantidad de energía necesaria para convertir un mol de una sustancia de la fase sólida a la fase líquida a su punto de fusión.</p>
+
+<h3>¿Qué describe la ecuación de Clausius-Clapeyron?</h3>
+
+<p>Describe la relación entre la presión de vapor de una sustancia y su temperatura de ebullición.</p>
+
+<pre>
+ln(P<sub>2</sub>/P<sub>1</sub>) = (-ΔH<sub>vap</sub>/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)
+</pre>
+
+
+
+
+<pre>
+ln(P<sub>2</sub>/P<sub>1</sub>) = (-ΔH<sub>sub</sub>/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)
+</pre>
+
+
+<h3>¿Cómo se determina el punto de ebullición de un líquido?</h3>
+
+<p>Se calienta el líquido hasta que su presión de vapor se iguala a la presión atmosférica, lo que se observa por la formación de burbujas en todo el volumen del líquido.</p>
+
+<h3>¿Qué es el punto de ebullición normal?</h3>
+
+<p>Es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión atmosférica estándar (1 atm).</p>
+
+<h3>¿Cómo varía el punto de ebullición con la presión?</h3>
+
+<p>El punto de ebullición aumenta a medida que la presión externa aumenta. A mayor presión, se requiere una temperatura más alta para que la presión de vapor del líquido se iguale a la presión externa.</p>
+
+<h3>¿Cómo varía el punto de fusión con la presión?</h3>
+
+<p>Para la mayoría de las sustancias, un aumento de presión aumenta el punto de fusión, pero para el agua lo disminuye porque el hielo es menos denso que el agua líquida.</p>
+
+<h3>¿Qué es una curva de calentamiento?</h3>
+
+<p>Es un gráfico que muestra cómo la temperatura de una sustancia aumenta a medida que se le añade calor, incluyendo las mesetas de temperatura que corresponden a las transiciones de fase.</p>
+
+<h3>¿Qué es un diagrama de fases?</h3>
+
+<p>Es un mapa que muestra qué fase de una sustancia es la más estable a diferentes presiones y temperaturas. Las líneas representan las condiciones de equilibrio.</p>
+
+<h3>¿Qué es el punto triple?</h3>
+
+<p>Es el único punto en un diagrama de fases en el que una sustancia puede coexistir en sus tres fases (sólido, líquido y gas) en equilibrio. Para el agua, este punto se encuentra a 4.6 Torr y 0.01 °C.</p>
+
+<h3>¿Qué es la temperatura y presión críticas?</h3>
+
+<p>La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido. La presión crítica es la presión de vapor a dicha temperatura.</p>
+
+<h3>¿Qué dice la regla de las fases?</h3>
+
+<p>Relaciona el número de fases P, el número de componentes C y los grados de libertad F de un sistema en equilibrio. F representa las variables intensivas (temperatura, presión) que pueden variarse independientemente.</p>
+
+<pre>F = C - P + 2</pre>
+
+
+<h3>¿Qué es un diagrama de fases binario?</h3>
+
+<p>Un gráfico que muestra las fases de una mezcla de dos componentes en función de la temperatura, la presión y la composición.</p>
+
+<h3>¿A cada presión de vapor le corresponde una temperatura de ebullición?</h3>
+
+<p>Sí, la temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa.</p>
+
+<h3>¿Cuál es la relación entre la temperatura de evaporación y la de condensación?</h3>
+
+<p>A una temperatura determinada, la evaporación y la condensación de un líquido ocurren a la misma velocidad cuando se alcanza el equilibrio. Por lo tanto, son la misma temperatura.</p>
+
+<h3>¿Cuál es la relación entre la temperatura de fusión y la de congelación?</h3>
+
+<p>La temperatura de fusión es la misma que la de congelación, ya que son procesos reversibles que ocurren a la misma temperatura en equilibrio.</p>
+
+<h2>Solubilidad</h2>
+
+<h3>¿Qué es una disolución?</h3>
+
+<p>Es una mezcla homogénea de dos o más sustancias. La sustancia en menor cantidad es el soluto y la de mayor cantidad es el disolvente.</p>
+
+<h3>¿Qué es la solubilidad?</h3>
+
+<p>Es la cantidad máxima de soluto que se puede disolver en una cantidad dada de disolvente a una temperatura y presión específicas. Es una medida de qué tan bien una sustancia se disuelve en otra para formar una solución homogénea.</p>
+
+<h3>¿Qué es la solubilidad molar?</h3>
+
+<p>Es la concentración molar de una sustancia en una disolución saturada, donde el soluto disuelto y el no disuelto se encuentran en equilibrio dinámico.</p>
+
+<h3>¿Qué es una disolución saturada, no saturada y sobresaturada?</h3>
+
+<p>Una disolución <strong>saturada</strong> contiene la máxima cantidad de soluto posible.
+Una <strong>no saturada</strong> puede disolver más soluto.
+Una <strong>sobresaturada</strong> contiene más soluto del que la disolución saturada puede contener.</p>
+
+<h3>¿Cuál es la diferencia entre un soluto polar y uno no polar?</h3>
+
+<p>Un soluto polar tiene una distribución desigual de la carga, mientras que uno no polar tiene una distribución de carga uniforme. Esto es clave para determinar la solubilidad.</p>
+
+<h3>¿Cuál es la regla &ldquo;lo semejante disuelve a lo semejante&rdquo;?</h3>
+
+<p>Establece que las sustancias polares se disuelven en disolventes polares, y las sustancias no polares se disuelven en disolventes no polares, debido a la similitud de las fuerzas de atracción entre las moléculas. Por ejemplo, el agua (polar) disuelve NaCl (polar), pero no aceite (no polar).</p>
+
+<h3>¿Cómo influye la presión en la solubilidad de sólidos y líquidos?</h3>
+
+<p>La presión tiene un efecto casi nulo en la solubilidad de sólidos y líquidos en un disolvente.</p>
+
+<h3>¿Qué dice la Ley de Henry?</h3>
+
+<p>Establece que la concentración de un gas en una disolución es directamente proporcional a la presión parcial de ese gas sobre la disolución.</p>
+
+<pre>
+C<sub>gas</sub> = k<sub>H</sub> P<sub>gas</sub>
+</pre>
+
+
+<h3>¿Cómo afecta la temperatura a la solubilidad de gases en líquidos?</h3>
+
+<p>La solubilidad de los gases en líquidos generalmente disminuye a medida que aumenta la temperatura. Por ejemplo, un refresco tibio pierde el gas más rápido que uno helado.</p>
+
+<h3>¿Qué es la entalpía de disolución?</h3>
+
+<p>Es el cambio de energía (ΔH) que ocurre cuando un soluto se disuelve. Es el resultado de la energía para separar el soluto (entalpía de red) y la energía liberada al ser rodeado por el disolvente (entalpía de hidratación).</p>
+
+<h3>¿Qué es la energía libre de Gibbs (ΔG) de disolución?</h3>
+
+<p>Es el cambio en la energía del sistema cuando un soluto se disuelve en un disolvente. La disolución es espontánea cuando ΔG es negativa.</p>
+
+<h2>Propiedades Coligativas</h2>
+
+<h3>¿Qué son las propiedades coligativas?</h3>
+
+<p>Son propiedades de las disoluciones que dependen solo del número de partículas de soluto, no de su identidad.</p>
+
+<h3>¿Cuáles son las cuatro propiedades coligativas principales?</h3>
+
+<ul>
+<li>Disminución de la presión de vapor.</li>
+<li>Elevación del punto de ebullición.</li>
+<li>Disminución del punto de congelación.</li>
+<li>Presión osmótica.</li>
+</ul>
+
+
+<h3>¿Cómo explicar las propiedades coligativas?</h3>
+
+<p>Imagina una calle con carros (el solvente) con personas (el soluto) obstruyendo
+el paso de los carros hacia la fase vapor.</p>
+
+<ul>
+<li><p>Disminución de la presión de vapor:</p>
+
+<p>  Como las personas (soluto) obstruyen la calle, es más difícil para los carros (solvente) escapar a la fase de vapor. Al haber menos escapes, la presión de vapor sobre el líquido disminuye.</p></li>
+<li><p>Aumento del punto de ebullición:</p>
+
+<p>  El punto de ebullición es la temperatura a la que la presión de vapor del líquido iguala la presión atmosférica. Como la presión de vapor de nuestra solución se ha reducido por las personas (soluto) que la obstruyen, necesitamos darle más energía (calor) a los carros (solvente) para que puedan moverse más rápido y romper la barrera. Por eso, la temperatura de ebullición aumenta.</p></li>
+<li><p>Disminución del punto de congelación:</p>
+
+<p>  Para que un líquido se congele, sus moléculas deben ordenarse en una estructura sólida. La presencia de las personas (soluto) interrumpe este proceso de organización. Las moléculas de solvente tienen que moverse más lentamente (a una temperatura más baja) para poder sortear los obstáculos y formar la estructura cristalina. Por eso, el punto de congelación desciende.</p></li>
+<li><p>Presión osmótica:</p>
+
+<p>  Imagina una barrera con poros muy pequeños (una membrana semipermeable) que solo deja pasar a los carros (solvente), pero no a las personas (soluto). Si de un lado de la barrera hay agua pura y del otro agua con sal (solución), el agua pura (menos &ldquo;congestionada&rdquo;) tenderá a moverse a través de los poros hacia el lado de la solución para intentar diluirla y equilibrar la concentración. La presión osmótica es la presión que se necesita aplicar en el lado de la solución para detener este flujo de agua.</p></li>
+</ul>
+
+
+<h3>¿Qué ejemplos cotidianos podemos observar sobre la disminución de la presión de vapor?</h3>
+
+<ul>
+<li><p>La preservación de alimentos con sal o azúcar, como en la elaboración de mermeladas o el curado de carnes. Al agregar grandes cantidades de soluto,
+se reduce la presión de vapor del agua, lo que deshidrata los microbios y detiene su crecimiento, prolongando la vida útil del alimento.</p></li>
+<li><p>Hervir agua salada: Cuando añades sal (NaCl) al agua para cocinar, las partículas de sal se
+disuelven y se interponen en la superficie del líquido. Esto dificulta que las moléculas de
+agua se evaporen, disminuyendo la presión de vapor. Por eso, el agua salada hierve a una
+temperatura ligeramente más alta que el agua pura.</p></li>
+<li><p>Preparar un jarabe: Al disolver una gran cantidad de azúcar en agua para hacer un jarabe, estás creando una solución concentrada. La presencia de las moléculas de azúcar reduce la presión de vapor del agua, lo que explica por qué los jarabes no se evaporan tan rápidamente como el agua pura.</p></li>
+</ul>
+
+
+<h3>¿Qué ejemplos cotidianos podemos observar sobre la elevación del punto de ebullición?</h3>
+
+<ul>
+<li><p>En la cocción de pasta, el agua con sal añadida hierve a una temperatura más alta que el agua pura,
+lo que puede ayudar a que la pasta se cocine más rápido.</p></li>
+<li><p>La cocción a alta altitud. La presión atmosférica es menor, por lo que el punto de ebullición del agua es más bajo
+y los alimentos tardan más en cocinarse. Para contrarrestar esto, se utiliza una olla a presión, que aumenta la presión interna y,
+por lo tanto, eleva el punto de ebullición del agua.</p></li>
+</ul>
+
+
+<h3>¿Qué ejemplos cotidianos podemos observar sobre la disminución del punto de congelación?</h3>
+
+<ul>
+<li><p>El uso de sal para derretir el hielo en las carreteras en invierno es un ejemplo.
+La sal disuelta en el agua del hielo disminuye su punto de congelación, haciendo que se derrita a temperaturas por debajo de 0 °C.</p></li>
+<li><p>El anticongelante en los motores de los automóviles.</p></li>
+<li><p>El uso de salmueras para enfriar en industrias como la cervecera o la lechera,
+donde se utilizan soluciones salinas en sistemas de refrigeración para alcanzar temperaturas inferiores al
+punto de congelación del agua pura sin que la solución se congele.</p></li>
+<li><p>Para hacer helado de forma artesanal, se coloca una mezcla de hielo, sal y agua
+alrededor del recipiente que contiene la mezcla de helado. La sal disuelta en el
+hielo baja la temperatura de fusión de este, creando un baño líquido que está a
+varios grados bajo cero, lo que permite que la mezcla de helado se congele de manera uniforme.</p></li>
+</ul>
+
+
+<h3>¿Qué ejemplos cotidianos podemos observar sobre la presión osmótica?</h3>
+
+<ul>
+<li><p>La deshidratación de frutas con azúcar. El azúcar extrae el agua de la fruta a través de sus membranas celulares mediante ósmosis.</p></li>
+<li><p>La rehidratación de verduras flácidas al sumergirlas en agua. El agua entra en las células de la verdura, haciéndolas más firmes.</p></li>
+<li><p>Cuando una planta de interior se riega con demasiada sal (por ejemplo, por el uso de abono en exceso).
+El agua del suelo, al tener una mayor concentración de soluto, extrae agua de las raíces de la planta, provocando que esta se deshidrate.</p></li>
+<li><p>Las bebidas deportivas están diseñadas para rehidratar el cuerpo rápidamente.
+Contienen una mezcla de agua, electrolitos y azúcares en una concentración específica
+que es similar a la de las células del cuerpo. Esto facilita que el agua se mueva por
+ósmosis desde el intestino hacia las células de forma eficiente, reponiendo los fluidos
+perdidos durante el ejercicio.</p></li>
+</ul>
+
+
+<h3>¿Qué es un electrolito y qué es el factor de van&rsquo;t Hoff (i)?</h3>
+
+<p>Un electrolito es una sustancia que se disocia en iones.
+El <strong>factor de van&rsquo;t Hoff (i)</strong> es un factor de corrección que mide el número de partículas
+que se forman por cada molécula de soluto. Para solutos que no se disocian como el azúcar, i = 1,
+mientras que para los electrolitos, i > 1.</p>
+
+<h3>¿Qué es la molaridad?</h3>
+
+<p>Es la concentración de una disolución expresada como moles de soluto por litro de disolución.</p>
+
+<pre>
+M = moles de soluto / litros de disolución
+</pre>
+
+
+<h3>¿Qué es la molalidad?</h3>
+
+<p>Es la concentración de una disolución expresada como moles de soluto por kilogramo de disolvente.</p>
+
+<pre>
+m = moles de soluto / kg de disolvente
+</pre>
+
+
+<h3>¿Qué es la fracción molar?</h3>
+
+<p>Es una medida de la concentración que expresa el número de moles de un componente en relación con el número total de moles de la disolución.</p>
+
+<pre>
+X<sub>A</sub> = moles de A / moles totales
+</pre>
+
+
+<h3>¿Por qué se usa la molalidad en las propiedades coligativas en lugar de la molaridad?</h3>
+
+<p>La molalidad es independiente de la temperatura, mientras que la molaridad cambia con el volumen de la disolución y por lo tanto con la temperatura.</p>
+
+<h3>¿Qué dice la Ley de Raoult?</h3>
+
+<p>La presión de vapor parcial de un componente en una mezcla de líquidos es igual
+a la presión de vapor de ese componente cuando está puro,
+multiplicada por su fracción molar en la mezcla.</p>
+
+<pre>
+P<sub>A</sub> = X<sub>A</sub> P°<sub>A</sub>
+</pre>
+
+
+<ul>
+<li>P<sub>A</sub> es la presión de vapor del componente A en la solución.</li>
+<li>X<sub>A</sub> es la fracción molar del componente A en la solución.</li>
+<li>P°<sub>A</sub> es la presión de vapor del componente A cuando está en estado puro.</li>
+</ul>
+
+
+<h3>¿Cómo calcular el descenso de la presión de vapor?</h3>
+
+<pre>
+ΔP = P<sub>solvente</sub> - P<sub>solución</sub>
+</pre>
+
+
+
+
+<pre>
+ΔP = X<sub>B</sub> P°<sub>A</sub>
+</pre>
+
+
+<ul>
+<li>ΔP es la disminución de la presión de vapor.</li>
+<li>P°<sub>A</sub> es la presión de vapor del solvente puro.</li>
+<li>X<sub>B</sub> es la fracción molar del soluto.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<p>Se debe tener en cuenta el factor de van ´t Hoff en la fracción molar:</p>
+
+<pre>
+X<sub>B</sub> = (in<sub>B</sub>) / (n<sub>A</sub> + in<sub>B</sub>)
+</pre>
+
+
+<h3>¿Cómo calcular la elevación del punto de ebullición?</h3>
+
+<pre>
+ΔT = T<sub>solución</sub> - T<sub>solvente</sub>
+</pre>
+
+
+
+
+<pre>
+ΔT = i K<sub>b</sub> m
+</pre>
+
+
+<ul>
+<li>ΔT es la elevación del punto de ebullición.</li>
+<li>K<sub>b</sub> es la constante ebulloscópica.</li>
+<li>m es la molalidad.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<h3>¿Cómo calcular la disminución del punto de congelación?</h3>
+
+<pre>
+ΔT = T<sub>solvente</sub> - T<sub>solución</sub>
+</pre>
+
+
+
+
+<pre>
+ΔT = i K<sub>f</sub> m
+</pre>
+
+
+<ul>
+<li>ΔT es la disminción del punto de congelación.</li>
+<li>K<sub>f</sub> es la constante ebulloscópica.</li>
+<li>m es la molalidad.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<h3>¿Cómo calcular la presión osmótica (Π)?</h3>
+
+<pre>
+Π = i M R T
+</pre>
+
+
+<ul>
+<li>Π es la presión osmótica</li>
+<li>M es la molaridad</li>
+<li>R es la constante de los gases</li>
+<li>T es la temperatura absoluta</li>
+</ul>
+
+
+<h3>¿Qué es la presión osmótica (Π)?</h3>
+
+<p>Es la presión externa que se necesita aplicar a una disolución para detener el flujo neto de disolvente a través de la membrana semipermeable.</p>
+
+<h3>¿Qué es la ósmosis?</h3>
+
+<p>Es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de menor concentración de soluto a una de mayor concentración.</p>
+
+<h3>¿Qué es la ósmosis inversa?</h3>
+
+<p>Es un proceso para purificar el agua. Se aplica una presión superior a la presión osmótica para forzar el disolvente a través de la membrana, dejando el soluto atrás.</p>
+
+<h3>¿Qué es una disolución isotónica, hipotónica e hipertónica?</h3>
+
+<p>Una disolución <strong>isotónica</strong> tiene la misma presión osmótica que las células. Una <strong>hipotónica</strong> tiene menor presión osmótica (el agua entra en la célula). Una <strong>hipertónica</strong> tiene mayor presión osmótica (el agua sale de la célula).</p>
+
+<h3>¿Por qué las propiedades coligativas son útiles para determinar la masa molar?</h3>
+
+<p>Porque la magnitud del cambio en la propiedad coligativa es directamente proporcional a la concentración del soluto. Midiendo este cambio, se puede calcular la masa molar.</p>
+
+<h2>Mezclas Líquidas Binarias</h2>
+
+<h3>¿Qué es una solución ideal?</h3>
+
+<p>Una solución ideal:</p>
+
+<ul>
+<li>Las interacciones entre las moléculas del soluto y del solvente son idénticas a las interacciones entre las moléculas de los componentes puros.</li>
+<li>Obedece la Ley de Raoult.</li>
+<li>No hay liberación ni absorción de calor al mezclar los componentes.</li>
+<li>El volumen de la solución es exactamente la suma de los volúmenes de los componentes puros.</li>
+</ul>
+
+
+<p>En el mundo real, no existen soluciones ideales, pero algunas se acercan mucho a este comportamiento.
+Un ejemplo clásico es una mezcla de benceno (C6H6) y tolueno (C7H8).</p>
+
+<h3>¿Qué es una disolución no ideal?</h3>
+
+<p>Una disolución donde las interacciones entre moléculas de soluto y disolvente no son iguales a las interacciones entre los componentes puros, causando desviaciones de la Ley de Raoult.</p>
+
+<h3>¿Cómo se desvían las disoluciones reales de la Ley de Raoult?</h3>
+
+<p>Las <strong>desviaciones positivas</strong> (mayor presión de vapor) ocurren cuando las interacciones soluto-disolvente son más débiles que las de los componentes puros. Las <strong>desviaciones negativas</strong> (menor presión de vapor) ocurren cuando son más fuertes.</p>
+
+<h3>¿Cómo se calcula la presión de vapor total de una solución ideal?</h3>
+
+<p>Combinando la Ley de Raoult con la Ley de Dalton de las presiones parciales:</p>
+
+<pre>
+P<sub>T</sub> = P<sub>A</sub> + P<sub>B</sub>
+</pre>
+
+
+
+
+<pre>
+P<sub>T</sub> = (Y<sub>A</sub>P<sub>T</sub>) + (Y<sub>B</sub>P<sub>T</sub>)
+</pre>
+
+
+
+
+<pre>
+P<sub>T</sub> = (X<sub>A</sub>P°<sub>A</sub>) + (X<sub>B</sub>P°<sub>B</sub>)
+</pre>
+
+
+<ul>
+<li>Las fracciones molares Y se refieren a la fase gas.</li>
+<li>Las fracciones molares X se refieren a la solución.</li>
+</ul>
+
+
+<h3>¿Qué es el punto eutéctico?</h3>
+
+<p>Es la temperatura más baja a la que puede fundir una mezcla sólida de dos o más componentes. En este punto, la mezcla se comporta como si fuera una sustancia pura, fundiéndose a una temperatura constante y con una composición fija, conocida como composición eutéctica.</p>
+
+<h3>¿Qué es un azeótropo?</h3>
+
+<p>Es una mezcla de líquidos que tiene la misma composición en fase líquida y vapor a una temperatura específica, por lo que no puede separarse por destilación simple.</p>
+
+<h3>¿Qué tipos de azeótropos existen?</h3>
+
+<p>Existen los <strong>azeótropos de ebullición mínima</strong>, que se forman en mezclas con desviaciones positivas a la Ley de Raoult y tienen un punto de ebullición más bajo que sus componentes (ejemplo: etanol y agua). Y los <strong>azeótropos de ebullición máxima</strong>, que se forman en mezclas con desviaciones negativas y tienen un punto de ebullición más alto (ejemplo: ácido clorhídrico y agua).</p>
+
+<h3>¿Qué es la destilación fraccionada?</h3>
+
+<p>Es un método para separar componentes de una disolución líquida aprovechando la diferencia en sus puntos de ebullición, mediante vaporizaciones y condensaciones sucesivas.</p>
+
+<h3>¿Cómo funciona una columna de fraccionamiento?</h3>
+
+<p>Es una columna vertical donde el vapor que asciende se enfría y se condensa, mientras que el líquido que desciende se calienta y se vaporiza. En cada nivel, el vapor se enriquece con el componente más volátil, lo que permite una separación eficiente.</p>
+
+<h3>¿La destilación fraccionada se usa para separar azeótropos?</h3>
+
+<p>No, porque los azeótropos hierven a una temperatura constante y su vapor tiene la misma composición que el líquido, lo que impide la separación por este método.</p>
+
+<hr />
 
 <center>
-<br>
-<h4> &#169; 2024, 2025 Dr. Octavio Juárez </h4>
-<h5> octavio.juarez@unison.mx </h5>
-<br>
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
 </center>
 
-</div>	
-
-
-
-
-
-
-
-
-
-</body>
+  </body>
 </html>

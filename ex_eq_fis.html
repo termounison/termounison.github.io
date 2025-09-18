@@ -457,7 +457,9 @@
 					const X_soluto = n_soluto / n_total;
 					let pregunta, respuesta;
 					
-					pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, MM = ${soluto.MM}) en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, MM = ${solvente.MM}). Calcula la fracción molar del ${soluto.nombre}.`;
+					pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol) 
+					            en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM} g/mol). 
+					            Calcula la fracción molar de ${soluto.nombre}.`;
 					respuesta = `${X_soluto.toFixed(4)}`;
 
 					return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
@@ -469,7 +471,9 @@
 				const V = frand(0.5, 1.5);
 				const n_soluto = m_soluto / soluto.MM;
 				const molaridad = n_soluto / V;
-				pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, MM = ${soluto.MM}) en ${solvente.nombre} para formar una solución con un volumen final de ${V.toFixed(2)} L. Calcula la molaridad de la solución.`;
+				pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol) 
+				                          en ${solvente.nombre} para formar una solución con un volumen final de
+				                           ${V.toFixed(2)} L. Calcula la molaridad de la solución.`;
 				respuesta = `${molaridad.toFixed(3)} M`;
 				return { titulo: "Molaridad", pregunta: pregunta, respuesta: respuesta };
 			},
@@ -481,7 +485,9 @@
 				const n_soluto = m_soluto / soluto.MM;
 				const kg_solvente = m_solvente / 1000;
 				const molalidad = n_soluto / kg_solvente;
-				pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, MM = ${soluto.MM}) en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, MM = ${solvente.MM}). Calcula la molalidad de la solución.`;
+				pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol)
+				                  en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM} g/mol). 
+				                  Calcula la molalidad de la solución.`;
 				respuesta = `${molalidad.toFixed(3)} m`;
 				return { titulo: "Molalidad", pregunta: pregunta, respuesta: respuesta };
 			}			
@@ -690,7 +696,7 @@
 
 				let respuesta = Tsoln.toFixed(2) + " °C";
 
-				return { titulo: "Temperatura de ebullición de la solución", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Aumento de la temperatura de ebullición", pregunta: pregunta, respuesta: respuesta };
 			},			
 			
 			
@@ -719,7 +725,7 @@
 
 				let respuesta = mB + " g";
 
-				return {titulo: "Temperatura de ebullición de la solución", 	pregunta: pregunta,	respuesta: respuesta	};
+				return {titulo: "Aumento de la temperatura de ebullición", 	pregunta: pregunta,	respuesta: respuesta	};
 			},
 			
 			'ATE_MB': () => {
@@ -801,7 +807,7 @@
 				               y la constante crioscópica es ${A.Kf} °C kg/mol, calcula la temperatura de congelación de la solución en °C.`;
 
 
-				return { titulo: "Temperatura de congelación de la solución", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Descenso de la temperatura de congelación", pregunta: pregunta, respuesta: respuesta };
 			},
 
 			'DTC_mB': () => {
@@ -827,7 +833,7 @@
 
 				let respuesta = mB + " g";
 
-				return { titulo: "Temperatura de congelación de la solución", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Descenso de la temperatura de congelación", pregunta: pregunta, respuesta: respuesta };
 			},
 
 			'DTC_MB': () => {
@@ -929,7 +935,7 @@
 				                    y resulte una presión osmótica de ${pi.toFixed(2)} Pa?`;
 
 				
-				return { titulo: "Presión osmótica, gramos de soluto", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
 			},
 			
 			'PO_V': () => {
@@ -953,7 +959,7 @@
 
 
 				
-				return { titulo: "Presión osmótica, volumen de la solución", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
 			},
 			
 			'PO_T': () => {
@@ -979,7 +985,7 @@
 				                 de ${pi.toFixed(2)} Pa?`;
 			
 
-				return { titulo: "Presión osmótica, temperatura de la solución", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
 			},
 
        },       
@@ -993,7 +999,7 @@
                 let B = par.B;
                 
                 let T = 25; // °C
-                let mA= irand(50, 100); // gramos
+                let mA = irand(50, 100); // gramos
                 let mB = irand(50, 100); //gramos
                                
                 let nA = mA / A.MM; // mol
@@ -1003,43 +1009,49 @@
                 let XA = nA / nt;
                 let XB = nB / nt;
                 
-                
-                let pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, ${A.MM}) con ${mB} g de ${B.nombre} (${B.formula}, ${B.MM}) a una temperatura de 25 °C. Las presiones de vapor de los componentes puros a esta temperatura son ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. Calcula la presión de vapor total de la solución.`;
-                
-                                
                 let PA = XA * A.P0; // mmHg
                 let PB = XB * B.P0; // mmHg
-                let Pt = PA + PB; // mmHg
-                      Pt = mmHg_to_Pa(Pt); // Pa
-                      
-                                      
-                let respuesta = Pt.toFixed(2) + " Pa";
-                return { titulo: "Ley de Raoult, presión total", pregunta: pregunta, respuesta: respuesta };
+                let Pt = PA + PB; // mmHg      
+                
+                let respuesta = Pt.toFixed(2) + " mmHg";       
+                
+                
+                let pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol) 
+                              con ${mB} g de ${B.nombre} (${B.formula}, ${B.MM} g/mol) a una temperatura de 25 °C. 
+                              Las presiones de vapor de los componentes puros a esta temperatura son 
+                              ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. 
+                              Calcula la presión de vapor total de la solución en mmHg.`;
+
+                return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
             },			
 
 
 
 			'RAOULT_PA': () => {
-							let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
-							let A = par.A;
-							let B = par.B;
-							let mA = irand(50, 100); // gramos
-							let mB = irand(50, 100); // gramos
+				let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
+				let A = par.A;
+				let B = par.B;
+				let mA = irand(50, 100); // gramos
+				let mB = irand(50, 100); // gramos
 
 
-							let nA = mA / A.MM; // mol
-							let nB = mB / B.MM; // mol
-							let nt = nA + nB; // mol 
+				let nA = mA / A.MM; // mol
+				let nB = mB / B.MM; // mol
+				let nt = nA + nB; // mol 
 
-							let XA = nA/ nt;
-							let PA = XA * A.P0; // mmHg
-							let PA_Pa = mmHg_to_Pa(PA); // Pa
+				let XA = nA/ nt;
+				let PA = XA * A.P0; // mmHg
+				
 
-							let pregunta = `Se mezclan ${mA.toFixed(2)} g de ${A.nombre} (${A.formula}, MM = ${A.MM}) con ${mB.toFixed(2)} g de ${B.nombre} (${B.formula}, MM = ${B.MM}). Si la presión de vapor del ${A.nombre} puro es ${A.P0.toFixed(1)} mmHg, calcula la presión de vapor de ${A.nombre} en la solución en Pa.`;
-							let respuesta = PA_Pa.toFixed(2) + " Pa";
+				let pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, MM = ${A.MM} g/mol) 
+				               con ${mB} g de ${B.nombre} (${B.formula}, MM = ${B.MM} g/mol). 
+				               Si la presión de vapor del ${A.nombre} puro es ${A.P0.toFixed(1)} mmHg, 
+				               calcula la presión de vapor de ${A.nombre} en la solución en mmHg.`;
+			
+				let respuesta = PA.toFixed(2) + " mmHg";
 
-							return { titulo: "Ley de Raoult, presión parcial", pregunta: pregunta, respuesta: respuesta };
-						},			
+				return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+			},			
 						
 			'RAOULT_YA': () => {
 				
@@ -1048,11 +1060,7 @@
 				let B = par.B;
 				let mA = irand(50, 100); // gramos
 				let mB = irand(50, 100); // gramos
-				
-				
-				const pregunta = `Se mezclan ${mA.toFixed(2)} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol) con ${mB.toFixed(2)} g de ${B.nombre} (${B.formula}, ${B.MM} g/mol) a una temperatura en la que las presiones de vapor de los componentes puros son ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. Calcula la fracción molar del componente A en la fase vapor.`;
 
-				
 				let nA = mA / A.MM; // mol
 				let nB = mB / B.MM; // mol
 				let n_total = nA + nB; // mol
@@ -1065,8 +1073,17 @@
 				
 				let YA = PA / P_total; // fracción molar en fase gas
 				
-				const respuesta = YA.toFixed(4);
-				return { titulo: "Ley de Raoult, fracción molar en la fase vapor", pregunta: pregunta, respuesta: respuesta };
+				const respuesta = YA.toFixed(4);				
+				
+				const pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol) 
+				                 con ${mB} g de ${B.nombre} (${B.formula}, ${B.MM} g/mol) 
+				                 a una temperatura en la que las presiones de vapor de los componentes puros 
+				                 son ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. 
+				                 Calcula la fracción molar del componente A en la fase vapor.`;
+
+				
+
+				return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
 			},
 			
 			'RAOULT_XB': () => {
@@ -1074,7 +1091,6 @@
 				let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
 				let A = par.A;
 				let B = par.B;
-
 				 
 				let PA_solucion = irand(20, 90); // mmHg
 				let P_puro = A.P0; // mmHg
@@ -1083,21 +1099,21 @@
 				if (PA_solucion > P_puro) {
 					[PA_solucion, P_puro] = [P_puro, PA_solucion];
 				}
+								
+				let XA = PA_solucion / P_puro;
+				let XB = 1 - XA;
 				
+				let respuesta = XB.toFixed(4);				
 				
-				const pregunta = `Una solución se compone de ${A.nombre} y ${B.nombre}. Si la presión de vapor del ${A.nombre} puro es ${P_puro.toFixed(2)} mmHg y la presión de vapor del ${A.nombre} en la solución es ${PA_solucion.toFixed(2)} mmHg, calcula la fracción molar de ${B.nombre} en la fase líquida.`;
+				const pregunta = `Una solución se compone de ${A.nombre} y ${B.nombre}. 
+				                 Si la presión de vapor del ${A.nombre} puro es ${P_puro.toFixed(2)} mmHg 
+				                 y la presión de vapor del ${A.nombre} en la solución es ${PA_solucion.toFixed(2)} mmHg, 
+				                 calcula la fracción molar de ${B.nombre} en la fase líquida.`;
 				
 			
-				// Cálculo de la fracción molar de A en la fase líquida (adimensional)
-				let XA = PA_solucion / P_puro;
 
-				// Cálculo de la fracción molar de B en la fase líquida
-				let XB = 1 - XA;
 
-				
-				let respuesta = XB.toFixed(4);
-
-				return { titulo: "Ley de Raoult, fracción molar en la fase líquida", pregunta: pregunta, respuesta: respuesta };
+				return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
 			}	
 
 
