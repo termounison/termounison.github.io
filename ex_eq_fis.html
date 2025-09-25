@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicios de Equilibrio Físico</title>
     <style>
-	
-	
+		
 		@font-face {
 			font-family: 'Open Sans';
 			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
@@ -173,6 +172,16 @@
 		const cal_to_J = (X) => {
 		  return X * 4.184;
 		};
+		
+		
+		function L_to_m3(L) {
+			return L / 1000;
+		}		
+		
+		
+		function m3_to_L(m3) {
+			return m3 * 1000;
+		}		
 
     
     // la función coin regresa 1 o 0
@@ -871,17 +880,17 @@
 					let T = frand(15, 30); // °C
 					T = C_to_K(T); // K					
 					let nB = mB / B.MM; // mol
+					V = L_to_m3(V) // m3
 					let pi = B.i * nB * R * T / V; // Pa
+					pi = pi/1000; // kPa					
 
-					const respuesta = pi.toFixed(2) + " Pa";
+					const respuesta = pi.toFixed(2) + " kPa";
 					
 					const pregunta = `Se prepara una solución disolviendo ${mB} g de ${B.nombre} 
 					                 (${B.formula}, ${B.MM} g/mol, i=${B.i}) 
-					                 en ${A.nombre} (${A.formula}, ${A.MM} g/mol) para obtener un volumen final de ${V.toFixed(2)} L. 
-					                 La solución está a ${T.toFixed(2)} K. Calcula la presión osmótica de la solución en Pa.`;
-
+					                 en ${A.nombre} (${A.formula}, ${A.MM} g/mol) para obtener un volumen final de ${V.toFixed(6)} m³. 
+					                 La solución está a ${T.toFixed(2)} K. Calcula la presión osmótica de la solución en kPa.`;
 					
-
 					return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
 			},
 			
