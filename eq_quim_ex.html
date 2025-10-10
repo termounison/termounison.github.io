@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Equilibrio Físico</title>
+    <style>
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
+			font-style: normal italic; /* Define el estilo (normal e itálico) */
+		}
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            //background-color: #f0f0f0;
+            background-color: #FAFAFA;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            margin: 10px auto;
+        }
+		.button-group {
+			display: flex; /* Habilitar flexbox para alineación */
+			width: 100%; /* Asegurar que ocupe todo el ancho del contenedor padre */
+			gap: 10px; /* Espacio entre los botones (opcional, mejora la estética) */
+			margin-bottom: 10px; /* Espacio debajo de los botones (opcional) */
+		}        
+		.menu-item, .btn {
+			display: inline-block; 
+			margin: 8px 6px;
+			padding: 10px 14px;
+			font-size: 16px;
+			cursor: pointer;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		/* Estilo específico para los botones dentro del grupo principal */
+		.button-group .btn {
+			flex-grow: 1; /* Permite que el elemento crezca para ocupar el espacio disponible */
+			width: 50%;   /* Establecer el ancho base */
+			margin: 0;    /* Eliminar los márgenes para un control total por flexbox */
+		}
+        .menu-item:hover, .btn:hover {
+            background-color: #0056b3;
+        }        
+        #ejercicio-container {
+            display: none; /* Ocultar el contenedor inicial de ejercicio */
+            text-align: left;
+        }
+        #examen-container {
+            display: none;
+        }
+        .ejercicio-titulo {
+           // border-top: 2px solid;
+           font-size: 24px;
+        }
+
+
+        .pregunta-texto {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .respuesta-texto {
+			font-size: 20px;
+            font-weight: bold;
+            color: red; /* Color para las respuestas */
+            display: none;
+        }
+        .buttons-container {
+            margin-top: 10px;
+            
+        }
+        .buttons-inline {
+            display: flex;
+            gap: 10px;
+        }        
+		.buttons-inline .btn {
+			flex-grow: 1; /* Permite que el botón crezca para llenar el espacio */
+			width: 50%;   /* Establece una base de 50% */
+			margin: 0;    /* Elimina el margen lateral que interfiere con el cálculo del ancho */
+			/* El padding ya está definido en .menu-item, .btn */
+		}        
+        .footer-text {
+            width: 100%;
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+        }
+        .ejercicio-block {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+	<center><h1>Equilibrio Químico</h1></center>
+	<div class="button-group">
+		<button id="generar-ejercicios-btn" class="btn" onclick="generarEjercicios()">Generar Ejercicios</button>
+		<button id="generar-examen-btn" class="btn" onclick="generarExamen()">Generar Examen</button>
+	</div>
+    <div id="ejercicios-generados">
+        </div>
+
+    <div id="ejercicio-container">
+        <h2 class="ejercicio-titulo"></h2>
+        <div class="pregunta-texto"></div>
+        <div class="respuesta-texto"></div>
+    </div>
+    
+</div>
+
+<div class="footer-text">
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+</div>
+
+<script>
+
+function C_to_K(X) {
+  return X + 273.15;
+};
+
+function K_to_C(X) {
+  return X - 273.15;
+};
+
+function Pa_to_atm(X) {
+  return X / 101325;
+};
+
+function atm_to_Pa(X) {
+  return X * 101325;
+};
+
+function Pa_to_mmHg(X) {
+  return X / 133.322;
+};
+
+function mmHg_to_Pa(X) {
+  return X * 133.322;
+};
+
+function J_to_cal(X) {
+  return X / 4.184;
+};
+
+function cal_to_J(X) {
+  return X * 4.184;
+};
+
+function L_to_m3(L) {
+    return L / 1000;
+}		
+
+function m3_to_L(m3) {
+    return m3 * 1000;
+}		
+
+function coin() {
+    return Math.round(Math.random());
+};
+
+function irand(A, B) {
+  return Math.floor(Math.random() * (B - A + 1)) + A;
+};	  
+
+function frand(A, B) {
+  return Math.random() * (B - A) + A;
+};	
+
+// Constante de los gases en unidades SI
+const R = 8.314; 
+    
+// Base de datos de reacciones químicas
+const RxQuimHomoData = [
+{
+ecuacion: "2H<sub>2</sub>(g) + O<sub>2</sub>(g) &#8652; 2H<sub>2</sub>O(g)",
+reactivos: [{compuesto: "H<sub>2</sub>", coeficiente: 2}, {compuesto: "O<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "H<sub>2</sub>O", coeficiente: 2}]
+},
+{
+ecuacion: "N<sub>2</sub>(g) + 3H<sub>2</sub>(g) &#8652; 2NH<sub>3</sub>(g)",
+reactivos: [{compuesto: "N<sub>2</sub>", coeficiente: 1}, {compuesto: "H<sub>2</sub>", coeficiente: 3}],
+productos: [{compuesto: "NH<sub>3</sub>", coeficiente: 2}]
+},
+{
+ecuacion: "4NH<sub>3</sub>(g) + 5O<sub>2</sub>(g) &#8652; 4NO(g) + 6H<sub>2</sub>O(g)",
+reactivos: [{compuesto: "NH<sub>3</sub>", coeficiente: 4}, {compuesto: "O<sub>2</sub>", coeficiente: 5}],
+productos: [{compuesto: "NO", coeficiente: 4}, {compuesto: "H<sub>2</sub>O", coeficiente: 6}]
+},
+{
+ecuacion: "2SO<sub>2</sub>(g) + O<sub>2</sub>(g) &#8652; 2SO<sub>3</sub>(g)",
+reactivos: [{compuesto: "SO<sub>2</sub>", coeficiente: 2}, {compuesto: "O<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "SO<sub>3</sub>", coeficiente: 2}]
+},
+{
+ecuacion: "2NO(g) + O<sub>2</sub>(g) &#8652; 2NO<sub>2</sub>(g)",
+reactivos: [{compuesto: "NO", coeficiente: 2}, {compuesto: "O<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "NO<sub>2</sub>", coeficiente: 2}]
+},
+{
+ecuacion: "2HI(g) &#8652; H<sub>2</sub>(g) + I<sub>2</sub>(g)",
+reactivos: [{compuesto: "HI", coeficiente: 2}],
+productos: [{compuesto: "H<sub>2</sub>", coeficiente: 1}, {compuesto: "I<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "PCl<sub>5</sub>(g) &#8652; PCl<sub>3</sub>(g) + Cl<sub>2</sub>(g)",
+reactivos: [{compuesto: "PCl<sub>5</sub>", coeficiente: 1}],
+productos: [{compuesto: "PCl<sub>3</sub>", coeficiente: 1}, {compuesto: "Cl<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "CO(g) + Cl<sub>2</sub>(g) &#8652; COCl<sub>2</sub>(g)",
+reactivos: [{compuesto: "CO", coeficiente: 1}, {compuesto: "Cl<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "COCl<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "2NOCl(g) &#8652; 2NO(g) + Cl<sub>2</sub>(g)",
+reactivos: [{compuesto: "NOCl", coeficiente: 2}],
+productos: [{compuesto: "NO", coeficiente: 2}, {compuesto: "Cl<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "2HBr(g) &#8652; H<sub>2</sub>(g) + Br<sub>2</sub>(g)",
+reactivos: [{compuesto: "HBr", coeficiente: 2}],
+productos: [{compuesto: "H<sub>2</sub>", coeficiente: 1}, {compuesto: "Br<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "N<sub>2</sub>O<sub>4</sub>(g) &#8652; 2NO<sub>2</sub>(g)",
+reactivos: [{compuesto: "N<sub>2</sub>O<sub>4</sub>", coeficiente: 1}],
+productos: [{compuesto: "NO<sub>2</sub>", coeficiente: 2}]
+},
+{
+ecuacion: "CO(g) + 2H<sub>2</sub>(g) &#8652; CH<sub>3</sub>OH(g)",
+reactivos: [{compuesto: "CO", coeficiente: 1}, {compuesto: "H<sub>2</sub>", coeficiente: 2}],
+productos: [{compuesto: "CH<sub>3</sub>OH", coeficiente: 1}]
+},
+{
+ecuacion: "CH<sub>4</sub>(g) + H<sub>2</sub>O(g) &#8652; CO(g) + 3H<sub>2</sub>(g)",
+reactivos: [{compuesto: "CH<sub>4</sub>", coeficiente: 1}, {compuesto: "H<sub>2</sub>O", coeficiente: 1}],
+productos: [{compuesto: "CO", coeficiente: 1}, {compuesto: "H<sub>2</sub>", coeficiente: 3}]
+},
+{
+ecuacion: "2SO<sub>3</sub>(g) &#8652; 2SO<sub>2</sub>(g) + O<sub>2</sub>(g)",
+reactivos: [{compuesto: "SO<sub>3</sub>", coeficiente: 2}],
+productos: [{compuesto: "SO<sub>2</sub>", coeficiente: 2}, {compuesto: "O<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "4HCl(g) + O<sub>2</sub>(g) &#8652; 2H<sub>2</sub>O(g) + 2Cl<sub>2</sub>(g)",
+reactivos: [{compuesto: "HCl", coeficiente: 4}, {compuesto: "O<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "H<sub>2</sub>O", coeficiente: 2}, {compuesto: "Cl<sub>2</sub>", coeficiente: 2}]
+},
+{
+ecuacion: "H<sub>2</sub>(g) + CO<sub>2</sub>(g) &#8652; H<sub>2</sub>O(g) + CO(g)",
+reactivos: [{compuesto: "H<sub>2</sub>", coeficiente: 1}, {compuesto: "CO<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "H<sub>2</sub>O", coeficiente: 1}, {compuesto: "CO", coeficiente: 1}]
+},
+{
+ecuacion: "2H<sub>2</sub>S(g) &#8652; 2H<sub>2</sub>(g) + S<sub>2</sub>(g)",
+reactivos: [{compuesto: "H<sub>2</sub>S", coeficiente: 2}],
+productos: [{compuesto: "H<sub>2</sub>", coeficiente: 2}, {compuesto: "S<sub>2</sub>", coeficiente: 1}]
+},
+{
+ecuacion: "CH<sub>4</sub>(g) + 2H<sub>2</sub>O(g) &#8652; CO<sub>2</sub>(g) + 4H<sub>2</sub>(g)",
+reactivos: [{compuesto: "CH<sub>4</sub>", coeficiente: 1}, {compuesto: "H<sub>2</sub>O", coeficiente: 2}],
+productos: [{compuesto: "CO<sub>2</sub>", coeficiente: 1}, {compuesto: "H<sub>2</sub>", coeficiente: 4}]
+}
+];
+
+// Base de datos de reacciones químicas heterogéneas
+const RxQuimHeteroData = [
+{
+ecuacion: "BaCO<sub>3</sub>(s) &#8652; BaO(s) + CO<sub>2</sub>(g)",
+reactivos: [{compuesto: "BaCO<sub>3</sub>", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "BaO", coeficiente: 1, estado: "s"}, {compuesto: "CO<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "C(s) + 2H<sub>2</sub>(g) &#8652; CH<sub>4</sub>(g)",
+reactivos: [{compuesto: "C", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>", coeficiente: 2, estado: "g"}],
+productos: [{compuesto: "CH<sub>4</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "Al<sub>2</sub>O<sub>3</sub>(s) + 3H<sub>2</sub>O(g) &#8652; 2Al(OH)<sub>3</sub>(s)",
+reactivos: [{compuesto: "Al<sub>2</sub>O<sub>3</sub>", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 3, estado: "g"}],
+productos: [{compuesto: "Al(OH)<sub>3</sub>", coeficiente: 2, estado: "s"}]
+},
+{
+ecuacion: "S(s) + O<sub>2</sub>(g) &#8652; SO<sub>2</sub>(g)",
+reactivos: [{compuesto: "S", coeficiente: 1, estado: "s"}, {compuesto: "O<sub>2</sub>", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "SO<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "CaCO<sub>3</sub>(s) + H<sub>2</sub>O(g) + CO<sub>2</sub>(g) &#8652; Ca(HCO<sub>3</sub>)<sub>2</sub>(s)",
+reactivos: [{compuesto: "CaCO<sub>3</sub>", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}, {compuesto: "CO<sub>2</sub>", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "Ca(HCO<sub>3</sub>)<sub>2</sub>", coeficiente: 1, estado: "s"}]
+},
+{
+ecuacion: "Zn(s) + H<sub>2</sub>O(g) &#8652; ZnO(s) + H<sub>2</sub>(g)",
+reactivos: [{compuesto: "Zn", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "ZnO", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "Fe<sub>2</sub>O<sub>3</sub>(s) + 3H<sub>2</sub>(g) &#8652; 2Fe(s) + 3H<sub>2</sub>O(g)",
+reactivos: [{compuesto: "Fe<sub>2</sub>O<sub>3</sub>", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>", coeficiente: 3, estado: "g"}],
+productos: [{compuesto: "Fe", coeficiente: 2, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 3, estado: "g"}]
+},
+{
+ecuacion: "I<sub>2</sub>(s) &#8652; I<sub>2</sub>(g)",
+reactivos: [{compuesto: "I<sub>2</sub>", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "I<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "CuO(s) + H<sub>2</sub>(g) &#8652; Cu(s) + H<sub>2</sub>O(g)",
+reactivos: [{compuesto: "CuO", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "Cu", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "NH<sub>4</sub>HS(s) &#8652; NH<sub>3</sub>(g) + H<sub>2</sub>S(g)",
+reactivos: [{compuesto: "NH<sub>4</sub>HS", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "NH<sub>3</sub>", coeficiente: 1, estado: "g"}, {compuesto: "H<sub>2</sub>S", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "Ag<sub>2</sub>O(s) &#8652; 2Ag(s) + 0.5O<sub>2</sub>(g)",
+reactivos: [{compuesto: "Ag<sub>2</sub>O", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "Ag", coeficiente: 2, estado: "s"}, {compuesto: "O<sub>2</sub>", coeficiente: 0.5, estado: "g"}]
+},
+{
+ecuacion: "CaO(s) + H<sub>2</sub>O(g) &#8652; Ca(OH)<sub>2</sub>(s)",
+reactivos: [{compuesto: "CaO", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "Ca(OH)<sub>2</sub>", coeficiente: 1, estado: "s"}]
+},
+{
+ecuacion: "C(s) + CO<sub>2</sub>(g) &#8652; 2CO(g)",
+reactivos: [{compuesto: "C", coeficiente: 1, estado: "s"}, {compuesto: "CO<sub>2</sub>", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "CO", coeficiente: 2, estado: "g"}]
+},
+{
+ecuacion: "H<sub>2</sub>O(l) &#8652; H<sub>2</sub>O(g)",
+reactivos: [{compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "l"}],
+productos: [{compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "MgCO<sub>3</sub>(s) &#8652; MgO(s) + CO<sub>2</sub>(g)",
+reactivos: [{compuesto: "MgCO<sub>3</sub>", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "MgO", coeficiente: 1, estado: "s"}, {compuesto: "CO<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "C(s) + H<sub>2</sub>O(g) &#8652; CO(g) + H<sub>2</sub>(g)",
+reactivos: [{compuesto: "C", coeficiente: 1, estado: "s"}, {compuesto: "H<sub>2</sub>O", coeficiente: 1, estado: "g"}],
+productos: [{compuesto: "CO", coeficiente: 1, estado: "g"}, {compuesto: "H<sub>2</sub>", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "NH<sub>4</sub>Cl(s) &#8652; NH<sub>3</sub>(g) + HCl(g)",
+reactivos: [{compuesto: "NH<sub>4</sub>Cl", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "NH<sub>3</sub>", coeficiente: 1, estado: "g"}, {compuesto: "HCl", coeficiente: 1, estado: "g"}]
+},
+{
+ecuacion: "CaCO<sub>3</sub>(s) &#8652; CaO(s) + CO<sub>2</sub>(g)",
+reactivos: [{compuesto: "CaCO<sub>3</sub>", coeficiente: 1, estado: "s"}],
+productos: [{compuesto: "CaO", coeficiente: 1, estado: "s"}, {compuesto: "CO<sub>2</sub>", coeficiente: 1, estado: "g"}]
+}
+];
+
+
+const RxQuimICEData = [
+// Reacción original 1
+{
+ecuacion: "H<sub>2</sub>(g) + I<sub>2</sub>(g) &#8652; 2 HI(g)",
+reactivos: [{compuesto: "H<sub>2</sub>", coeficiente: 1}, {compuesto: "I<sub>2</sub>", coeficiente: 1}],
+productos: [{compuesto: "HI", coeficiente: 2}]
+},
+// Reacción invertida 1
+{
+ecuacion: "2 HI(g) &#8652; H<sub>2</sub>(g) + I<sub>2</sub>(g)",
+reactivos: [{compuesto: "HI", coeficiente: 2}],
+productos: [{compuesto: "H<sub>2</sub>", coeficiente: 1}, {compuesto: "I<sub>2</sub>", coeficiente: 1}]
+},
+// Reacción original 2
+{
+ecuacion: "N<sub>2</sub>O<sub>4</sub>(g) &#8652; 2 NO<sub>2</sub>(g)",
+reactivos: [{compuesto: "N<sub>2</sub>O<sub>4</sub>", coeficiente: 1}],
+productos: [{compuesto: "NO<sub>2</sub>", coeficiente: 2}]
+},
+// Reacción invertida 2
+{
+ecuacion: "2 NO<sub>2</sub>(g) &#8652; N<sub>2</sub>O<sub>4</sub>(g)",
+reactivos: [{compuesto: "NO<sub>2</sub>", coeficiente: 2}],
+productos: [{compuesto: "N<sub>2</sub>O<sub>4</sub>", coeficiente: 1}]
+}
+];
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+function RxQuimHomo_Kc() {
+
+				// OBJETIVO: generar un ejercicio para calcular la constante de equilibrio
+
+				let pregunta = "";
+				let respuesta = 0;
+
+				// Seleccionar una reacción al azar
+				const reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+
+				let Kc = 0;
+				let T = 0;
+				let concentraciones = {};
+
+				// El ciclo asegura que el valor de Kc esté en un rango razonable
+				while (true) {
+					T = irand(20, 30); // °C
+					concentraciones = {};
+					let numerador = 1;
+					let denominador = 1;
+
+					// Generar concentraciones para los reactivos
+					for (const reactivo of reaccionAleatoria.reactivos) {
+						const C = irand(10, 1000) / 100;
+						concentraciones[reactivo.compuesto] = C;
+						denominador *= Math.pow(C, reactivo.coeficiente);
+					}
+
+					// Generar concentraciones para los productos
+					for (const producto of reaccionAleatoria.productos) {
+						const C = irand(10, 1000) / 100;
+						concentraciones[producto.compuesto] = C;
+						numerador *= Math.pow(C, producto.coeficiente);
+					}
+
+					Kc = numerador / denominador;
+
+					if (Kc >= 1 && Kc <= 1000) {
+						respuesta = parseFloat(Kc.toFixed(2));
+						break;
+					}
+				}
+
+				// Construir la pregunta
+				let concentraciones_str = "";
+				let comp_count = 0;
+				for (const compuesto in concentraciones) {
+					comp_count++;
+					concentraciones_str += "<br>[" + compuesto + "] = " + concentraciones[compuesto] + " mol/L" + (comp_count < Object.keys(concentraciones).length ? ". " : ". ");
+				}
+
+				pregunta += "Calcula la constante de equilibrio K<sub>c</sub>.<br>";
+				pregunta += reaccionAleatoria.ecuacion + "<br>";
+				pregunta += "" + concentraciones_str;
+				
+
+				return { titulo: "Equilibrio Químico Homogéneo", pregunta: pregunta, respuesta: respuesta };
+  
+}
+			
+function RxQuimHomo_C(){
+
+
+			// OBJETIVO: generar un ejercicio para calcular la concentración del primer reactivo
+
+			let pregunta = "";
+			let respuesta = 0;
+
+			// Seleccionar una reacción al azar
+			const reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+			const primerReactivo = reaccionAleatoria.reactivos[0];
+
+			let Kc = 0;
+			let T = 0;
+			let concentraciones = {};
+			let concentracionPrimerReactivo = 0;
+
+			// El ciclo asegura que los valores estén en un rango razonable
+			while (true) {
+				T = irand(20, 30); // °C
+				concentraciones = {};
+				Kc = irand(100, 1000) / 100; // Constante de equilibrio
+				
+				let numerador = 1;
+				let denominador = 1;
+				
+				// Generar concentraciones para los productos
+				for (const producto of reaccionAleatoria.productos) {
+					const C = irand(10, 1000) / 100;
+					concentraciones[producto.compuesto] = C;
+					numerador *= Math.pow(C, producto.coeficiente);
+				}
+
+				// Generar concentraciones para los demás reactivos (desde el segundo)
+				for (let i = 1; i < reaccionAleatoria.reactivos.length; i++) {
+					const reactivo = reaccionAleatoria.reactivos[i];
+					const C = irand(10, 1000) / 100;
+					concentraciones[reactivo.compuesto] = C;
+					denominador *= Math.pow(C, reactivo.coeficiente);
+				}
+
+				// Calcular la concentración del primer reactivo a partir de Kc
+				let C_reactivo_1 = Math.pow((numerador / (Kc * denominador)), 1 / primerReactivo.coeficiente);
+				
+				if (C_reactivo_1 >= 0.1 && C_reactivo_1 <= 10) {
+					concentracionPrimerReactivo = C_reactivo_1;
+					concentraciones[primerReactivo.compuesto] = parseFloat(concentracionPrimerReactivo.toFixed(2));
+					respuesta = parseFloat(C_reactivo_1.toFixed(2)) + " mol/L";
+					break;
+				}
+			}
+
+			// Construir la pregunta
+			let concentraciones_str = "";
+			let comp_count = 0;
+			for (const compuesto in concentraciones) {
+				comp_count++;
+				// Excluir la concentración del primer reactivo del texto de la pregunta
+				if (compuesto !== primerReactivo.compuesto) {
+					concentraciones_str += "<br>[" + compuesto + " ] = " + concentraciones[compuesto] + " mol/L" + (comp_count < Object.keys(concentraciones).length ? ". " : ". ");
+				}
+			}
+
+			pregunta += "Calcula la concentración de " + primerReactivo.compuesto + ".<br>";
+			pregunta += reaccionAleatoria.ecuacion + "; K<sub>c</sub> = " + Kc.toFixed(2) + "<br>";
+			pregunta += "" + concentraciones_str;
+			
+
+			return { titulo: "Equilibrio Químico Homogéneo", pregunta: pregunta, respuesta: respuesta };
+
+}            
+			
+function RxQuimHetero_Kc(){
+                let pregunta = "";
+                let respuesta = 0;
+                const reaccionAleatoria = RxQuimHeteroData[irand(0, RxQuimHeteroData.length - 1)];
+
+                let Kc = 0;
+                let concentraciones = {};
+                
+                // Obtenemos todos los compuestos, tanto reactivos como productos, para generar concentraciones
+                const todosLosCompuestos = [...reaccionAleatoria.reactivos, ...reaccionAleatoria.productos];
+                
+                while (true) {
+                    let numerador = 1;
+                    let denominador = 1;
+                    const estadoValido = ['g', 'ac'];
+
+                    concentraciones = {}; // Resetear concentraciones en cada iteración
+                    
+                    for (const compuesto of todosLosCompuestos) {
+                        const C = irand(10, 1000) / 100;
+                        concentraciones[compuesto.compuesto] = C;
+                    }
+
+                    // Calcular el numerador y denominador solo con los compuestos en estado válido
+                    for (const producto of reaccionAleatoria.productos) {
+                        if (estadoValido.includes(producto.estado)) {
+                            numerador *= Math.pow(concentraciones[producto.compuesto], producto.coeficiente);
+                        }
+                    }
+                    
+                    for (const reactivo of reaccionAleatoria.reactivos) {
+                        if (estadoValido.includes(reactivo.estado)) {
+                            denominador *= Math.pow(concentraciones[reactivo.compuesto], reactivo.coeficiente);
+                        }
+                    }
+
+                    // Evitar división por cero
+                    if (denominador === 0) {
+                        continue;
+                    }
+                    Kc = numerador / denominador;
+
+                    if (Kc >= 1 && Kc <= 1000) {
+                        respuesta = parseFloat(Kc.toFixed(2));
+                        break;
+                    }
+                }
+
+                let concentraciones_str = "";
+                // Construir la cadena de concentraciones para todos los compuestos
+                for (const compuesto of todosLosCompuestos) {
+                    concentraciones_str += "<br>[" + compuesto.compuesto + "(" + compuesto.estado + ")] = " + concentraciones[compuesto.compuesto] + " mol/L";
+                }
+
+                pregunta += "Calcula la constante de equilibrio K<sub>c</sub>.<br>";
+                pregunta += reaccionAleatoria.ecuacion + "<br>";
+                pregunta += "" + concentraciones_str;
+                
+                return { titulo: "Equilibrio Químico Heterogéneo", pregunta: pregunta, respuesta: respuesta };
+}
+
+function RxQuimHetero_C(){
+				// OBJETIVO: generar un ejercicio para calcular la concentración de un compuesto
+				
+				let pregunta = "";
+				let respuesta = 0;
+
+				// Seleccionar una reacción al azar
+				const reaccionAleatoria = RxQuimHeteroData[irand(0, RxQuimHeteroData.length - 1)];
+
+				// Filtrar compuestos gaseosos y acuosos que deben ser considerados en la expresión de Kc
+				const compuestosValidos = [...reaccionAleatoria.reactivos, ...reaccionAleatoria.productos].filter(compuesto => compuesto.estado === 'g' || compuesto.estado === 'ac');
+				
+				// Si no hay compuestos gaseosos o acuosos, la función no puede generar un ejercicio válido
+				if (compuestosValidos.length === 0) {
+					return { titulo: "Equilibrio Químico Heterogéneo", pregunta: "No hay compuestos en estado gaseoso o acuoso para este ejercicio. Por favor, intente con otro.", respuesta: "N/A" };
+				}
+				
+				// Seleccionar un compuesto al azar de los que tienen estados válidos
+				const compuestoIncognita = compuestosValidos[irand(0, compuestosValidos.length - 1)];
+				let Kc = 0;
+				let concentraciones = {};
+				let concentracionIncognita = 0;
+
+				// El ciclo asegura que los valores estén en un rango razonable
+				while (true) {
+					Kc = irand(100, 1000) / 100; // Constante de equilibrio
+					
+					let numerador = 1;
+					let denominador = 1;
+					
+					// Generar concentraciones para todos los compuestos, incluso para los sólidos y líquidos
+					const todosLosCompuestos = [...reaccionAleatoria.reactivos, ...reaccionAleatoria.productos];
+					for (const compuesto of todosLosCompuestos) {
+						if (compuesto.compuesto !== compuestoIncognita.compuesto || compuesto.estado !== compuestoIncognita.estado) {
+							const C = irand(10, 1000) / 100;
+							concentraciones[compuesto.compuesto] = C;
+						}
+					}
+					
+					// Calcular el numerador y denominador con las concentraciones generadas
+					reaccionAleatoria.productos.forEach(producto => {
+						if (producto.estado === 'g' || producto.estado === 'ac') {
+							if (producto.compuesto !== compuestoIncognita.compuesto || producto.estado !== compuestoIncognita.estado) {
+								numerador *= Math.pow(concentraciones[producto.compuesto], producto.coeficiente);
+							}
+						}
+					});
+
+					reaccionAleatoria.reactivos.forEach(reactivo => {
+						if (reactivo.estado === 'g' || reactivo.estado === 'ac') {
+							if (reactivo.compuesto !== compuestoIncognita.compuesto || reactivo.estado !== reactivo.estado) {
+								 denominador *= Math.pow(concentraciones[reactivo.compuesto], reactivo.coeficiente);
+							}
+						}
+					});
+
+					// Calcular la concentración del compuesto incógnita a partir de Kc
+					if (reaccionAleatoria.productos.find(p => p.compuesto === compuestoIncognita.compuesto && (p.estado === 'g' || p.estado === 'ac'))) {
+						// El compuesto incógnita es un producto
+						if (denominador === 0) { // Evita división por cero
+							continue;
+						}
+						concentracionIncognita = Math.pow((Kc * denominador) / numerador, 1 / compuestoIncognita.coeficiente);
+					} else {
+						// El compuesto incógnita es un reactivo
+						if (Kc * denominador === 0) { // Evita división por cero
+							continue;
+						}
+						concentracionIncognita = Math.pow(numerador / (Kc * denominador), 1 / compuestoIncognita.coeficiente);
+					}
+					
+					if (concentracionIncognita > 0.1 && concentracionIncognita < 100) {
+						respuesta = parseFloat(concentracionIncognita.toFixed(2));
+						break;
+					}
+				}
+
+				// Construir la pregunta con todas las concentraciones
+				let concentraciones_str = "";
+				const todosLosCompuestos = [...reaccionAleatoria.reactivos, ...reaccionAleatoria.productos];
+				for (const compuesto of todosLosCompuestos) {
+					const concentracion = (compuesto.compuesto === compuestoIncognita.compuesto && compuesto.estado === compuestoIncognita.estado)
+						? "?"
+						: concentraciones[compuesto.compuesto];
+					concentraciones_str += "<br>[" + compuesto.compuesto + "(" + compuesto.estado + ")] = " + concentracion + " mol/L";
+				}
+				
+				pregunta += "Calcula la concentración de " + compuestoIncognita.compuesto + "(" + compuestoIncognita.estado + ").<br>";
+				pregunta += reaccionAleatoria.ecuacion + "; K<sub>c</sub> = " + Kc.toFixed(2) + "<br>";
+				pregunta += "" + concentraciones_str;
+				
+				return { titulo: "Equilibrio Químico Heterogéneo", pregunta: pregunta, respuesta: respuesta + " mol/L" };
+}
+
+
+function KpKc_Kp(){
+				// OBJETIVO: generar un ejercicio para calcular Kp a partir de Kc
+				let pregunta = "";
+				let respuesta = 0;
+				
+				let dn = 0
+				let reaccionAleatoria;
+				let T;
+				let R;
+				let Kc;
+				let Kp;
+				
+				
+				while(1){
+					// Seleccionar una reacción homogénea al azar
+					reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+					
+					dn = 0; // Diferencia de moles gaseosos (Delta n)
+					
+					// Calcular la suma de los coeficientes de los productos gaseosos
+					let sumProd = 0;
+					reaccionAleatoria.productos.forEach(producto => {
+						sumProd += producto.coeficiente;
+					});
+					
+					// Calcular la suma de los coeficientes de los reactivos gaseosos
+					let sumReac = 0;
+					reaccionAleatoria.reactivos.forEach(reactivo => {
+						sumReac += reactivo.coeficiente;
+					});
+					
+					dn = sumProd - sumReac;
+					
+					// Generar valores aleatorios para T y Kc dentro de rangos razonables
+					T = irand(298, 500); // Temperatura en Kelvin
+					Kc = parseFloat((frand(1, 1000)).toFixed(2));
+					
+					R = 0.08206; // Constante de los gases en L·atm/(mol·K)
+					
+					// Calcular Kp = Kc * (R * T) ^ dn
+					Kp = Kc * Math.pow(R * T, dn);
+					
+					if(Kp > 1) break;
+					
+				}
+				
+				// Redondear la respuesta a 2 decimales
+				respuesta = parseFloat(Kp.toFixed(2));
+				
+				// Construir la pregunta
+				pregunta = "Considera la siguiente reacción química ("+ T + " K): <br>" + reaccionAleatoria.ecuacion + "; K<sub>c</sub> = " + Kc + "<br><br>";
+				pregunta += "Calcula la constante de equilibrio K<sub>p</sub> si las presiones fueran medidas en atm.";
+				
+				return { titulo: "Kp y Kc", pregunta: pregunta, respuesta: respuesta };
+}
+					
+function KpKc_T(){
+
+				// OBJETIVO: generar un ejercicio para calcular la Temperatura de la reacción química a partir de Kc, Kp y delta n
+				// CUIDADO: delta n debe ser diferente de cero.
+				let pregunta = "";
+				let respuesta = 0;
+				let reaccionAleatoria;
+				
+				let dn = 0; // Diferencia de moles gaseosos (Delta n)									
+				let sumProd = 0; // Calcular la suma de los coeficientes de los productos gaseosos	
+				let sumReac = 0; // Calcular la suma de los coeficientes de los reactivos gaseosos
+				let T;
+				let R;
+				let Kc;
+				let Kp;				
+				
+				while(1){
+					// Seleccionar una reacción homogénea al azar
+					reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+
+					reaccionAleatoria.productos.forEach(producto => {
+						sumProd += producto.coeficiente;
+					});
+					
+					reaccionAleatoria.reactivos.forEach(reactivo => {
+						sumReac += reactivo.coeficiente;
+					});
+					
+					dn = sumProd - sumReac;
+					
+					// Generar valores aleatorios para T y Kc dentro de rangos razonables
+					T = irand(298, 500); // Temperatura en Kelvin
+					Kc = parseFloat((frand(1, 1000)).toFixed(2));
+					
+					R = 0.08206; // Constante de los gases en L·atm/(mol·K)
+					
+					// Calcular Kp = Kc * (R * T) ^ dn
+					Kp = Kc * Math.pow(R * T, dn);
+					
+					if( Kp > 1  &&  dn !== 0) break;
+					
+				}
+				
+				respuesta = T + " K";
+				
+
+				
+				// Construir la pregunta
+				pregunta = "Considera la siguiente reacción química:<br>" + reaccionAleatoria.ecuacion + "<br>";
+				pregunta += "K<sub>c</sub> = " + Kc + "; K<sub>p</sub> = " + Kp.toFixed(2) +"<br><br>";
+				pregunta += "Calcula a qué temperatura se llevó a cabo la reacción si las presiones fueron medidas en atm.";
+				
+				return { titulo: "Kp y Kc", pregunta: pregunta, respuesta: respuesta };				
+			
+}
+
+function ICE(){
+			  const MAX_REACTION_ATTEMPTS = 500;
+			  const MAX_PARAM_ATTEMPTS = 500;
+			  const EPS = 1e-12;
+			  let pregunta = "";
+			  let respuesta = "";
+
+			  for (let ra = 0; ra < MAX_REACTION_ATTEMPTS; ra++) {
+				const reaccionAleatoria = RxQuimICEData[irand(0, RxQuimICEData.length - 1)];
+				const r = reaccionAleatoria.reactivos;
+				const p = reaccionAleatoria.productos;
+
+				// reconocer patrones que generan cuadráticas
+				let patron = null;
+				if (r.length === 2 && p.length === 1 && p[0].coeficiente === 2) patron = "AB_2C";
+				else if (r.length === 1 && r[0].coeficiente === 1 && p.length === 1 && p[0].coeficiente === 2) patron = "A_2B";
+				else if (r.length === 1 && r[0].coeficiente === 2 && p.length === 1 && p[0].coeficiente === 1) patron = "2A_B";
+				else continue; // no es un patrón cuadrático seguro
+
+				// intentos para encontrar parámetros (a, Kc) que den solución física
+				for (let pa = 0; pa < MAX_PARAM_ATTEMPTS; pa++) {
+				  const a = frand(0.5, 2);       // uso la misma 'a' para cada reactivo (simplifica)
+				  const Kc = frand(10, 100);
+
+				  // construir cuadrática A x^2 + B x + C = 0 según patrón
+				  let Acoef, Bcoef, Ccoef;
+				  if (patron === "AB_2C") {
+					const b = a;
+					Acoef = 4 - Kc;
+					Bcoef = Kc * (a + b);
+					Ccoef = -Kc * a * b;
+				  } else if (patron === "A_2B") {
+					Acoef = 4;
+					Bcoef = Kc;
+					Ccoef = -Kc * a;
+				  } else { // "2A_B"
+					Acoef = 4 * Kc;
+					Bcoef = -(4 * a * Kc + 1);
+					Ccoef = Kc * a * a;
+				  }
+
+				  // resolver cuadrática (o lineal si A ~ 0)
+				  let posibles = [];
+				  if (Math.abs(Acoef) < EPS) {
+					if (Math.abs(Bcoef) < EPS) continue; // sin solución útil
+					posibles.push(-Ccoef / Bcoef);
+				  } else {
+					const disc = Bcoef * Bcoef - 4 * Acoef * Ccoef;
+					if (disc < 0) continue;
+					const sd = Math.sqrt(disc);
+					posibles.push((-Bcoef + sd) / (2 * Acoef));
+					posibles.push((-Bcoef - sd) / (2 * Acoef));
+				  }
+
+				  // seleccionar la raíz física: 0 < x < min(a/coef_reactivo)
+				  let xVal = null;
+				  const maxAllowed = r.reduce((m, rr) => Math.min(m, a / rr.coeficiente), Infinity);
+				  for (const x of posibles) {
+					if (!isFinite(x)) continue;
+					if (x <= EPS) continue;
+					if (x >= maxAllowed - 1e-9) continue;
+
+					// comprobar concentraciones finales no negativas
+					let ok = true;
+					for (const rr of r) {
+					  const concR = a - rr.coeficiente * x;
+					  if (concR < -1e-8) { ok = false; break; }
+					}
+					if (!ok) continue;
+					for (const pp of p) {
+					  const concP = pp.coeficiente * x;
+					  if (concP < -1e-8) { ok = false; break; }
+					}
+					if (!ok) continue;
+
+					xVal = x;
+					break;
+				  }
+
+				  if (xVal === null) continue; // probar otros parámetros
+
+				  // construir enunciado y respuesta
+				  let concentracionesInicialesStr = "";
+				  r.forEach(rr => { concentracionesInicialesStr += `[${rr.compuesto}] = ${a.toFixed(3)} M<br>`; });
+				  p.forEach(pp => { concentracionesInicialesStr += `[${pp.compuesto}] = 0 M<br>`; });
+
+				  pregunta = `
+					${reaccionAleatoria.ecuacion}; K<sub>c</sub> = ${Kc.toFixed(4)}<br>
+					Concentraciones iniciales:<br>
+					${concentracionesInicialesStr}<br>
+					Calcula las concentraciones en el equilibrio.
+				  `;
+
+				  const concentracionesEquilibrio = {};
+				  r.forEach(rr => {
+					concentracionesEquilibrio[rr.compuesto] = (a - rr.coeficiente * xVal).toFixed(4);
+				  });
+				  p.forEach(pp => {
+					concentracionesEquilibrio[pp.compuesto] = (pp.coeficiente * xVal).toFixed(4);
+				  });
+
+				  respuesta = Object.keys(concentracionesEquilibrio)
+					.map(k => `${k}: ${concentracionesEquilibrio[k]} M`)
+					.join(", ");
+
+				  return { titulo: "Ejercicio I. C. E.", pregunta: pregunta, respuesta: respuesta };
+				} // end param attempts
+			  } // end reaction attempts
+
+			  // fallback si no se encuentra nada válido (muy improbable)
+			  return { titulo: "Ejercicio I. C. E.", pregunta: "No se encontró ejercicio válido tras varios intentos.", respuesta: "" };
+}
+
+function vanthoff_K2(){
+				let pregunta = "";
+				let respuesta = "";
+
+				// 1. Seleccionar una reacción homogénea aleatoria
+				const reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+
+				// 2. Generar valores aleatorios para T1, ΔH y Kc1 en rangos razonables
+				const T1_C = irand(25, 50); // T1 en Celsius
+				const T2_C = T1_C + irand(10, 50); // T2 en Celsius, mayor que T1
+				const T1_K = C_to_K(T1_C); // T1 en Kelvin
+				const T2_K = C_to_K(T2_C); // T2 en Kelvin
+				const R = 8.314; // Constante de los gases en J/(mol·K)
+				const deltaH = irand(-100000, 100000); // Entalpía en J/mol
+				const Kc1 = parseFloat((irand(1, 1000)).toFixed(2)); // Constante de equilibrio inicial
+
+				// 3. Aplicar la ecuación de van't Hoff: ln(Kc2/Kc1) = -(ΔH/R) * (1/T2 - 1/T1)
+				const factor = - (deltaH / R) * ((1 / T2_K) - (1 / T1_K));
+				const Kc2 = Kc1 * Math.exp(factor);
+
+				// 4. Redondear la respuesta a 2 decimales
+				respuesta = parseFloat(Kc2.toFixed(2));
+
+				// 5. Construir la pregunta con los valores generados
+				pregunta = `
+					Para cierta reacción química la constante de equilibrio K<sub>c</sub> = ${Kc1} a ${T1_C} °C. 
+					Calcula la constante de equilibrio a ${T2_C} °C si la entalpía de reacción es ${deltaH} J/mol.
+				`;
+
+				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta };
+}
+			
+function vanthoff_dH(){
+				let pregunta = "";
+				let respuesta = "";
+
+				// 1. Seleccionar una reacción homogénea aleatoria
+				const reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+
+				// 2. Generar valores aleatorios para T1, T2, Kc1 y Kc2 en rangos razonables
+				const T1_K = irand(298, 400); // T1 en Kelvin
+				const T2_K = T1_K + irand(20, 100); // T2 en Kelvin, mayor que T1
+				const Kc1 = parseFloat((irand(1, 100)).toFixed(2)); // Constante de equilibrio inicial
+				
+				// 3. Aplicar la ecuación de van't Hoff para generar una entalpía y un Kc2 coherentes
+				const R = 8.314; // Constante de los gases en J/(mol·K)
+				const deltaH = irand(-100000, 100000); // Entalpía en J/mol
+				const factor = - (deltaH / R) * ((1 / T2_K) - (1 / T1_K));
+				const Kc2 = Kc1 * Math.exp(factor);
+
+				// 4. Calcular el deltaH a partir de los valores generados, para asegurar la respuesta
+				const ln_K_ratio = Math.log(Kc2 / Kc1);
+				const inv_T_diff = (1 / T2_K) - (1 / T1_K);
+				const deltaH_calculado = - (ln_K_ratio * R) / inv_T_diff;
+
+				// 5. Redondear la respuesta a 2 decimales
+				respuesta = parseFloat(deltaH_calculado.toFixed(2));
+
+				// 6. Construir la pregunta
+				pregunta = `
+					Para cierta reacción química, las constantes de equilibrio a diferente temperatura son: K<sub>c</sub> = ${Kc1} a ${T1_K} K y K<sub>c</sub> = ${Kc2.toFixed(2)} a ${T2_K} K. 
+					Calcula la entalpía de la reacción en J/mol.
+				`;
+
+				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta + " J/mol" };
+}
+			
+function vanthoff_T2(){
+				let pregunta = "";
+				let respuesta = "";
+
+				// 1. Seleccionar una reacción homogénea aleatoria (aunque no se usa la reacción en sí)
+				const reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+
+				// 2. Generar valores aleatorios para T1, DeltaH, Kc1, y calcular Kc2
+				const R = 8.314; // Constante de los gases en J/(mol·K)
+				
+				let deltaH;
+				let T1_K;
+				let T2_K_objetivo;
+				let Kc1;
+				let Kc2;
+				
+				// Ciclo para asegurar que la temperatura objetivo (T2) esté en un rango razonable (> 250 K y < 800 K)
+				while (true) {
+					// T1 en Kelvin (rango razonable para reacciones)
+					T1_K = irand(298, 400); 
+					
+					// Entalpía en J/mol (evitando valores muy cercanos a cero para la división)
+					deltaH = irand(-100000, 100000); 
+					if (Math.abs(deltaH) < 5000) continue; 
+					
+					// Constante de equilibrio inicial
+					Kc1 = parseFloat((irand(1, 100)).toFixed(2));
+					
+					// Generar la temperatura objetivo (T2) y calcular el Kc2 asociado
+					T2_K_objetivo = T1_K + irand(50, 100); 
+					if (T2_K_objetivo < 250 || T2_K_objetivo > 800) continue; // Rango de temperatura razonable
+					
+					// Aplicar la ecuación de van't Hoff para calcular un Kc2 coherente
+					const factor = - (deltaH / R) * ((1 / T2_K_objetivo) - (1 / T1_K));
+					Kc2 = Kc1 * Math.exp(factor);
+					
+					// Asegurar que Kc2 también es un valor razonable (> 1 y < 10000)
+					if (Kc2 > 1 && Kc2 < 10000) {
+						break;
+					}
+				}
+				
+				// Redondear la respuesta (T2_K) y el valor de Kc2 para el enunciado
+				respuesta = parseFloat(T2_K_objetivo.toFixed(2)) + " K";
+				const Kc2_round = parseFloat(Kc2.toFixed(4)); 
+
+				// 3. Construir la pregunta con los valores generados
+				pregunta = `
+					Para cierta reacción química, se midieron las siguientes constantes de equilibrio: 
+					K<sub>c</sub> = ${Kc1} a ${T1_K} K y K<sub>c</sub> = ${Kc2_round} a una temperatura desconocida. 
+					Calcula a qué temperatura se midió la segunda constante de equilibrio (en Kelvin), si la entalpía de reacción es ${deltaH} J/mol.
+				`;
+
+				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta };
+}
+
+
+
+
+
+// --- Generadores globales en el mismo orden (para poder regenerar individualmente) ---
+const GENERADORES = [
+    RxQuimHomo_Kc,
+    RxQuimHomo_C,
+    RxQuimHetero_Kc,
+    RxQuimHetero_C,
+    KpKc_Kp,
+    KpKc_T,
+    ICE,
+    vanthoff_K2,
+    vanthoff_T2,
+    vanthoff_dH   
+    
+];
+
+// Función principal para generar y mostrar los ejercicios (respuestas ocultas)
+function generarEjercicios() {
+    const ejercicios = [];
+    GENERADORES.forEach(func => {
+        ejercicios.push(func()); // Ejecutar cada función para obtener el ejercicio
+    });
+
+    // Construir HTML con respuestas ocultas y botones alineados
+    let htmlContent = '';
+    ejercicios.forEach((ejercicio, index) => {
+        htmlContent += `
+            <div class="ejercicio-block" id="ejercicio-${index}">
+                <h3 class="ejercicio-titulo">Ejercicio ${index + 1}: ${ejercicio.titulo}</h3>
+                <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                <div class="respuesta-texto" id="respuesta-${index}" style="display:none;"><br>Respuesta: ${ejercicio.respuesta}</div>
+                <div class="buttons-container">
+                    <div class="buttons-inline">
+                        <button id="mostrar-btn-${index}" class="btn" onclick="mostrarRespuesta(${index})">Mostrar respuesta</button>
+                        <button class="btn" onclick="generarOtro(${index})">Generar otro</button>
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
+}
+
+function generarExamen() {
+
+	// Mapeo de nombres de funciones generadoras (strings) a las funciones reales
+	const GeneradoresMap = {
+		'RxQuimHomo_Kc': RxQuimHomo_Kc,
+		'RxQuimHomo_C': RxQuimHomo_C,
+		'RxQuimHetero_Kc': RxQuimHetero_Kc,
+		'RxQuimHetero_C': RxQuimHetero_C,
+		'KpKc_Kp': KpKc_Kp,
+		'KpKc_T': KpKc_T,
+		'ICE': ICE,
+		'vanthoff_K2': vanthoff_K2,
+		'vanthoff_T2': vanthoff_T2,
+		'vanthoff_dH': vanthoff_dH
+	};
+
+    // 1. Configuración del examen: Define qué tipos de ejercicios y cuántos generar.
+    const configuracionExamen = [
+        { categoria: 'RxQuimHomo_Kc', cantidad: 1 },
+        { categoria: 'RxQuimHomo_C', cantidad: 1 },
+        { categoria: 'RxQuimHetero_Kc', cantidad: 1 },
+        { categoria: 'RxQuimHetero_C', cantidad: 1 },
+        { categoria: 'KpKc_Kp', cantidad: 1 },
+        { categoria: 'KpKc_T', cantidad: 1 },
+        { categoria: 'ICE', cantidad: 1 },
+        { categoria: 'vanthoff_K2', cantidad: 1 },
+        { categoria: 'vanthoff_T2', cantidad: 1 },
+        { categoria: 'vanthoff_dH', cantidad: 1 }
+    ];
+
+    const ejerciciosGenerados = [];
+    let contadorEjercicio = 1;
+
+    // 2. Generar los ejercicios según la configuración
+    configuracionExamen.forEach(config => {
+        const generador = GeneradoresMap[config.categoria];
+        if (generador) {
+            for (let i = 0; i < config.cantidad; i++) {
+                ejerciciosGenerados.push(generador());
+            }
+        }
+    });
+	
+
+    // 3. Construir HTML con respuestas **visibles** (estilo `display:block;`)
+    let htmlContent = '';
+    ejerciciosGenerados.forEach((ejercicio, index) => {
+        htmlContent += `
+            <div class="ejercicio-block" id="examen-ejercicio-${index}">
+                <h3 class="ejercicio-titulo">Ejercicio ${contadorEjercicio++}: ${ejercicio.titulo}</h3>
+                <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${ejercicio.respuesta}</div>
+            </div>
+        `;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
+}
+
+// Mostrar/ocultar respuesta (toggle) y actualizar etiqueta del botón
+function mostrarRespuesta(index) {
+    const resp = document.getElementById(`respuesta-${index}`);
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (!resp) return;
+    if (resp.style.display === 'none' || resp.style.display === '') {
+        resp.style.display = 'block';
+        if (btn) btn.textContent = 'Ocultar respuesta';
+    } else {
+        resp.style.display = 'none';
+        if (btn) btn.textContent = 'Mostrar respuesta';
+    }
+}
+
+// Generar otro ejercicio del mismo tipo y dejar respuesta oculta
+function generarOtro(index) {
+    if (index < 0 || index >= GENERADORES.length) return;
+    const nuevo = GENERADORES[index]();
+    const cont = document.getElementById(`ejercicio-${index}`);
+    if (!cont) return;
+    cont.querySelector('.ejercicio-titulo').innerHTML = `Ejercicio ${index + 1}: ${nuevo.titulo}`;
+    cont.querySelector('.pregunta-texto').innerHTML = nuevo.pregunta;
+    const resp = cont.querySelector('.respuesta-texto');
+    resp.innerHTML = `<br>Respuesta: ${nuevo.respuesta}`;
+    resp.style.display = 'none';
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (btn) btn.textContent = 'Mostrar respuesta';
+}
+
+// La página inicial solo muestra el botón "Generar Ejercicios".
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('ejercicios-generados').innerHTML = '';
+});
+
+</script>
+
+</body>
+</html>

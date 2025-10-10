@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Equilibrio Físico</title>
+    <style>
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
+			font-style: normal italic; /* Define el estilo (normal e itálico) */
+		}
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            //background-color: #f0f0f0;
+            background-color: #FAFAFA;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            margin: 10px auto;
+        }
+		.button-group {
+			display: flex; /* Habilitar flexbox para alineación */
+			width: 100%; /* Asegurar que ocupe todo el ancho del contenedor padre */
+			gap: 10px; /* Espacio entre los botones (opcional, mejora la estética) */
+			margin-bottom: 10px; /* Espacio debajo de los botones (opcional) */
+		}        
+		.menu-item, .btn {
+			display: inline-block; 
+			margin: 8px 6px;
+			padding: 10px 14px;
+			font-size: 16px;
+			cursor: pointer;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		/* Estilo específico para los botones dentro del grupo principal */
+		.button-group .btn {
+			flex-grow: 1; /* Permite que el elemento crezca para ocupar el espacio disponible */
+			width: 50%;   /* Establecer el ancho base */
+			margin: 0;    /* Eliminar los márgenes para un control total por flexbox */
+		}
+        .menu-item:hover, .btn:hover {
+            background-color: #0056b3;
+        }        
+        #ejercicio-container {
+            display: none; /* Ocultar el contenedor inicial de ejercicio */
+            text-align: left;
+        }
+        #examen-container {
+            display: none;
+        }
+        .ejercicio-titulo {
+           // border-top: 2px solid;
+           font-size: 24px;
+        }
+
+
+        .pregunta-texto {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .respuesta-texto {
+			font-size: 20px;
+            font-weight: bold;
+            color: red; /* Color para las respuestas */
+            display: none;
+        }
+        .buttons-container {
+            margin-top: 10px;
+            
+        }
+        .buttons-inline {
+            display: flex;
+            gap: 10px;
+        }        
+		.buttons-inline .btn {
+			flex-grow: 1; /* Permite que el botón crezca para llenar el espacio */
+			width: 50%;   /* Establece una base de 50% */
+			margin: 0;    /* Elimina el margen lateral que interfiere con el cálculo del ancho */
+			/* El padding ya está definido en .menu-item, .btn */
+		}        
+        .footer-text {
+            width: 100%;
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+        }
+        .ejercicio-block {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+	<center><h1>Equilibrio Físico</h1></center>
+	<div class="button-group">
+		<button id="generar-ejercicios-btn" class="btn" onclick="generarEjercicios()">Generar Ejercicios</button>
+		<button id="generar-examen-btn" class="btn" onclick="generarExamen()">Generar Examen</button>
+	</div>
+    <div id="ejercicios-generados">
+        </div>
+
+    <div id="ejercicio-container">
+        <h2 class="ejercicio-titulo"></h2>
+        <div class="pregunta-texto"></div>
+        <div class="respuesta-texto"></div>
+    </div>
+    
+</div>
+
+<div class="footer-text">
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+</div>
+
+<script>
+
+function C_to_K(X) {
+  return X + 273.15;
+};
+
+function K_to_C(X) {
+  return X - 273.15;
+};
+
+function Pa_to_atm(X) {
+  return X / 101325;
+};
+
+function atm_to_Pa(X) {
+  return X * 101325;
+};
+
+function Pa_to_mmHg(X) {
+  return X / 133.322;
+};
+
+function mmHg_to_Pa(X) {
+  return X * 133.322;
+};
+
+function J_to_cal(X) {
+  return X / 4.184;
+};
+
+function cal_to_J(X) {
+  return X * 4.184;
+};
+
+function L_to_m3(L) {
+    return L / 1000;
+}		
+
+function m3_to_L(m3) {
+    return m3 * 1000;
+}		
+
+function coin() {
+    return Math.round(Math.random());
+};
+
+function irand(A, B) {
+  return Math.floor(Math.random() * (B - A + 1)) + A;
+};	  
+
+function frand(A, B) {
+  return Math.random() * (B - A) + A;
+};	
+
+// Constante de los gases en unidades SI
+const R = 8.314; 
+
+// datos en unidades SI
+const DATOS_Clausius = [
+	{ nombre: 'Agua',    formula: 'H<sub>2</sub>O',              Tb: 373.15, dHvap: 40660, Ttriple: 273.16, Ptriple: 603.7, dHsub: 51050 },        
+	{ nombre: 'Metanol', formula: 'CH<sub>3</sub>OH',            Tb: 337.85, dHvap: 35210, Ttriple: 175.6, Ptriple: 2790, dHsub: 38430 },
+	{ nombre: 'Acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O',  Tb: 329.65, dHvap: 29100, Ttriple: 178.45, Ptriple: 2560, dHsub: 34770 },
+	{ nombre: 'Benceno', formula: 'C<sub>6</sub>H<sub>6</sub>',   Tb: 353.25, dHvap: 30720, Ttriple: 278.5, Ptriple: 4690, dHsub: 43190 }        
+];	
+
+
+// datos en g/mol y g/(L atm)
+const DATOS_HENRY = [
+	{ nombre: 'dióxido de carbono', formula: 'CO<sub>2</sub>', MM: 44.01, KH: 3.4e-2 },
+	{ nombre: 'nitrógeno', formula: 'N<sub>2</sub>', MM: 28.01, KH: 7.2e-5 },
+	{ nombre: 'oxígeno', formula: 'O<sub>2</sub>', MM: 32.00, KH: 1.3e-3 },
+];
+
+
+//datos en g/mol
+const DATOS_CONCENTRACION = {
+	solventes: [
+		{ nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02 },
+	],
+	solutos: [
+		{ nombre: 'etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', MM: 46.07 },
+		{ nombre: 'acetona', formula: 'C<sub>3</sub>H<sub>6</sub>O', MM: 58.08 },
+		{ nombre: 'sal', formula: 'NaCl', MM: 58.44 },
+		{ nombre: 'azúcar', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3 }
+	]
+};
+
+//pares ideales para formar soluciones ideales, supuestamente ideales...
+//datos en g/mol y mmHg
+const DATOS_RAOULT = [
+	{
+		A: { nombre: 'benceno', formula: 'C<sub>6</sub>H<sub>6</sub>', MM: 78.11, P0: 95.1 },
+		B: { nombre: 'tolueno', formula: 'C<sub>7</sub>H<sub>8</sub>', MM: 92.14, P0: 28.4 }
+	},
+	{
+		A: { nombre: 'etanol', formula: 'C<sub>2</sub>H<sub>5</sub>OH', MM: 46.07, P0: 59.3 },
+		B: { nombre: 'propanol', formula: 'C<sub>3</sub>H<sub>7</sub>OH', MM: 60.10, P0: 20.9 }
+	}
+];    
+
+//datos en g/mol, Pa, °C, °C, kg °C/ mol, kg °C/ mol
+const DATOS_COLIGATIVAS = {
+	solventes: [
+		{ nombre: 'agua', formula: 'H<sub>2</sub>O', MM: 18.02, P0: 3173, Tb: 100, Tf: 0, Kf: 1.86, Kb: 0.512 },
+	],
+	solutos: [
+		{ nombre: 'sacarosa', formula: 'C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>', MM: 342.3, i: 1 },
+		{ nombre: 'glucosa', formula: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>', MM: 180.16, i: 1 },
+		{ nombre: 'cloruro de sodio', formula: 'NaCl', MM: 58.44, i: 2 },
+		{ nombre: 'cloruro de calcio', formula: 'CaCl<sub>2</sub>', MM: 110.98, i: 3 },
+	]
+};
+    
+
+function clausius_clapeyron_vap_P2() {
+
+	//TODOS los datos en unidades SI
+	let sustancia = DATOS_Clausius[irand(0, DATOS_Clausius.length - 1)];
+	let nombre = sustancia.nombre;
+	let formula = sustancia.formula;
+	let T1 = sustancia.Tb; //K
+	let P1 = 101325; //Pa
+	let dH = sustancia.dHvap; //J/mol
+	let T2 = irand(T1 - 15, T1 + 15); //K
+	let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2)));           
+		 
+	let respuesta = P2.toFixed(2)+ " Pa";                
+	let pregunta;
+
+	// Aquí hay dos enunciados que piden exactamento lo mismo, pero con otras palabras
+	if(coin()===1){
+		pregunta = `Cuál es la presión necesaria (en Pa) para evaporar ${nombre} 
+						 (ΔH<sub>vap</sub> = ${dH} J/mol, T<sub>b</sub>  = ${T1} K, P<sub>b</sub> = 101325 Pa)
+						 a ${T2} K` ;											
+	}else{
+		pregunta = `Calcula la presión de vapor (en Pa) de ${nombre} 
+						 (ΔH<sub>vap</sub> = ${dH} J/mol, T<sub>b</sub>  = ${T1} K, P<sub>b</sub> = 101325 Pa)
+						 a ${T2} K` ;										
+	}
+						
+
+	
+	return { titulo: "Clausius-Clapeyron (evaporación)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function clausius_clapeyron_vap_T2() {
+	
+	//TODOS los datos en unidades SI
+	let sustancia = DATOS_Clausius[irand(0, DATOS_Clausius.length - 1)];
+	let nombre = sustancia.nombre;
+	let formula = sustancia.formula;
+	let T1 = sustancia.Tb; //K
+	let P1 = 101325; //Pa
+	let dH = sustancia.dHvap; //J/mol
+	let T2 = irand(T1 - 15, T1 + 15); //K
+	let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2))); 
+	
+	
+	let respuesta = T2.toFixed(2) + " K";				
+
+	//enunciado del ejercicio
+	const info = " ΔH<sub>vap</sub> = " + dH + " J/mol, T<sub>b</sub> = " + T1 + " K, P<sub>b</sub> = 101325 Pa";
+	const pregunta = "Calcula la temperatura de ebullición (en K) del " + nombre + " ( " + info + " ) si la presión de vapor es " + P2.toFixed(2) + " Pa.";
+
+	return { titulo: "Clausius-Clapeyron (evaporación)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function clausius_clapeyron_sub_P2() {
+	
+	
+	//TODOS los datos en unidades SI	
+	let sustancia = DATOS_Clausius[irand(0, DATOS_Clausius.length - 1)];
+	let nombre = sustancia.nombre;
+	let formula = sustancia.formula;
+	let T1 = sustancia.Ttriple; //K
+	let P1 = sustancia.Ptriple; //K
+	let dH = sustancia.dHsub; //J/mol
+	let T2 = irand(T1 - 12, T1 + 12); //K
+	let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2))); 
+	
+	let respuesta = P2.toFixed(2)+ " Pa";  				
+	
+
+	//enunciado del ejercicio
+	const info = " ΔH<sub>sub</sub> = " +dH+ " J/mol, T<sub>triple</sub> = " +T1+ "K, P<sub>triple</sub> = " +P1+ " Pa";                             
+	const pregunta = "Calcula la presión de vapor (en Pa) de " +nombre+ " (sólido, " +info+ " ) a " +T2+ " K.";
+	
+
+	return { titulo: "Clausius-Clapeyron (sublimación)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function clausius_clapeyron_sub_T2() {
+		
+	// TODOS los datos en unidades SI
+	let sustancia = DATOS_Clausius[irand(0, DATOS_Clausius.length - 1)];
+	let nombre = sustancia.nombre;
+	let formula = sustancia.formula;
+	let T1 = sustancia.Ttriple; //K
+	let P1 = sustancia.Ptriple; //K
+	let dH = sustancia.dHsub; //J/mol
+	let T2 = irand(T1 - 12, T1 + 12); //K
+	let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2))); 
+	
+	let respuesta = T2 + " K";
+
+	//enunciado del ejercicio
+	const info = " ΔH<sub>sub</sub> = " +dH+ " J/mol, T<sub>triple</sub> = " +T1+ "K, P<sub>triple</sub> = " +P1+ " Pa";
+	const pregunta = "Calcula la temperatura de sublimación (en K) del " + nombre + " ( " + info + " ) si la presión de vapor es " + P2.toFixed(4) + " Pa.";
+
+	
+	return { titulo: "Clausius-Clapeyron (sublimación)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function clausius_clapeyron_vap_dH() {
+	
+	// TODOS los datos en unidades SI
+	let T1 = irand(300,400) //K                
+	let T2 = T1 + irand(10,20); //K
+	let P1 = irand(90,110)*1000; //Pa
+	let dH = irand(30,50)*1000; //J/mol                
+	let P2 = P1 * Math.exp((dH/ R) * ((1 / T1) - (1 / T2))); 
+	let respuesta = dH.toFixed(2) + " J/mol";
+	
+	//enunciado del ejercicio
+	const pregunta = "Calcula el calor de evaporación (ΔH<sub>vap</sub>) en J/mol de una sustancia desconocida cuya presión de vapor es de " + P1 + " Pa a " + T1 + " K y de " + P2.toFixed(2) + " Pa a " + T2 + " K.";
+
+	return { titulo: "Clausius-Clapeyron (calor)", pregunta: pregunta, respuesta: respuesta };
+}			
+
+function henry_C(){
+	
+	let sustancia = DATOS_HENRY[irand(0, DATOS_HENRY.length - 1)];
+	let KH = sustancia.KH // g/atmL
+	let P = frand(1, 5); // atm
+	let C = KH * P; // g/L
+	let respuesta = C.toFixed(6)+" g/L";
+
+	let pregunta = "Calcula la concentración (en g/L) de " +sustancia.nombre+ " disuelta en una solución a 25°C, sabiendo que su constante de Henry es "+KH+" g/(L·atm) y la presión parcial del gas es "+P.toFixed(2)+" atm.";				
+	
+	return { titulo: "Ley de Henry, C", pregunta: pregunta, respuesta: respuesta };
+}
+
+function henry_P(){
+
+	let sustancia = DATOS_HENRY[irand(0, DATOS_HENRY.length - 1)];
+	let KH = sustancia.KH // g/atmL
+	let P = frand(1, 5); // atm
+	let C = KH * P; // g/L
+	
+	const respuesta = P.toFixed(2) + " atm";
+   
+	const pregunta = `La solubilidad de ${sustancia.nombre} en agua es de ${C.toFixed(6)} g/L y su constante de Henry a 25°C es de ${KH} g/(L·atm). Calcula la presión parcial (atm) de este gas en el agua.`;
+	
+	return { titulo: "Ley de Henry, P", pregunta: pregunta, respuesta: respuesta };
+
+}
+
+function henry_K(){
+	
+	let C = frand(0.5, 1); // g/L
+	let P = frand(0.2, 0.5); // atm
+	let KH = C / P; // en g/(L atm)
+	
+	const respuesta = KH.toFixed(4) + " g/atm L";			
+
+	const pregunta = `Calcula la constante de Henry (en g/(atm L)) para una sustancia desconocida si la solubilidad de dicha sustancia es de ${C.toFixed(4)} g/L a 25 °C cuando su presión parcial es de ${P.toFixed(4)} atm.`;		
+
+	return { titulo: "Ley de Henry", pregunta: pregunta, respuesta: respuesta };
+}			
+
+function henry_m(){
+
+	
+	let sustancia = DATOS_HENRY[irand(0, DATOS_HENRY.length - 1)];
+	let KH = sustancia.KH // g/atmL
+	let P = frand(1, 5); // atm
+	let C = KH * P; // g/L
+	let V = irand(2, 5); // L
+	let m = C * V; // g		
+	
+	let respuesta = m.toFixed(4) + " g";		
+	
+	//enunciado del ejercicio
+	let pregunta = "Calcula la masa del gas " +sustancia.nombre+ " disuelta en " +V+ " litros de una solución a 25°C, sabiendo que la constante de Henry es "+KH+" g/(L·atm) y la presión parcial del gas es "+P.toFixed(2)+" atm.";
+
+	return { titulo: "Ley de Henry, masa del soluto", pregunta: pregunta, respuesta: respuesta };
+}
+
+function conc_X(){
+
+		const solvente = DATOS_CONCENTRACION.solventes[irand(0, DATOS_CONCENTRACION.solventes.length - 1)];
+		const soluto = DATOS_CONCENTRACION.solutos[irand(0, DATOS_CONCENTRACION.solutos.length - 1)];
+		const m_solvente = irand(500, 1000);
+		const m_soluto = irand(50, 100);
+		const n_solvente = m_solvente / solvente.MM;
+		const n_soluto = m_soluto / soluto.MM;
+		const n_total = n_solvente + n_soluto;
+		const X_solvente = n_solvente / n_total;
+		const X_soluto = n_soluto / n_total;
+		let pregunta, respuesta;
+		
+		pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol) 
+					en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM} g/mol). 
+					Calcula la fracción molar de ${soluto.nombre}.`;
+		respuesta = `${X_soluto.toFixed(4)}`;
+
+		return { titulo: "Fracción Molar", pregunta: pregunta, respuesta: respuesta };
+	}
+
+function conc_M(){	
+
+	const solvente = DATOS_CONCENTRACION.solventes[irand(0, DATOS_CONCENTRACION.solventes.length - 1)];
+	const soluto = DATOS_CONCENTRACION.solutos[irand(0, DATOS_CONCENTRACION.solutos.length - 1)];
+	const m_soluto = irand(50, 100);
+	const V = frand(0.5, 1.5);
+	const n_soluto = m_soluto / soluto.MM;
+	const molaridad = n_soluto / V;
+	pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol) 
+							  en ${solvente.nombre} para formar una solución con un volumen final de
+							   ${V.toFixed(2)} L. Calcula la molaridad de la solución.`;
+	respuesta = `${molaridad.toFixed(3)} M`;
+	return { titulo: "Molaridad", pregunta: pregunta, respuesta: respuesta };
+}
+
+function conc_m(){
+
+	const solvente = DATOS_CONCENTRACION.solventes[irand(0, DATOS_CONCENTRACION.solventes.length - 1)];
+	const soluto = DATOS_CONCENTRACION.solutos[irand(0, DATOS_CONCENTRACION.solutos.length - 1)];
+	const m_soluto = irand(50, 100);
+	const m_solvente = irand(500, 1000);
+	const n_soluto = m_soluto / soluto.MM;
+	const kg_solvente = m_solvente / 1000;
+	const molalidad = n_soluto / kg_solvente;
+	pregunta = `Se disuelven ${m_soluto} g de ${soluto.nombre} (${soluto.formula}, ${soluto.MM} g/mol)
+					  en ${m_solvente} g de ${solvente.nombre} (${solvente.formula}, ${solvente.MM} g/mol). 
+					  Calcula la molalidad de la solución.`;
+	respuesta = `${molalidad.toFixed(3)} m`;
+	return { titulo: "Molalidad", pregunta: pregunta, respuesta: respuesta };
+}			
+
+function DPV_dP(){
+	
+	// A es solvente
+	// B es soluto
+	
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+	
+	let mB = irand(5, 25); // gramos
+	let mA = irand(9,15)*100; //gramos
+	let nB = mB / B.MM; //mol
+	let nA = mA / A.MM; //mol
+	let XB = (B.i * nB) / (B.i * nB + nA);
+	let PA0 = A.P0 // Pa
+	let dP = XB * PA0 // Pa, el Rango típico realista es: 13 - 267 Pa
+	
+	let pregunta = `Se prepara una solución disolviendo ${mB} g de ${B.nombre} 
+					(${B.formula}, ${B.MM} g/mol, i=${B.i}) en ${mA} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol). 
+					Sabiendo que la presión de vapor del ${A.nombre} puro es ${A.P0.toFixed(1)} Pa a 25 °C, 
+					calcula el descenso de la presión de vapor de la solución en Pa.`;      
+											
+	let respuesta = dP.toFixed(2) + " Pa";
+	
+	return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+}
+
+function DPV_XA(){
+
+	// A es el solvente
+	// B es el soluto
+	
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25, 50); // gramos
+	let mA = irand(9,15)*100; //gramos
+	let nB = mB / B.MM; //mol
+	let nA = mA / A.MM; //mol
+	let XB = (B.i * nB) / (B.i * nB + nA);
+	let XA = 1- XB;
+	let PA0 = A.P0 // Pa
+	let dP = XB * PA0 // Pa, el Rango típico realista es: 13 - 267 Pa
+	
+	const pregunta = `Después de disolver cierta cantidad de un soluto en ${A.nombre}, 
+					 la presión de vapor de la solución disminuyó en ${dP.toFixed(2)} Pa. 
+					 Si la presión de vapor del solvente puro es ${PA0.toFixed(2)} Pa, 
+					 calcula la fracción molar del solvente.`;
+								   
+	const respuesta = XA.toFixed(4);
+
+	return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+}         
+
+function DPV_P(){
+	
+	// A es el solvente
+	// B es el soluto
+	
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25, 50); // gramos
+	let mA = irand(9,15)*100; //gramos
+	let nB = mB / B.MM; //mol
+	let nA = mA / A.MM; //mol
+	let XB = (B.i * nB) / (B.i * nB + nA);
+	let XA = 1- XB;
+	let PA0 = A.P0 // Pa
+	let dP = XB * PA0 // Pa, el Rango típico realista es: 13 - 267 Pa
+	let Psoln = XA * PA0; // Pa
+	
+	const pregunta = `Se disuelven ${mB} g de ${B.nombre} 
+					 (${B.formula}, MM=${B.MM} g/mol, i=${B.i}) en ${mA} g de ${A.nombre} (${A.formula}, MM=${A.MM} g/mol). 
+					 Sabiendo que la presión de vapor del solvente puro es de ${PA0.toFixed(1)} Pa, 
+					 calcula la presión de vapor de la solución en Pa.`;
+					
+	const respuesta = Psoln.toFixed(2) + " Pa";
+	return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+}
+
+function DPV_mB(){
+
+
+	// A es el solvente
+	// B es el soluto
+				
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25, 50); // gramos
+	let mA = irand(9,15)*100; //gramos
+	let nB = mB / B.MM; //mol
+	let nA = mA / A.MM; //mol
+	let XB = (B.i * nB) / (B.i * nB + nA);
+	let XA = 1- XB;
+	let PA0 = A.P0 // Pa
+	let dP = XB * PA0 // Pa, el Rango típico realista es: 13 - 267 Pa
+	let Psoln = XA * PA0; // Pa
+
+	const pregunta = `¿Cuántos gramos de ${B.nombre} (${B.formula}, M=${B.MM} g/mol, i=${B.i}) 
+					  es necesario disolver en ${mA} g de ${A.nombre} (${A.formula}, M=${A.MM} g/mol) 
+					  para que el descenso de la presión de vapor sea ${dP.toFixed(2)} Pa? 
+					  Considera que la presión de vapor del solvente puro es ${A.P0} Pa.`;
+
+
+	const respuesta = `${mB.toFixed(2)} g`;
+	return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+}		
+
+function DPV_MB(){
+
+	// A es el solvente
+	// B es el soluto
+				
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	//let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25, 50); // gramos
+	let mA = irand(9,15)*100; //gramos
+	let MB = irand(2,20); //gmol
+	let nB = mB / MB; //mol                
+	let nA = mA / A.MM; //mol
+	let XB = (nB) / (nB + nA);
+	let XA = 1- XB;
+	let PA0 = A.P0 // Pa
+	let dP = XB * PA0 // Pa, el Rango típico realista es: 13 - 267 Pa
+	let Psoln = XA * PA0; // Pa
+
+
+	const pregunta = `Se disuelven ${mB} gramos de una sustancia desconocida no iónica 
+					 en ${mA} gramos de ${A.nombre} (${A.formula}, ${A.MM} g/mol, P⁰ = ${PA0.toFixed(2)} Pa). 
+					 El descenso de la presión de vapor es igual a ${dP.toFixed(2)} Pa. 
+					 Determina la masa molar de la sustancia desconocida.`;
+
+	let respuesta = `${MB.toFixed(2)} g/mol`;
+
+	return { titulo: "Descenso de la Presión de Vapor", pregunta: pregunta, respuesta: respuesta };
+}
+
+function ATE_dT(){
+
+	// A es el solvente
+	// B es el soluto
+	// K en kg °C/ mol
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kb * B.i * molalidad; // °C  valores típicos realistas: 0.5 a 5 °C
+					
+	let respuesta = dT.toFixed(3) + " °C";				
+							
+	let pregunta = `Se prepara una solución disolviendo ${mB} gramos de ${B.nombre} 
+				   (${B.formula}, M=${B.MM} g/mol, i=${B.i}) 
+				   en ${mA} kg de ${A.nombre} (${A.formula}, M=${A.MM} g/mol). 
+				   Si la constante ebulloscópica es ${A.Kb} °C kg/mol, calcula el aumento de la temperatura de ebullición (en °C) de la solución.`;
+
+	
+
+
+	return { titulo: "Aumento de la temperatura de ebullición", pregunta: pregunta, respuesta: respuesta };
+}			
+
+function ATE_T(){
+
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kb * B.i * molalidad; // °C
+	let Tsoln = A.Tb + dT; // °C				
+	
+	
+	let pregunta = `Se prepara una solución disolviendo ${mB} g de ${B.nombre} 
+				   (${B.formula}, M=${B.MM} g/mol, i=${B.i}) 
+				   en ${mA} kg de ${A.nombre} (${A.formula}, M=${A.MM} g/mol). 
+				   Si el punto de ebullición del solvente puro es ${A.Tb.toFixed(2)} °C y 
+				   la constante ebulloscópica es ${A.Kb} °C kg/mol, calcula la temperatura de ebullición de la solución en °C.`;
+
+	
+
+	
+
+	let respuesta = Tsoln.toFixed(2) + " °C";
+
+	return { titulo: "Aumento de la temperatura de ebullición", pregunta: pregunta, respuesta: respuesta };
+}		
+
+function ATE_mB(){
+
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kb * B.i * molalidad; // °C
+	let Tsoln = A.Tb + dT; // °C	
+
+	// enunciado del ejercicio en unidades no SI
+	let pregunta = `Calcula cuántos gramos de ${B.nombre} 
+				   (${B.formula}, MM = ${B.MM} g/mol, i = ${B.i}) 
+				   disueltos en ${mA.toFixed(2)} kg de ${A.nombre} 
+				   (${A.formula}, MM = ${A.MM} g/mol) son necesarios para que la temperatura de ebullición 
+				   aumente ${dT.toFixed(2)} °C, si la constante ebulloscopica es ${A.Kb} °C kg/mol.`;
+
+	let respuesta = mB + " g";
+
+	return {titulo: "Aumento de la temperatura de ebullición", 	pregunta: pregunta,	respuesta: respuesta	};
+}
+
+function ATE_MB(){
+
+	// A es el solvente
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+
+	
+	let mB = irand(25, 100); // gramos de soluto
+	let mA = irand(500, 1100)/1000; // kg de solvente
+	let dT = frand(0.5, 2.0); // °C de aumento
+	let nA = mA / A.MM; // mol
+	let molalidad = dT / (A.Kb * 1); // mol/kg, i = 1 porque es no iónico
+	let nB = molalidad * mA; // mol de soluto
+	let MB = mB / nB; // g/mol
+
+	let respuesta = MB.toFixed(2) + " g/mol";
+	
+	let pregunta = `Se disuelven ${mB} gramos de una sustancia no iónica desconocida 
+				   en ${mA} kg de ${A.nombre} (${A.formula}, ${A.MM} g/mol, Tb = ${A.Tb} °C, Kb = ${A.Kb} °C kg/mol), 
+				   la temperatura de ebullición aumenta en ${dT.toFixed(2)} °C. 
+				   Determina la masa molar de la sustancia desconocida`;
+
+
+
+
+	return { titulo: "Masa molar (ebulloscopía)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function DTC_dT(){
+
+	// A es el solvente
+	// B es el soluto
+	// K en kg °C/ mol
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kf * B.i * molalidad; // °C  valores típicos realistas: 0.5 a 5 °C
+					
+	let respuesta = dT.toFixed(3) + " °C";	
+	
+	let pregunta = `Se prepara una solución disolviendo ${mB} gramos de ${B.nombre} 
+				   (${B.formula}, M=${B.MM} g/mol, i=${B.i}) en ${mA} kg de ${A.nombre} 
+				   (${A.formula}, M=${A.MM} g/mol). Si la constante crioscópica es ${A.Kf} °C kg/mol, 
+				   calcula el descenso de la temperatura de congelación de la solución.`;
+
+
+	return { titulo: "Descenso de la temperatura de congelación", pregunta: pregunta, respuesta: respuesta };
+}
+			
+function DTC_T(){			
+			
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kf * B.i * molalidad; // °C
+	let Tsoln = A.Tf - dT; // °C	
+	
+	let respuesta = Tsoln.toFixed(2) + " °C";
+	
+	let pregunta = `Se prepara una solución disolviendo ${mB} g de ${B.nombre} 
+				   (${B.formula}, M=${B.MM} g/mol, i=${B.i}) en ${mA}kg de ${A.nombre} 
+				   (${A.formula}, M=${A.MM} g/mol). Si el punto de congelación del solvente puro es ${A.Tf.toFixed(2)} °C 
+				   y la constante crioscópica es ${A.Kf} °C kg/mol, calcula la temperatura de congelación de la solución en °C.`;
+
+
+	return { titulo: "Descenso de la temperatura de congelación", pregunta: pregunta, respuesta: respuesta };
+}
+
+function DTC_mB(){
+
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];
+
+	let mB = irand(25,100); // grams
+	let mA = irand(800, 1000)/1000; // Kg
+	
+	let nB = mB / B.MM; // mol
+	let molalidad = nB / mA; // mol/kg
+
+	let dT = A.Kf * B.i * molalidad; // °C
+	let Tsoln = A.Tf - dT; // °C	
+	
+	
+	let pregunta = `Calcula cuántos gramos de ${B.nombre} (${B.formula}, MM = ${B.MM} g/mol, i = ${B.i}) 
+					disueltos en ${mA.toFixed(2)} kg de ${A.nombre} 
+					(${A.formula}, MM = ${A.MM} g/mol) son necesarios para que la temperatura de 
+					congelación disminuya ${dT.toFixed(2)} °C, si la constante crioscópica es ${A.Kf} °C kg/mol.`;
+
+	let respuesta = mB + " g";
+
+	return { titulo: "Descenso de la temperatura de congelación", pregunta: pregunta, respuesta: respuesta };
+}
+
+function DTC_MB(){
+
+	// A es el solvente
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+
+	
+	let mB = irand(25, 100); // gramos de soluto
+	let mA = irand(500, 1100)/1000; // kg de solvente
+	let dT = frand(0.5, 2.0); // °C de aumento
+	let nA = mA / A.MM; // mol
+	let molalidad = dT / (A.Kf * 1); // mol/kg, i = 1 porque es no iónico
+	let nB = molalidad * mA; // mol de soluto
+	let MB = mB / nB; // g/mol
+
+	let respuesta = MB.toFixed(2) + " g/mol";
+	let pregunta = `Se disuelven ${mB} gramos de una sustancia no iónica desconocida en ${mA.toFixed(2)} kg de ${A.nombre} 
+					(${A.formula}, ${A.MM} g/mol, Tf = ${A.Tf} °C, Kf = ${A.Kf} °C kg/mol), 
+					la temperatura de congelación disminuye en ${dT.toFixed(2)} °C. Determina la masa molar de la sustancia desconocida.`;
+
+	return { titulo: "Masa molar (crioscopía)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function PO_P(){
+
+		// A es el solvente
+		// B es el soluto
+		let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+		let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];				
+		
+		
+		let mB = irand(5, 25); // gramos
+		let V = frand(0.1, 0.5); // L
+		let T = frand(15, 30); // °C
+		T = C_to_K(T); // K					
+		let nB = mB / B.MM; // mol
+		V = L_to_m3(V) // m3
+		let pi = B.i * nB * R * T / V; // Pa
+		pi = pi/1000; // kPa					
+
+		const respuesta = pi.toFixed(2) + " kPa";
+		
+		const pregunta = `Se prepara una solución disolviendo ${mB} g de ${B.nombre} 
+						 (${B.formula}, ${B.MM} g/mol, i=${B.i}) 
+						 en ${A.nombre} (${A.formula}, ${A.MM} g/mol) para obtener un volumen final de ${V.toFixed(6)} m³. 
+						 La solución está a ${T.toFixed(2)} K. Calcula la presión osmótica de la solución en kPa.`;
+		
+		return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
+}
+
+function PO_MB(){
+
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let i = 1; // el soluto desconocido no es iónico.
+
+	
+	let mB = irand(10,50); // gramos
+	let pi = frand(0.5, 2.5); // atm
+	let V = frand(0.25, 1); // L
+	let T = irand(290,310); // K
+	V = V/1000.0 // m3
+	pi = atm_to_Pa(pi); // Pa
+
+	let nB = (pi * V) / (i * R * T); // mol
+	let MB = mB / nB; // g/mol
+
+	const respuesta = MB.toFixed(2) + " g/mol";
+
+	const pregunta = `Se disuelven ${mB} g de una sustancia desconocida no iónica en agua lo que provoca 
+					  una presión osmótica de ${pi.toFixed(2)} Pa. Si el volumen de la solución es ${V.toFixed(6)} m<sup>3</sup>
+					  y la solución se encuentra a ${T} K, calcula la masa molar de la sustancia desconocida en g/mol.`;
+
+	return { titulo: "Masa molar (osmometría)", pregunta: pregunta, respuesta: respuesta };
+}
+
+function PO_mB(){
+	
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];				
+	
+	
+	let mB = irand(5, 25); // gramos
+	let V = frand(0.25, 1)/1000; // m3
+	let T = irand(290,310); // K			
+	let nB = mB / B.MM; // mol
+	let pi = B.i * nB * R * T / V; // Pa
+	
+	
+	const respuesta = mB+ " g";
+	
+	const pregunta = `¿Cuántos gramos de ${B.nombre} (${B.formula}, ${B.MM} g/mol, i=${B.i}) 
+					   se deben agregar al ${A.nombre} para que el volumen final sea ${V.toFixed(6)} m<sup>3</sup> a ${T} K
+						y resulte una presión osmótica de ${pi.toFixed(2)} Pa?`;
+
+	
+	return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
+}
+
+function PO_V(){
+
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];				
+	
+	
+	let mB = irand(5, 25); // gramos
+	let V = frand(0.25, 1)/1000; // m3
+	let T = irand(290,310); // K			
+	let nB = mB / B.MM; // mol
+	let pi = B.i * nB * R * T / V; // Pa
+	
+	const respuesta = V.toFixed(6) + " m<sup>3</sup>";
+	
+	const pregunta = `¿Cuál es el volumen final (en m<sup>3</sup>) de una solución que contiene ${mB} g de ${B.nombre} 
+					 (${B.formula}, ${B.MM} g/mol, i=${B.i}) si la presión osmótica es de ${pi.toFixed(2)} Pa
+					  a una temperatura de ${T} K?`;
+
+
+	
+	return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
+}
+
+function PO_T(){
+	
+	// A es el solvente
+	// B es el soluto
+	let A = DATOS_COLIGATIVAS.solventes[irand(0, DATOS_COLIGATIVAS.solventes.length - 1)];
+	let B = DATOS_COLIGATIVAS.solutos[irand(0, DATOS_COLIGATIVAS.solutos.length - 1)];				
+	
+	
+	let mB = irand(5, 25); // gramos
+	let V = frand(0.25, 1)/1000; // m3
+	let T = irand(290,310); // K			
+	let nB = mB / B.MM; // mol
+	let pi = B.i * nB * R * T / V; // Pa
+	
+	const respuesta = T + " K";
+	
+	
+	const pregunta = `¿Cuál es la temperatura (en K) de una solución de ${B.nombre} 
+					 (${B.formula}, ${B.MM} g/mol, i=${B.i}) que contiene ${mB} g del soluto 
+					 en ${V.toFixed(6)} m<sup>3</sup> de solución y presenta una presión osmótica 
+					 de ${pi.toFixed(2)} Pa?`;
+
+
+	return { titulo: "Presión osmótica", pregunta: pregunta, respuesta: respuesta };
+}
+
+function raoult_Pt(){
+
+	let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
+	let A = par.A;
+	let B = par.B;
+	
+	let T = 25; // °C
+	let mA = irand(50, 100); // gramos
+	let mB = irand(50, 100); //gramos
+				   
+	let nA = mA / A.MM; // mol
+	let nB = mB / B.MM; //mol
+	let nt = nA + nB; // mol
+					
+	let XA = nA / nt;
+	let XB = nB / nt;
+	
+	let PA = XA * A.P0; // mmHg
+	let PB = XB * B.P0; // mmHg
+	let Pt = PA + PB; // mmHg      
+	
+	let respuesta = Pt.toFixed(2) + " mmHg";       
+	
+	
+	let pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol) 
+				  con ${mB} g de ${B.nombre} (${B.formula}, ${B.MM} g/mol) a una temperatura de 25 °C. 
+				  Las presiones de vapor de los componentes puros a esta temperatura son 
+				  ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. 
+				  Calcula la presión de vapor total de la solución en mmHg.`;
+
+	return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+}			
+
+function raoult_PA(){
+
+	let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
+	let A = par.A;
+	let B = par.B;
+	let mA = irand(50, 100); // gramos
+	let mB = irand(50, 100); // gramos
+
+
+	let nA = mA / A.MM; // mol
+	let nB = mB / B.MM; // mol
+	let nt = nA + nB; // mol 
+
+	let XA = nA/ nt;
+	let PA = XA * A.P0; // mmHg
+	
+
+	let pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, MM = ${A.MM} g/mol) 
+				   con ${mB} g de ${B.nombre} (${B.formula}, MM = ${B.MM} g/mol). 
+				   Si la presión de vapor del ${A.nombre} puro es ${A.P0.toFixed(1)} mmHg, 
+				   calcula la presión de vapor de ${A.nombre} en la solución en mmHg.`;
+
+	let respuesta = PA.toFixed(2) + " mmHg";
+
+	return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+}			
+			
+function raoult_YA(){			
+			
+	let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
+	let A = par.A;
+	let B = par.B;
+	let mA = irand(50, 100); // gramos
+	let mB = irand(50, 100); // gramos
+
+	let nA = mA / A.MM; // mol
+	let nB = mB / B.MM; // mol
+	let n_total = nA + nB; // mol
+	
+	let XA = nA / n_total; // fracción molar en fase líquida
+	
+	let PA = XA * A.P0; // mmHg
+	let PB = (1 - XA) * B.P0; // mmHg
+	let P_total = PA + PB; // mmHg
+	
+	let YA = PA / P_total; // fracción molar en fase gas
+	
+	const respuesta = YA.toFixed(4);				
+	
+	const pregunta = `Se mezclan ${mA} g de ${A.nombre} (${A.formula}, ${A.MM} g/mol) 
+					 con ${mB} g de ${B.nombre} (${B.formula}, ${B.MM} g/mol) 
+					 a una temperatura en la que las presiones de vapor de los componentes puros 
+					 son ${A.P0.toFixed(1)} mmHg y ${B.P0.toFixed(1)} mmHg, respectivamente. 
+					 Calcula la fracción molar del primer componente en la fase vapor.`;
+
+	
+
+	return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+}
+
+function raoult_XB(){
+	 
+	let par = DATOS_RAOULT[irand(0, DATOS_RAOULT.length - 1)];
+	let A = par.A;
+	let B = par.B;
+	 
+	let PA_solucion = irand(20, 90); // mmHg
+	let P_puro = A.P0; // mmHg
+
+	// Asegurarse de que PA_solucion sea menor que P_puro
+	if (PA_solucion > P_puro) {
+		[PA_solucion, P_puro] = [P_puro, PA_solucion];
+	}
+					
+	let XA = PA_solucion / P_puro;
+	let XB = 1 - XA;
+	
+	let respuesta = XB.toFixed(4);				
+	
+	const pregunta = `Una solución se compone de ${A.nombre} y ${B.nombre}. 
+					 Si la presión de vapor del ${A.nombre} puro es ${P_puro.toFixed(2)} mmHg 
+					 y la presión de vapor del ${A.nombre} en la solución es ${PA_solucion.toFixed(2)} mmHg, 
+					 calcula la fracción molar de ${B.nombre} en la fase líquida.`;
+	
+
+
+
+	return { titulo: "Ley de Raoult", pregunta: pregunta, respuesta: respuesta };
+}	
+
+
+// --- Generadores globales en el mismo orden (para poder regenerar individualmente) ---
+const GENERADORES = [
+  clausius_clapeyron_vap_P2,
+  clausius_clapeyron_vap_T2,
+  clausius_clapeyron_sub_P2,
+  clausius_clapeyron_sub_T2,
+  clausius_clapeyron_vap_dH,
+  henry_C,
+  henry_P,
+  henry_K,
+  DPV_dP,
+  DPV_XA,
+  DPV_P,
+  DPV_mB,
+  DPV_MB,
+  ATE_dT,
+  ATE_T,
+  ATE_mB,
+  ATE_MB,
+  DTC_dT,
+  DTC_T,
+  DTC_mB,
+  DTC_MB,  
+  PO_P,
+  PO_MB,
+  PO_mB,
+  PO_V,
+  PO_T,
+  raoult_Pt,
+  raoult_PA,
+  raoult_YA,
+  raoult_XB    
+];
+
+// Función principal para generar y mostrar los ejercicios (respuestas ocultas)
+function generarEjercicios() {
+    const ejercicios = [];
+    GENERADORES.forEach(func => {
+        ejercicios.push(func()); // Ejecutar cada función para obtener el ejercicio
+    });
+
+    // Construir HTML con respuestas ocultas y botones alineados
+    let htmlContent = '';
+    ejercicios.forEach((ejercicio, index) => {
+        htmlContent += `
+            <div class="ejercicio-block" id="ejercicio-${index}">
+                <h3 class="ejercicio-titulo">Ejercicio ${index + 1}: ${ejercicio.titulo}</h3>
+                <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                <div class="respuesta-texto" id="respuesta-${index}" style="display:none;"><br>Respuesta: ${ejercicio.respuesta}</div>
+                <div class="buttons-container">
+                    <div class="buttons-inline">
+                        <button id="mostrar-btn-${index}" class="btn" onclick="mostrarRespuesta(${index})">Mostrar respuesta</button>
+                        <button class="btn" onclick="generarOtro(${index})">Generar otro</button>
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
+}
+
+
+function generarExamen() {
+
+
+    // --- Definición de categorías temáticas ---
+    const categorias = {
+        clausius: [
+            clausius_clapeyron_vap_P2,
+            clausius_clapeyron_vap_T2,
+            clausius_clapeyron_sub_P2,
+            clausius_clapeyron_sub_T2,
+            clausius_clapeyron_vap_dH
+        ],
+        henry: [henry_C, henry_P, henry_K, henry_m],
+        concentraciones: [conc_X, conc_M, conc_m],
+        raoult: [raoult_Pt, raoult_PA, raoult_YA, raoult_XB],
+        coligativas: [
+            DPV_dP, DPV_P, DPV_mB, DPV_MB,
+            ATE_dT, ATE_T, ATE_mB, ATE_MB,
+            DTC_dT, DTC_T, DTC_mB, DTC_MB,
+            PO_P, PO_MB, PO_mB, PO_V, PO_T]
+    };
+
+    // --- Configuración del equilibrio temático ---
+    const configuracion = {
+        clausius: 2,
+        henry: 1,
+        concentraciones: 1,
+        raoult: 2,
+        coligativas: 4
+    };
+
+    // --- Selección equilibrada de ejercicios ---
+    const ejercicios = [];
+    Object.keys(configuracion).forEach(cat => {
+        const lista = categorias[cat];
+        const cantidad = configuracion[cat];
+        const indicesUsados = new Set();
+
+        while (indicesUsados.size < cantidad && indicesUsados.size < lista.length) {
+            const i = irand(0, lista.length - 1);
+            if (!indicesUsados.has(i)) {
+                indicesUsados.add(i);
+                ejercicios.push(lista[i]());
+            }
+        }
+    });
+
+    // --- Generar HTML con respuestas visibles ---
+    let html = '';
+    ejercicios.forEach((e, i) => {
+        html += `
+        <div class="ejercicio-block" id="examen-${i}">
+            <h3 class="ejercicio-titulo">Ejercicio ${i + 1}: ${e.titulo}</h3>
+            <div class="pregunta-texto">${e.pregunta}</div>
+            <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${e.respuesta}</div>
+        </div>`;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = html;
+}
+
+
+
+function generarExamen_ver01() {
+	// esta versión es muy pero muy aleatoria
+	
+    const total = 10;
+    const generadores = [...GENERADORES];
+    const ejercicios = [];
+
+    // Barajar y tomar los primeros 10 sin repetir
+    for (let i = generadores.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [generadores[i], generadores[j]] = [generadores[j], generadores[i]];
+    }
+    const seleccion = generadores.slice(0, total);
+
+    // Generar ejercicios
+    seleccion.forEach(fn => ejercicios.push(fn()));
+
+    // Construir HTML con respuestas visibles
+    let html = '';
+    ejercicios.forEach((e, i) => {
+        html += `
+        <div class="ejercicio-block" id="examen-${i}">
+            <h3 class="ejercicio-titulo">Ejercicio ${i + 1}: ${e.titulo}</h3>
+            <div class="pregunta-texto">${e.pregunta}</div>
+            <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${e.respuesta}</div>
+        </div>`;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = html;
+}
+
+
+function generarExamen_wip() {
+	
+	// no me borres !!
+	
+	// esta opción es buena para generar una serie de ejercicios para material didáctico (para registrar)
+
+	// Mapeo de nombres de funciones generadoras (strings) a las funciones reales
+	const GeneradoresMap = {
+		'clausius_clapeyron_vap_P2': clausius_clapeyron_vap_P2,
+		'clausius_clapeyron_vap_T2': clausius_clapeyron_vap_T2,
+		'clausius_clapeyron_sub_P2': clausius_clapeyron_sub_P2,
+		'clausius_clapeyron_sub_T2': clausius_clapeyron_sub_T2,
+		'clausius_clapeyron_vap_dH': clausius_clapeyron_vap_dH
+
+	};
+
+    // 1. Configuración del examen: Define qué tipos de ejercicios y cuántos generar.
+    const configuracionExamen = [
+        { categoria: 'clausius_clapeyron_vap_P2', cantidad: 1 },
+
+    ];
+
+    const ejerciciosGenerados = [];
+    let contadorEjercicio = 1;
+
+    // 2. Generar los ejercicios según la configuración
+    configuracionExamen.forEach(config => {
+        const generador = GeneradoresMap[config.categoria];
+        if (generador) {
+            for (let i = 0; i < config.cantidad; i++) {
+                ejerciciosGenerados.push(generador());
+            }
+        }
+    });
+	
+
+    // 3. Construir HTML con respuestas **visibles** (estilo `display:block;`)
+    let htmlContent = '';
+    ejerciciosGenerados.forEach((ejercicio, index) => {
+        htmlContent += `
+            <div class="ejercicio-block" id="examen-ejercicio-${index}">
+                <h3 class="ejercicio-titulo">Ejercicio ${contadorEjercicio++}: ${ejercicio.titulo}</h3>
+                <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${ejercicio.respuesta}</div>
+            </div>
+        `;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
+}
+
+// Mostrar/ocultar respuesta (toggle) y actualizar etiqueta del botón
+function mostrarRespuesta(index) {
+    const resp = document.getElementById(`respuesta-${index}`);
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (!resp) return;
+    if (resp.style.display === 'none' || resp.style.display === '') {
+        resp.style.display = 'block';
+        if (btn) btn.textContent = 'Ocultar respuesta';
+    } else {
+        resp.style.display = 'none';
+        if (btn) btn.textContent = 'Mostrar respuesta';
+    }
+}
+
+// Generar otro ejercicio del mismo tipo y dejar respuesta oculta
+function generarOtro(index) {
+    if (index < 0 || index >= GENERADORES.length) return;
+    const nuevo = GENERADORES[index]();
+    const cont = document.getElementById(`ejercicio-${index}`);
+    if (!cont) return;
+    cont.querySelector('.ejercicio-titulo').innerHTML = `Ejercicio ${index + 1}: ${nuevo.titulo}`;
+    cont.querySelector('.pregunta-texto').innerHTML = nuevo.pregunta;
+    const resp = cont.querySelector('.respuesta-texto');
+    resp.innerHTML = `<br>Respuesta: ${nuevo.respuesta}`;
+    resp.style.display = 'none';
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (btn) btn.textContent = 'Mostrar respuesta';
+}
+
+// La página inicial solo muestra el botón "Generar Ejercicios".
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('ejercicios-generados').innerHTML = '';
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reacciones Químicas y Constantes de Equilibrio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            //box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            //text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .reaction-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+
+        
+        .equilibrium-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+            margin-top: 15px;
+        }
+        
+        .equilibrium-section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: slideIn 0.4s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .click-instruction {
+            text-align: center;
+            //color: #7f8c8d;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        
+        .reaction-card.revealed .click-instruction {
+            display: none;
+        }
+        
+        .reaction-number {
+            font-weight: bold;
+            //color: #e74c3c;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .reaction {
+            font-size: 1.4em;
+            //color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .equilibrium {
+            font-size: 1.3em;
+            //color: #8e44ad;
+            text-align: center;
+            background: linear-gradient(145deg, #f8f4ff, #ede4ff);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #d4b3ff;
+        }
+        
+        .equilibrium-label {
+            font-weight: bold;
+            //color: #6c5ce7;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .fraction {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .numerator, .denominator {
+            display: block;
+            padding: 5px 10px;
+        }
+        
+        .numerator {
+            border-bottom: 2px solid #8e44ad;
+        }
+        
+		.grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 20px;
+			max-width: 600px; /* o el ancho que prefieras */
+			margin: 0 auto;
+		}
+				
+  
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reaction-card {
+                padding: 15px;
+            }
+            
+            .reaction, .equilibrium {
+                font-size: 1.1em;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reacciones Homogéneas</h1>
+        
+        <div class="grid">
+            <!-- Reacción 1 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 1:</div>
+                <div class="reaction">
+                    2H<sub>2</sub>(g) + O<sub>2</sub>(g) &#8652; 2H<sub>2</sub>O(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>O]<sup>2</sup></span>
+                            <span class="denominator">[H<sub>2</sub>]<sup>2</sup>[O<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 2 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 2:</div>
+                <div class="reaction">
+                    N<sub>2</sub>(g) + 3H<sub>2</sub>(g) &#8652; 2NH<sub>3</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[NH<sub>3</sub>]<sup>2</sup></span>
+                            <span class="denominator">[N<sub>2</sub>][H<sub>2</sub>]<sup>3</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 3 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 3:</div>
+                <div class="reaction">
+                    4NH<sub>3</sub>(g) + 5O<sub>2</sub>(g) &#8652; 4NO(g) + 6H<sub>2</sub>O(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[NO]<sup>4</sup>[H<sub>2</sub>O]<sup>6</sup></span>
+                            <span class="denominator">[NH<sub>3</sub>]<sup>4</sup>[O<sub>2</sub>]<sup>5</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 4 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 4:</div>
+                <div class="reaction">
+                    2SO<sub>2</sub>(g) + O<sub>2</sub>(g) &#8652; 2SO<sub>3</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[SO<sub>3</sub>]<sup>2</sup></span>
+                            <span class="denominator">[SO<sub>2</sub>]<sup>2</sup>[O<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 5 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 5:</div>
+                <div class="reaction">
+                    2NO(g) + O<sub>2</sub>(g) &#8652; 2NO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[NO<sub>2</sub>]<sup>2</sup></span>
+                            <span class="denominator">[NO]<sup>2</sup>[O<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 6 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 6:</div>
+                <div class="reaction">
+                    2HI(g) &#8652; H<sub>2</sub>(g) + I<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>][I<sub>2</sub>]</span>
+                            <span class="denominator">[HI]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 7 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 7:</div>
+                <div class="reaction">
+                    PCl<sub>5</sub>(g) &#8652; PCl<sub>3</sub>(g) + Cl<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[PCl<sub>3</sub>][Cl<sub>2</sub>]</span>
+                            <span class="denominator">[PCl<sub>5</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 8 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 8:</div>
+                <div class="reaction">
+                    CO(g) + Cl<sub>2</sub>(g) &#8652; COCl<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[COCl<sub>2</sub>]</span>
+                            <span class="denominator">[CO][Cl<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 9 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 9:</div>
+                <div class="reaction">
+                    2NOCl(g) &#8652; 2NO(g) + Cl<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[NO]<sup>2</sup>[Cl<sub>2</sub>]</span>
+                            <span class="denominator">[NOCl]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 10 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 10:</div>
+                <div class="reaction">
+                    2HBr(g) &#8652; H<sub>2</sub>(g) + Br<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>][Br<sub>2</sub>]</span>
+                            <span class="denominator">[HBr]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 11 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 11:</div>
+                <div class="reaction">
+                    N<sub>2</sub>O<sub>4</sub>(g) &#8652; 2NO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[NO<sub>2</sub>]<sup>2</sup></span>
+                            <span class="denominator">[N<sub>2</sub>O<sub>4</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 12 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 12:</div>
+                <div class="reaction">
+                    CO(g) + 2H<sub>2</sub>(g) &#8652; CH<sub>3</sub>OH(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CH<sub>3</sub>OH]</span>
+                            <span class="denominator">[CO][H<sub>2</sub>]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 13 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 13:</div>
+                <div class="reaction">
+                    CH<sub>4</sub>(g) + H<sub>2</sub>O(g) &#8652; CO(g) + 3H<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CO][H<sub>2</sub>]<sup>3</sup></span>
+                            <span class="denominator">[CH<sub>4</sub>][H<sub>2</sub>O]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 14 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 14:</div>
+                <div class="reaction">
+                    2SO<sub>3</sub>(g) &#8652; 2SO<sub>2</sub>(g) + O<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[SO<sub>2</sub>]<sup>2</sup>[O<sub>2</sub>]</span>
+                            <span class="denominator">[SO<sub>3</sub>]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 15 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 15:</div>
+                <div class="reaction">
+                    4HCl(g) + O<sub>2</sub>(g) &#8652; 2H<sub>2</sub>O(g) + 2Cl<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>O]<sup>2</sup>[Cl<sub>2</sub>]<sup>2</sup></span>
+                            <span class="denominator">[HCl]<sup>4</sup>[O<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 16 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 16:</div>
+                <div class="reaction">
+                    H<sub>2</sub>(g) + CO<sub>2</sub>(g) &#8652; H<sub>2</sub>O(g) + CO(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>O][CO]</span>
+                            <span class="denominator">[H<sub>2</sub>][CO<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 17 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 17:</div>
+                <div class="reaction">
+                    2H<sub>2</sub>S(g) &#8652; 2H<sub>2</sub>(g) + S<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>]<sup>2</sup>[S<sub>2</sub>]</span>
+                            <span class="denominator">[H<sub>2</sub>S]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 18 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 18:</div>
+                <div class="reaction">
+                    CH<sub>4</sub>(g) + 2H<sub>2</sub>O(g) &#8652; CO<sub>2</sub>(g) + 4H<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">ClickMe</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CO<sub>2</sub>][H<sub>2</sub>]<sup>4</sup></span>
+                            <span class="denominator">[CH<sub>4</sub>][H<sub>2</sub>O]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        
+        
+			<h1>Reacciones Heterogéneas</h1>
+            <!-- Reacción 1 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 1:</div>
+                <div class="reaction">
+                    CaCO<sub>3</sub>(s) &#8652; CaO(s) + CO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [CO<sub>2</sub>]
+                    </div>
+
+                </div>
+            </div>        
+        
+            <!-- Reacción 2 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 2:</div>
+                <div class="reaction">
+                    NH<sub>4</sub>Cl(s) &#8652; NH<sub>3</sub>(g) + HCl(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [NH<sub>3</sub>][HCl]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 3 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 3:</div>
+                <div class="reaction">
+                    C(s) + H<sub>2</sub>O(g) &#8652; CO(g) + H<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CO][H<sub>2</sub>]</span>
+                            <span class="denominator">[H<sub>2</sub>O]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 4 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 4:</div>
+                <div class="reaction">
+                    MgCO<sub>3</sub>(s) &#8652; MgO(s) + CO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [CO<sub>2</sub>]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 5 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 5:</div>
+                <div class="reaction">
+                    H<sub>2</sub>O(l) &#8652; H<sub>2</sub>O(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [H<sub>2</sub>O(g)]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 6 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 6:</div>
+                <div class="reaction">
+                    C(s) + CO<sub>2</sub>(g) &#8652; 2CO(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CO]<sup>2</sup></span>
+                            <span class="denominator">[CO<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 7 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 7:</div>
+                <div class="reaction">
+                    CaO(s) + H<sub>2</sub>O(g) &#8652; Ca(OH)<sub>2</sub>(s)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">[H<sub>2</sub>O]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 8 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 8:</div>
+                <div class="reaction">
+                    Ag<sub>2</sub>O(s) &#8652; 2Ag(s) + ½O<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [O<sub>2</sub>]<sup>1/2</sup>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 9 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 9:</div>
+                <div class="reaction">
+                    NH<sub>4</sub>HS(s) &#8652; NH<sub>3</sub>(g) + H<sub>2</sub>S(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [NH<sub>3</sub>][H<sub>2</sub>S]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 10 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 10:</div>
+                <div class="reaction">
+                    CuO(s) + H<sub>2</sub>(g) &#8652; Cu(s) + H<sub>2</sub>O(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>O]</span>
+                            <span class="denominator">[H<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 11 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 11:</div>
+                <div class="reaction">
+                    I<sub>2</sub>(s) &#8652; I<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [I<sub>2</sub>(g)]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 12 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 12:</div>
+                <div class="reaction">
+                    Fe<sub>2</sub>O<sub>3</sub>(s) + 3H<sub>2</sub>(g) &#8652; 2Fe(s) + 3H<sub>2</sub>O(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>O]<sup>3</sup></span>
+                            <span class="denominator">[H<sub>2</sub>]<sup>3</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 13 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 13:</div>
+                <div class="reaction">
+                    Zn(s) + H<sub>2</sub>O(g) &#8652; ZnO(s) + H<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[H<sub>2</sub>]</span>
+                            <span class="denominator">[H<sub>2</sub>O]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 14 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 14:</div>
+                <div class="reaction">
+                    CaCO<sub>3</sub>(s) + H<sub>2</sub>O(g) + CO<sub>2</sub>(g) &#8652; Ca(HCO<sub>3</sub>)<sub>2</sub>(s)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">[H<sub>2</sub>O][CO<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 15 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 15:</div>
+                <div class="reaction">
+                    S(s) + O<sub>2</sub>(g) &#8652; SO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[SO<sub>2</sub>]</span>
+                            <span class="denominator">[O<sub>2</sub>]</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 16 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 16:</div>
+                <div class="reaction">
+                    Al<sub>2</sub>O<sub>3</sub>(s) + 3H<sub>2</sub>O(g) &#8652; 2Al(OH)<sub>3</sub>(s)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">1</span>
+                            <span class="denominator">[H<sub>2</sub>O]<sup>3</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 17 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 17:</div>
+                <div class="reaction">
+                    C(s) + 2H<sub>2</sub>(g) &#8652; CH<sub>4</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = <span class="fraction">
+                            <span class="numerator">[CH<sub>4</sub>]</span>
+                            <span class="denominator">[H<sub>2</sub>]<sup>2</sup></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reacción 18 -->
+            <div class="reaction-card" onclick="toggleEquilibrium(this)">
+                <div class="reaction-number">Reacción 18:</div>
+                <div class="reaction">
+                    BaCO<sub>3</sub>(s) &#8652; BaO(s) + CO<sub>2</sub>(g)
+                </div>
+                <div class="click-instruction">Haz click para ver la constante de equilibrio</div>
+                <div class="equilibrium-section">
+                    <div class="equilibrium-label">Constante de equilibrio:</div>
+                    <div class="equilibrium">
+                        K<sub>c</sub> = [CO<sub>2</sub>]
+                    </div>
+                </div>
+            </div>
+        
+        
+        
+        
+        </div>
+        
+    </div>
+
+    <script>
+        function toggleEquilibrium(card) {
+            const equilibriumSection = card.querySelector('.equilibrium-section');
+            const isVisible = equilibriumSection.classList.contains('show');
+            
+            if (isVisible) {
+                // Ocultar
+                equilibriumSection.classList.remove('show');
+                card.classList.remove('revealed');
+                setTimeout(() => {
+                    equilibriumSection.style.display = 'none';
+                }, 400);
+            } else {
+                // Mostrar
+                equilibriumSection.style.display = 'block';
+                card.classList.add('revealed');
+                setTimeout(() => {
+                    equilibriumSection.classList.add('show');
+                }, 10);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   
+
+
+    <title>Termodinámica</title>	  
+    <style>
+        body {
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+            color: black;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            font-weight: normal;
+            border-bottom: 2px solid black;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 50px;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+        }
+                
+        pre {
+            text-align: center;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .footer-text {
+			border-top: 1px solid gray;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .footer-text h4, .footer-text h5 {
+            margin: 5px 0;
+        }        
+        
+    </style>
+  </head>
+  <body>
+    <h1>Introducción al Equilibrio Químico</h1>
+
+<h3>¿Qué es el equilibrio químico?</h3>
+
+<p>Es el estado dinámico en el que la velocidad de la reacción directa es igual a
+la velocidad de la reacción inversa, manteniendo constantes las concentraciones
+de reactivos y productos.</p>
+
+<h3>¿Qué significa que el equilibrio sea dinámico?</h3>
+
+<p>Significa que aunque las concentraciones permanecen constantes,
+las moléculas continúan reaccionando en ambas direcciones a nivel molecular.</p>
+
+<h3>¿Qué dice la ley de acción de masas?</h3>
+
+<p>Para una reacción reversible en equilibrio, a una temperatura constante,
+existe una relación constante entre las concentraciones de reactivos. A dicha relación
+se le conoce como constante de equilibrio químico.</p>
+
+<h3>¿Qué es la constante de equilibrio (K<sub>c</sub>)?</h3>
+
+<p>Es una expresión matemática que relaciona las concentraciones de productos y
+reactivos en el equilibrio.</p>
+
+<pre>
+aA + bB &harr; cC + dD:
+</pre>
+
+
+
+
+<pre>
+Kc = [C]<sup>c</sup> [D]<sup>d</sup> / [A]<sup>a</sup> [B]<sup>b</sup>
+</pre>
+
+
+<h3>¿Qué indica el valor de K<sub>c</sub>?</h3>
+
+<ul>
+<li>Si K<sub>c</sub> &gt; 1, predominan los productos.</li>
+<li>Si K<sub>c</sub> &lt; 1, predominan los reactivos.</li>
+<li>Si K<sub>c</sub> &asymp; 1, hay cantidades similares de ambos.</li>
+</ul>
+
+
+<h3>¿La constante de equilibrio depende de las concentraciones iniciales?</h3>
+
+<p>No. K<sub>c</sub> solo depende de la temperatura.
+Las concentraciones iniciales determinan cuánto tiempo toma alcanzar el equilibrio, pero no su valor.</p>
+
+<h3>¿Cual es la forma rigurosa de la constante de equilibrio?</h3>
+
+<p>La forma rigurosa y termodinámicamente correcta de escribir la constante de equilibrio
+utiliza las <strong>actividades (a)</strong> de las especies químicas en lugar de sus concentraciones o presiones.</p>
+
+<pre>
+aA + bB &harr; cC + dD
+</pre>
+
+
+
+
+<pre>
+K<sub>a</sub> = a<sub>C</sub><sup>c</sup> a<sub>D</sub><sup>d</sup> / a<sub>A</sub><sup>a</sup> a<sub>B</sub><sup>b</sup>
+</pre>
+
+
+<p>La constante de equilibrio basada en actividades es una constante termodinámica verdadera,
+independiente de las concentraciones y las presiones.</p>
+
+<h3>¿Cuál es la relación entre concentración y actividad?</h3>
+
+<p>La actividad es la concentración &ldquo;efectiva&rdquo; que considera las interacciones entre iones.
+En soluciones diluidas, actividad &asymp; concentración.</p>
+
+<h3>¿Cuándo es importante usar actividades en lugar de concentraciones?</h3>
+
+<p>En soluciones concentradas (&gt;0.1 M) o con iones de alta carga,
+donde las interacciones electrostáticas son significativas y afectan el comportamiento químico.</p>
+
+<h3>¿Qué es K<sub>p</sub> y cómo se relaciona con K<sub>c</sub>?</h3>
+
+<p>K<sub>p</sub> es la constante de equilibrio expresada en presiones parciales para gases.</p>
+
+<pre>
+Kp = Kc(RT)<sup>&Delta;n</sup>
+</pre>
+
+
+<h3>¿Cuáles son las reglas para escribir constantes de equilibrio?</h3>
+
+<ul>
+<li>Los productos van en el numerador, reactivos en el denominador.</li>
+<li>Cada concentración se eleva a su coeficiente estequiométrico.</li>
+<li>Sólidos y líquidos puros se omiten.</li>
+</ul>
+
+
+<h3>¿Qué es el cociente de reacción (Q<sub>c</sub>)?</h3>
+
+<p>Tiene la misma expresión que K<sub>c</sub> pero se calcula con concentraciones en cualquier momento,
+no necesariamente en equilibrio. Permite predecir la dirección de la reacción.</p>
+
+<h3>¿Cómo se interpreta la relación entre Q<sub>c</sub> y K<sub>c</sub>?</h3>
+
+<ul>
+<li>Si Q<sub>c</sub> &lt; K<sub>c</sub>, la reacción procede hacia productos.</li>
+<li>Si Q<sub>c</sub> &gt; K<sub>c</sub>, la reacción procede hacia reactivos.</li>
+<li>Si Q<sub>c</sub> = K<sub>c</sub>, el sistema está en equilibrio.</li>
+</ul>
+
+
+<h3>¿Qué establece el Principio de Le Châtelier?</h3>
+
+<p>Cuando se aplica una perturbación a un sistema en equilibrio,
+éste se desplaza en la dirección que contrarresta dicha perturbación.</p>
+
+<h3>¿Qué sucede al agregar más reactivo a un sistema en equilibrio?</h3>
+
+<p>Según Le Châtelier, el equilibrio se desplaza hacia productos
+para consumir el exceso de reactivo agregado.</p>
+
+<h3>¿Qué ocurre cuando se retira un producto del equilibrio?</h3>
+
+<p>Según Le Châtelier, el equilibrio se desplaza hacia productos para reemplazar lo que se retiró,
+aumentando la conversión de reactivos.</p>
+
+<h3>¿Cómo afecta el aumento de presión al equilibrio gaseoso?</h3>
+
+<p>El equilibrio se desplaza hacia el lado con menor número de moles
+de gas para reducir la presión.</p>
+
+<h3>¿Cómo afecta el volumen del recipiente a un equilibrio gaseoso?</h3>
+
+<ul>
+<li>Disminuir el volumen (aumentar presión) desplaza el equilibrio hacia el lado con menor número de moles de gas.</li>
+<li>Aumentar el volumen tiene el efecto contrario.</li>
+</ul>
+
+
+<h3>¿Qué describe la ecuación de van&rsquo;t Hoff?</h3>
+
+<p>Cómo varía la constante de equilibrio con la temperatura:</p>
+
+<pre>ln(K<sub>2</sub>/K<sub>1</sub>) = -(&Delta;H/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)</pre>
+
+
+<h3>¿Cómo afecta el aumento de temperatura al equilibrio?</h3>
+
+<ul>
+<li>En reacciones endotérmicas, el equilibrio se desplaza hacia productos.</li>
+<li>En reacciones exotérmicas, se desplaza hacia reactivos.</li>
+</ul>
+
+
+<h3>¿Cómo afecta la temperatura a la constante de equilibrio?</h3>
+
+<ul>
+<li>En reacciones endotérmicas, K<sub>c</sub> aumenta con la temperatura.</li>
+<li>En reacciones exotérmicas, K<sub>c</sub> disminuye con la temperatura.</li>
+</ul>
+
+
+<!--
+
+
+### ¿Por qué algunos equilibrios parecen "no existir"?
+
+Cuando Kc es extremadamente grande (&gt;10<sup>6</sup>) o pequeño (&lt;10<sup>-6</sup>), 
+la reacción parece ir solo en una dirección, pero técnicamente sigue siendo un equilibrio.
+
+### ¿Qué es la constante de producto de solubilidad (Kps)?
+
+Es la constante de equilibrio para la disolución de un sólido iónico poco soluble en agua. 
+Para AB(s) &harr; A<sup>+</sup>(aq) + B<sup>-</sup>(aq), Kps = [A<sup>+</sup>][B<sup>-</sup>].
+
+### ¿Cómo se interpreta el valor de Kps?
+
+Kps pequeño indica baja solubilidad. Kps solo depende de la temperatura. 
+Para predecir precipitación, se compara el producto iónico (Q) con Kps.
+
+### ¿Qué es la solubilidad molar y cómo se relaciona con Kps?
+
+Es la cantidad máxima de soluto que se disuelve por litro de solución saturada. Para AB:
+
+<pre>
+solubilidad = &radic;Kps
+</pre>
+
+Para A<sub>2</sub>B:
+
+<pre>
+solubilidad = &sup3;&radic;(Kps/4)
+</pre>
+
+### ¿Cómo se calcula la constante de equilibrio para una reacción inversa?
+
+Si la reacción se invierte, la nueva constante es el recíproco de la original:
+
+<pre>
+K'c = 1 / Kc
+</pre>
+
+### ¿Qué ocurre con Kc cuando se multiplican los coeficientes de una ecuación?
+
+Si se multiplican todos los coeficientes por n, la nueva constante será:
+
+<pre>
+K'c = (Kc)<sup>n</sup>
+</pre>
+
+### ¿Cómo se combinan constantes de equilibrio?
+
+Si se suman reacciones, se multiplican sus constantes:
+
+<pre>
+K<sub>3</sub> = K<sub>1</sub> &times; K<sub>2</sub>
+</pre>
+
+Si se resta una reacción, se divide:
+
+<pre>
+K<sub>3</sub> = K<sub>1</sub> / K<sub>2</sub>
+</pre>
+
+
+
+### ¿Cómo se determina experimentalmente una constante de equilibrio?
+
+Se mide las concentraciones de todas las especies en equilibrio usando métodos como espectrofotometría, potenciometría, o análisis químico, y se aplica la expresión de Kc.
+
+### ¿Qué técnicas experimentales se usan para medir concentraciones en equilibrio?
+
+Espectrofotometría UV-Vis (para especies coloreadas), conductimetría (para iones), potenciometría (con electrodos selectivos), cromatografía, y titulaciones.
+
+### ¿Por qué es importante esperar a que se establezca el equilibrio en experimentos?
+
+Las mediciones deben hacerse cuando las concentraciones no cambian con el tiempo. Si se mide antes del equilibrio, se obtiene Qc en lugar de Kc.
+
+
+### ¿Qué es el efecto del ion común y cómo afecta al equilibrio de solubilidad?
+
+El efecto del ion común es la disminución de la solubilidad de un compuesto iónico al añadir un segundo soluto que contenga un ion en común con el primero. Según Le Châtelier, el equilibrio se desplaza hacia los reactivos (el sólido no disuelto) para compensar la concentración adicional del ion.
+
+### ¿Qué es el Principio de Le Châtelier y cómo se aplica a los equilibrios acoplados?
+
+En un equilibrio acoplado, la perturbación en un equilibrio afecta a otros equilibrios conectados. El Principio de Le Châtelier se aplica a cada equilibrio individualmente. Por ejemplo, si una reacción produce un producto que es un reactivo en otra, el desplazamiento en la primera reacción causará un desplazamiento en la segunda.
+
+### ¿Cómo afecta la dilución a un equilibrio iónico?
+
+La dilución desplaza el equilibrio hacia el lado con mayor número de iones para mantener constante el valor de Kc.
+
+
+### ¿Cómo afecta un catalizador al equilibrio?
+
+Un catalizador acelera tanto la reacción directa como la inversa por igual, permitiendo alcanzar el equilibrio más rápido, pero sin cambiar su posición.
+
+### ¿Cómo se relaciona la cinética con el equilibrio?
+
+El equilibrio se alcanza cuando las velocidades directa e inversa son iguales. La cinética determina qué tan rápido se alcanza el equilibrio, pero no su posición final.
+
+### ¿Qué es el grado de disociación (&alpha;)?
+
+Es la fracción de reactivo que se convierte en productos en el equilibrio. Se expresa como &alpha; = moles disociados / moles iniciales.
+
+### ¿Cómo se calcula el rendimiento porcentual en equilibrio?
+
+Rendimiento % = (moles de producto formado / moles máximos posibles) &times; 100. En equilibrio, es menor al 100% porque la reacción no se completa totalmente.
+
+### ¿Qué es la aproximación de pequeño cambio en cálculos de equilibrio?
+
+Cuando Kc es muy pequeño, se puede asumir que el cambio en concentración es despreciable comparado con la concentración inicial, simplificando los cálculos.
+
+### ¿Qué son las constantes híbridas?
+
+Son constantes de equilibrio que mezclan unidades de concentración y presión en la misma expresión, usadas cuando algunas especies están en solución y otras en fase gaseosa.
+
+### ¿Cuándo usar constantes híbridas?
+
+En equilibrios gas-solución, donde es más conveniente expresar gases en presión parcial y especies disueltas en concentración molar.
+
+### ¿Qué es la constante de equilibrio aparente?
+
+Es la constante observada experimentalmente que puede diferir de la termodinámica debido a efectos como formación de complejos, actividad vs concentración, o reacciones secundarias.
+
+### ¿Qué son los equilibrios acoplados?
+
+Son sistemas donde dos o más equilibrios ocurren simultáneamente y se influyen mutuamente. Un ejemplo común son los equilibrios ácido-base con precipitación.
+
+### ¿Cómo se calcula Kc cuando hay especies intermedias?
+
+Se aplica la aproximación del estado estacionario: las concentraciones de intermedios permanecen aproximadamente constantes durante la mayor parte de la reacción.
+
+### ¿Qué es el tiempo de vida media en equilibrio?
+
+Es el tiempo necesario para que el sistema alcance la mitad del cambio total hacia el equilibrio. Depende de las constantes de velocidad, no de las concentraciones iniciales.
+
+### ¿Qué factores determinan la dirección espontánea de una reacción?
+
+La energía libre de Gibbs (&Delta;G). Si &Delta;G &lt; 0, la reacción es espontánea hacia productos. Si &Delta;G &gt; 0, es espontánea hacia reactivos. En equilibrio, &Delta;G = 0.
+
+### ¿Cómo se relaciona &Delta;G con la constante de equilibrio?
+
+Mediante la ecuación:
+
+<pre>
+&Delta;G&deg; = -RT ln K
+</pre>
+
+Cuando K &gt; 1, &Delta;G&deg; &lt; 0 (favorece productos). Cuando K &lt; 1, &Delta;G&deg; &gt; 0 (favorece reactivos).
+
+### ¿Cómo se comportan los equilibrios a temperaturas muy altas?
+
+A temperaturas muy altas, predominan las reacciones endotérmicas porque el término T&Delta;S&deg; en la energía libre se vuelve dominante sobre &Delta;H&deg;.
+
+### ¿Qué es el principio de compensación temperatura-entropía?
+
+Cuando &Delta;H&deg; y &Delta;S&deg; tienen el mismo signo, existe una temperatura de compensación donde:
+
+<pre>
+&Delta;G&deg; = 0
+</pre>
+
+y K = 1, dividiendo regiones donde predominan productos o reactivos.
+
+
+## Ecuaciones Importantes
+
+
+**Relación entre Kp y Kc:**
+
+<pre>Kp = Kc(RT)<sup>&Delta;n</sup></pre>
+
+**Energía libre y equilibrio:**
+
+<pre>&Delta;G&deg; = -RT ln K</pre>
+
+**Ecuación de van't Hoff:**
+
+<pre>ln(K<sub>2</sub>/K<sub>1</sub>) = -(&Delta;H&deg;/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)</pre>
+
+
+
+
+-->
+
+
+
+
+<!--
+## Ejemplos de Equilibrios
+
+### Equilibrios Homogéneos (misma fase)
+
+<pre>H<sub>2</sub> + I<sub>2</sub> &harr; 2HI &nbsp;&nbsp;&nbsp; </pre><pre> Kc = [HI]<sup>2</sup> / [H<sub>2</sub>][I<sub>2</sub>]</pre>
+<pre>N<sub>2</sub> + 3H<sub>2</sub> &harr; 2NH<sub>3</sub> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [NH<sub>3</sub>]<sup>2</sup> / [N<sub>2</sub>][H<sub>2</sub>]<sup>3</sup></pre>
+<pre>2SO<sub>2</sub> + O<sub>2</sub> &harr; 2SO<sub>3</sub> &nbsp;&nbsp;&nbsp;</pre><pre> Kc = [SO<sub>3</sub>]<sup>2</sup> / [SO<sub>2</sub>]<sup>2</sup>[O<sub>2</sub>]</pre>
+<pre>CH<sub>3</sub>COOH + C<sub>2</sub>H<sub>5</sub>OH &harr; CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub> + H<sub>2</sub>O &nbsp;&nbsp;&nbsp; Kc = [CH<sub>3</sub>COOC<sub>2</sub>H<sub>5</sub>][H<sub>2</sub>O] / [CH<sub>3</sub>COOH][C<sub>2</sub>H<sub>5</sub>OH]</pre>
+<pre>2NO<sub>2</sub> &harr; N<sub>2</sub>O<sub>4</sub> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [N<sub>2</sub>O<sub>4</sub>] / [NO<sub>2</sub>]<sup>2</sup></pre>
+<pre>PCl<sub>5</sub> &harr; PCl<sub>3</sub> + Cl<sub>2</sub> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [PCl<sub>3</sub>][Cl<sub>2</sub>] / [PCl<sub>5</sub>]</pre>
+<pre>CO + H<sub>2</sub>O &harr; CO<sub>2</sub> + H<sub>2</sub> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [CO<sub>2</sub>][H<sub>2</sub>] / [CO][H<sub>2</sub>O]</pre>
+<pre>Fe<sup>3+</sup> + SCN<sup>-</sup> &harr; FeSCN<sup>2+</sup> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [FeSCN<sup>2+</sup>] / [Fe<sup>3+</sup>][SCN<sup>-</sup>]</pre>
+<pre>H<sub>2</sub> + Br<sub>2</sub> &harr; 2HBr &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [HBr]<sup>2</sup> / [H<sub>2</sub>][Br<sub>2</sub>]</pre>
+<pre>2HI &harr; H<sub>2</sub> + I<sub>2</sub> &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [H<sub>2</sub>][I<sub>2</sub>] / [HI]<sup>2</sup></pre>
+
+### Equilibrios Heterogéneos (diferentes fases)
+
+<pre>CaCO<sub>3</sub>(s) &harr; CaO(s) + CO<sub>2</sub>(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [CO<sub>2</sub>]</pre>
+<pre>NH<sub>4</sub>HS(s) &harr; NH<sub>3</sub>(g) + H<sub>2</sub>S(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [NH<sub>3</sub>][H<sub>2</sub>S]</pre>
+<pre>C(s) + CO<sub>2</sub>(g) &harr; 2CO(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [CO]<sup>2</sup> / [CO<sub>2</sub>]</pre>
+<pre>AgCl(s) &harr; Ag<sup>+</sup>(aq) + Cl<sup>-</sup>(aq) &nbsp;&nbsp;&nbsp; </pre><pre>Kps = [Ag<sup>+</sup>][Cl<sup>-</sup>]</pre>
+<pre>Fe<sub>2</sub>O<sub>3</sub>(s) + 3H<sub>2</sub>(g) &harr; 2Fe(s) + 3H<sub>2</sub>O(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [H<sub>2</sub>O]<sup>3</sup> / [H<sub>2</sub>]<sup>3</sup></pre>
+<pre>BaCO<sub>3</sub>(s) &harr; BaO(s) + CO<sub>2</sub>(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [CO<sub>2</sub>]</pre>
+<pre>H<sub>2</sub>O(l) &harr; H<sup>+</sup>(aq) + OH<sup>-</sup>(aq) &nbsp;&nbsp;&nbsp; </pre><pre>Kw = [H<sup>+</sup>][OH<sup>-</sup>]</pre>
+<pre>Mg(OH)<sub>2</sub>(s) &harr; Mg<sup>2+</sup>(aq) + 2OH<sup>-</sup>(aq) &nbsp;&nbsp;&nbsp; </pre><pre>Kps = [Mg<sup>2+</sup>][OH<sup>-</sup>]<sup>2</sup></pre>
+<pre>CuO(s) + H<sub>2</sub>(g) &harr; Cu(s) + H<sub>2</sub>O(g) &nbsp;&nbsp;&nbsp; </pre><pre>Kc = [H<sub>2</sub>O] / [H<sub>2</sub>]</pre>
+<pre>PbI<sub>2</sub>(s) &harr; Pb<sup>2+</sup>(aq) + 2I<sup>-</sup>(aq) &nbsp;&nbsp;&nbsp; </pre><pre>Kps = [Pb<sup>2+</sup>][I<sup>-</sup>]<sup>2</sup></pre>
+-->
+
+  </body>
+  
+  <br><br>
+  <div class="footer-text">
+	<center>
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+    </center>
+</div>
+  
+</html>

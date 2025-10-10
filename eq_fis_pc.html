@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+   
+
+
+    <title>Termodinámica</title>	  
+    <style>
+        body {
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white;
+            color: black;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            font-weight: normal;
+            border-bottom: 2px solid black;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 50px;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+        }
+                
+        pre {
+            text-align: center;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        .footer-text {
+			border-top: 1px solid gray;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .footer-text h4, .footer-text h5 {
+            margin: 5px 0;
+        }        
+        
+    </style>
+  </head>
+  <body>
+    <h1>Introducción al Equilibrio Físico</h1>
+
+<h2>Fases y Transiciones de Fase</h2>
+
+<h3>¿Qué es un equilibrio físico?</h3>
+
+<p>Es un estado dinámico donde dos o más fases de una sustancia coexisten en equilibrio a
+una temperatura y presión dadas. Las velocidades de las transformaciones directa e inversa son iguales.</p>
+
+<h3>¿Qué es un diagrama de fases?</h3>
+
+<p>Es un mapa que muestra qué fase de una sustancia es la más estable a diferentes presiones y temperaturas.
+Las líneas representan las condiciones de equilibrio.</p>
+
+<h3>¿Qué es el punto triple?</h3>
+
+<p>Es el único punto en un diagrama de fases en el que una sustancia puede coexistir en sus tres fases (sólido, líquido y gas)
+en equilibrio. Para el agua, este punto se encuentra a 4.6 Torr y 0.01 °C.</p>
+
+<h3>¿Qué es la temperatura y presión críticas?</h3>
+
+<p>La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido.
+La presión crítica es la presión de vapor a dicha temperatura.</p>
+
+<h3>¿Qué dice la regla de las fases?</h3>
+
+<p>Relaciona el número de fases P, el número de componentes C y los grados de libertad F de un sistema en equilibrio.
+F representa las variables intensivas (temperatura, presión) que pueden variarse independientemente.</p>
+
+<pre>F = C - P + 2</pre>
+
+
+<h3>¿Qué es la presión de vapor?</h3>
+
+<p>Es la presión ejercida por el vapor en equilibrio con su fase líquida o sólida en un recipiente
+cerrado a una temperatura determinada. Este equilibrio ocurre cuando la velocidad de evaporación es igual a la de condensación.</p>
+
+<h3>¿Cómo se relaciona la presión de vapor con la volatilidad?</h3>
+
+<p>Una sustancia con alta presión de vapor es más volátil, lo que significa que se evapora más fácilmente.</p>
+
+<h3>¿Cuál es la relación entre la volatilidad y las fuerzas intermoleculares?</h3>
+
+<p>Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles.
+Por ejemplo, el etanol es menos volátil que el dimetil éter, aunque tienen la misma fórmula molecular (C<sub>2</sub>H<sub>6</sub>O), porque el etanol puede formar puentes de hidrógeno, lo que crea fuerzas intermoleculares más fuertes.</p>
+
+<h3>¿Cómo se relaciona la presión de vapor con la temperatura de ebullición?</h3>
+
+<p>La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se
+iguala a la presión externa que lo rodea. Por lo tanto, si la presión externa es menor, como en
+la cima de una montaña, la temperatura de ebullición también será más baja.</p>
+
+<h3>¿Cómo afectan las fuerzas intermoleculares a las transiciones de fase?</h3>
+
+<p>Sustancias con fuerzas intermoleculares más fuertes tienen presiones de vapor más bajas
+y puntos de ebullición y de fusión más altos.</p>
+
+<h3>¿Qué describe la ecuación de Clausius-Clapeyron?</h3>
+
+<p>Describe la relación entre la presión de vapor de una sustancia y su temperatura de ebullición.</p>
+
+<pre>
+ln(P<sub>2</sub>/P<sub>1</sub>) = (-ΔH<sub>vap</sub>/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)
+</pre>
+
+
+
+
+<pre>
+ln(P<sub>2</sub>/P<sub>1</sub>) = (-ΔH<sub>sub</sub>/R)(1/T<sub>2</sub> - 1/T<sub>1</sub>)
+</pre>
+
+
+<h3>¿Qué es el punto de ebullición normal?</h3>
+
+<p>Es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión atmosférica estándar (1 atm).</p>
+
+<h3>¿Cómo varía el punto de ebullición con la presión?</h3>
+
+<p>El punto de ebullición aumenta a medida que la presión externa aumenta.
+A mayor presión, se requiere una temperatura más alta para que la presión de vapor del líquido se iguale a la presión externa.</p>
+
+<h3>¿Cómo varía el punto de fusión con la presión?</h3>
+
+<p>Para la mayoría de las sustancias, un aumento de presión aumenta el punto de fusión,
+pero para el agua lo disminuye porque el hielo es menos denso que el agua líquida.</p>
+
+<h3>¿A cada presión de vapor le corresponde una temperatura de ebullición?</h3>
+
+<p>Sí, la temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa.</p>
+
+<h2>Solubilidad</h2>
+
+<h3>¿Qué es una disolución?</h3>
+
+<p>Es una mezcla homogénea de dos o más sustancias. La sustancia en menor cantidad es el soluto y la de mayor cantidad es el disolvente.</p>
+
+<h3>¿Qué es la solubilidad?</h3>
+
+<p>Es la cantidad máxima de soluto que se puede disolver en una cantidad dada de disolvente a una temperatura y presión específicas. Es una medida de qué tan bien una sustancia se disuelve en otra para formar una solución homogénea.</p>
+
+<h3>¿Qué es una disolución saturada, no saturada y sobresaturada?</h3>
+
+<p>Una disolución <strong>saturada</strong> contiene la máxima cantidad de soluto posible.
+Una <strong>no saturada</strong> puede disolver más soluto.
+Una <strong>sobresaturada</strong> contiene más soluto del que la disolución saturada puede contener.</p>
+
+<h3>¿Cuál es la diferencia entre un soluto polar y uno no polar?</h3>
+
+<p>Un soluto polar tiene una distribución desigual de la carga, mientras que uno no polar tiene una distribución de carga uniforme.
+Esto es clave para determinar la solubilidad.</p>
+
+<h3>¿Cuál es la regla &ldquo;lo semejante disuelve a lo semejante&rdquo;?</h3>
+
+<p>Establece que las sustancias polares se disuelven en disolventes polares,
+y las sustancias no polares se disuelven en disolventes no polares,
+debido a la similitud de las fuerzas de atracción entre las moléculas.
+Por ejemplo, el agua (polar) disuelve NaCl (polar), pero no aceite (no polar).</p>
+
+<h3>¿Qué dice la Ley de Henry?</h3>
+
+<p>Establece que la concentración de un gas en una disolución es directamente proporcional a la presión parcial de ese gas sobre la disolución.</p>
+
+<pre>
+C<sub>gas</sub> = k<sub>H</sub> P<sub>gas</sub>
+</pre>
+
+
+<h3>¿Cómo afecta la temperatura a la solubilidad de gases en líquidos?</h3>
+
+<p>La solubilidad de los gases en líquidos generalmente disminuye a medida que aumenta la temperatura.
+Por ejemplo, un refresco tibio pierde el gas más rápido que uno helado.</p>
+
+<h2>Propiedades Coligativas</h2>
+
+<h3>¿Qué son las propiedades coligativas?</h3>
+
+<p>Son propiedades de las disoluciones que dependen solo del número de partículas de soluto, no de su identidad.</p>
+
+<h3>¿Cuáles son las cuatro propiedades coligativas principales?</h3>
+
+<ul>
+<li>Disminución de la presión de vapor.</li>
+<li>Elevación del punto de ebullición.</li>
+<li>Disminución del punto de congelación.</li>
+<li>Presión osmótica.</li>
+</ul>
+
+
+<h3>¿Qué es un electrolito y qué es el factor de van&rsquo;t Hoff (i)?</h3>
+
+<p>Un electrolito es una sustancia que se disocia en iones.
+El <strong>factor de van&rsquo;t Hoff (i)</strong> es un factor de corrección que mide el número de partículas
+que se forman por cada molécula de soluto. Para solutos que no se disocian como el azúcar, i = 1,
+mientras que para los electrolitos, i > 1.</p>
+
+<h3>¿Qué es la molaridad?</h3>
+
+<p>Es la concentración de una disolución expresada como moles de soluto por litro de disolución.</p>
+
+<pre>
+M = moles de soluto / litros de disolución
+</pre>
+
+
+<h3>¿Qué es la molalidad?</h3>
+
+<p>Es la concentración de una disolución expresada como moles de soluto por kilogramo de disolvente.</p>
+
+<pre>
+m = moles de soluto / kg de disolvente
+</pre>
+
+
+<h3>¿Qué es la fracción molar?</h3>
+
+<p>Es una medida de la concentración que expresa el número de moles de un componente en relación con el número total de moles de la disolución.</p>
+
+<pre>
+X<sub>A</sub> = moles de A / moles totales
+</pre>
+
+
+<h3>¿Por qué se usa la molalidad en las propiedades coligativas en lugar de la molaridad?</h3>
+
+<p>La molalidad es independiente de la temperatura, mientras que la molaridad cambia con el volumen de la disolución y por lo tanto con la temperatura.</p>
+
+<h3>¿Qué dice la Ley de Raoult?</h3>
+
+<p>La presión de vapor parcial de un componente en una mezcla de líquidos es igual
+a la presión de vapor de ese componente cuando está puro,
+multiplicada por su fracción molar en la mezcla.</p>
+
+<pre>
+P<sub>A</sub> = X<sub>A</sub> P°<sub>A</sub>
+</pre>
+
+
+<ul>
+<li>P<sub>A</sub> es la presión de vapor del componente A en la solución.</li>
+<li>X<sub>A</sub> es la fracción molar del componente A en la solución.</li>
+<li>P°<sub>A</sub> es la presión de vapor del componente A cuando está en estado puro.</li>
+</ul>
+
+
+<h3>¿Cómo calcular el descenso de la presión de vapor?</h3>
+
+<pre>
+ΔP = P<sub>solvente</sub> - P<sub>solución</sub>
+</pre>
+
+
+
+
+<pre>
+ΔP = X<sub>B</sub> P°<sub>A</sub>
+</pre>
+
+
+<ul>
+<li>ΔP es la disminución de la presión de vapor.</li>
+<li>P°<sub>A</sub> es la presión de vapor del solvente puro.</li>
+<li>X<sub>B</sub> es la fracción molar del soluto.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<p>Se debe tener en cuenta el factor de van ´t Hoff en la fracción molar:</p>
+
+<pre>
+X<sub>B</sub> = (in<sub>B</sub>) / (n<sub>A</sub> + in<sub>B</sub>)
+</pre>
+
+
+<h3>¿Cómo calcular la elevación del punto de ebullición?</h3>
+
+<pre>
+ΔT = T<sub>solución</sub> - T<sub>solvente</sub>
+</pre>
+
+
+
+
+<pre>
+ΔT = i K<sub>b</sub> m
+</pre>
+
+
+<ul>
+<li>ΔT es la elevación del punto de ebullición.</li>
+<li>K<sub>b</sub> es la constante ebulloscópica.</li>
+<li>m es la molalidad.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<h3>¿Cómo calcular la disminución del punto de congelación?</h3>
+
+<pre>
+ΔT = T<sub>solvente</sub> - T<sub>solución</sub>
+</pre>
+
+
+
+
+<pre>
+ΔT = i K<sub>f</sub> m
+</pre>
+
+
+<ul>
+<li>ΔT es la disminción del punto de congelación.</li>
+<li>K<sub>f</sub> es la constante ebulloscópica.</li>
+<li>m es la molalidad.</li>
+<li>i es el factor de van &rsquo;t Hoff</li>
+</ul>
+
+
+<h3>¿Cómo calcular la presión osmótica (Π)?</h3>
+
+<pre>
+Π = i M R T
+</pre>
+
+
+<ul>
+<li>Π es la presión osmótica</li>
+<li>M es la molaridad</li>
+<li>R es la constante de los gases</li>
+<li>T es la temperatura absoluta</li>
+</ul>
+
+
+<h3>¿Qué es la presión osmótica (Π)?</h3>
+
+<p>Es la presión externa que se necesita aplicar a una disolución para detener el flujo neto de disolvente a través de la membrana semipermeable.</p>
+
+<h3>¿Qué es la ósmosis?</h3>
+
+<p>Es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de menor concentración de soluto a una de mayor concentración.</p>
+
+<h3>¿Qué es la ósmosis inversa?</h3>
+
+<p>Es un proceso para purificar el agua. Se aplica una presión superior a la presión osmótica para forzar el disolvente a través de la membrana, dejando el soluto atrás.</p>
+
+<h3>¿Qué es una disolución isotónica, hipotónica e hipertónica?</h3>
+
+<p>Una disolución <strong>isotónica</strong> tiene la misma presión osmótica que las células. Una <strong>hipotónica</strong> tiene menor presión osmótica (el agua entra en la célula). Una <strong>hipertónica</strong> tiene mayor presión osmótica (el agua sale de la célula).</p>
+
+<h3>¿Por qué las propiedades coligativas son útiles para determinar la masa molar?</h3>
+
+<p>Porque la magnitud del cambio en la propiedad coligativa es directamente proporcional a la concentración del soluto. Midiendo este cambio, se puede calcular la masa molar.</p>
+
+<h2>Mezclas Líquidas Binarias</h2>
+
+<h3>¿Qué es una solución ideal?</h3>
+
+<p>Una solución ideal:</p>
+
+<ul>
+<li>Las interacciones entre las moléculas del soluto y del solvente son idénticas a las interacciones entre las moléculas de los componentes puros.</li>
+<li>Obedece la Ley de Raoult.</li>
+<li>No hay liberación ni absorción de calor al mezclar los componentes.</li>
+<li>El volumen de la solución es exactamente la suma de los volúmenes de los componentes puros.</li>
+</ul>
+
+
+<p>En el mundo real, no existen soluciones ideales, pero algunas se acercan mucho a este comportamiento.
+Un ejemplo clásico es una mezcla de benceno (C6H6) y tolueno (C7H8).</p>
+
+<h3>¿Cómo se desvían las disoluciones reales de la Ley de Raoult?</h3>
+
+<ul>
+<li>Las <strong>desviaciones positivas</strong> (mayor presión de vapor) ocurren cuando las interacciones soluto-disolvente son más débiles que las de los componentes puros.</li>
+<li>Las <strong>desviaciones negativas</strong> (menor presión de vapor) ocurren cuando son más fuertes.</li>
+</ul>
+
+
+<h3>¿Cómo se calcula la presión de vapor total de una solución ideal?</h3>
+
+<p>Combinando la Ley de Raoult con la Ley de Dalton de las presiones parciales:</p>
+
+<pre>
+P<sub>T</sub> = P<sub>A</sub> + P<sub>B</sub>
+</pre>
+
+
+
+
+<pre>
+P<sub>T</sub> = (Y<sub>A</sub>P<sub>T</sub>) + (Y<sub>B</sub>P<sub>T</sub>)
+</pre>
+
+
+
+
+<pre>
+P<sub>T</sub> = (X<sub>A</sub>P°<sub>A</sub>) + (X<sub>B</sub>P°<sub>B</sub>)
+</pre>
+
+
+<ul>
+<li>Las fracciones molares Y se refieren a la fase gas.</li>
+<li>Las fracciones molares X se refieren a la solución.</li>
+</ul>
+
+
+<h3>¿Qué es el punto eutéctico?</h3>
+
+<p>Es la temperatura más baja a la que puede fundir una mezcla sólida de dos o más componentes.
+En este punto, la mezcla se comporta como si fuera una sustancia pura,
+fundiéndose a una temperatura constante y con una composición fija, conocida como composición eutéctica.</p>
+
+<h3>¿Qué es un azeótropo?</h3>
+
+<p>Es una mezcla de líquidos que tiene la misma composición en fase líquida y vapor a una temperatura específica,
+por lo que no puede separarse por destilación simple.</p>
+
+<h3>¿Qué tipos de azeótropos existen?</h3>
+
+<ul>
+<li><strong>azeótropos de ebullición mínima</strong>, que se forman en mezclas con desviaciones positivas a la Ley de Raoult y tienen un punto de ebullición más bajo que sus componentes (ejemplo: etanol y agua).</li>
+<li><strong>azeótropos de ebullición máxima</strong>, que se forman en mezclas con desviaciones negativas y tienen un punto de ebullición más alto (ejemplo: ácido clorhídrico y agua).</li>
+</ul>
+
+
+<h3>¿Qué es la destilación fraccionada?</h3>
+
+<p>Es un método para separar componentes de una disolución líquida aprovechando
+la diferencia en sus puntos de ebullición, mediante vaporizaciones y condensaciones sucesivas.</p>
+
+<h3>¿Cómo funciona una columna de fraccionamiento?</h3>
+
+<p>Es una columna vertical donde el vapor que asciende se enfría y se condensa,
+mientras que el líquido que desciende se calienta y se vaporiza.
+En cada nivel, el vapor se enriquece con el componente más volátil, lo que permite una separación eficiente.</p>
+
+<h3>¿La destilación fraccionada se usa para separar azeótropos?</h3>
+
+<p>No, porque los azeótropos hierven a una temperatura constante y su vapor tiene la misma composición que el líquido,
+lo que impide la separación por este método.</p>
+  </body>
+  
+  <br><br>
+  <div class="footer-text">
+	<center>
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+    </center>
+</div>
+  
+</html>
