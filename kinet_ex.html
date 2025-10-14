@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinética Química</title>
+    <style>
+
+		@font-face {
+			font-family: 'Open Sans';
+			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
+			font-style: normal italic; /* Define el estilo (normal e itálico) */
+		}
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            //background-color: #f0f0f0;
+            background-color: #FAFAFA;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            margin: 10px auto;
+        }
+		.button-group {
+			display: flex; /* Habilitar flexbox para alineación */
+			width: 100%; /* Asegurar que ocupe todo el ancho del contenedor padre */
+			gap: 10px; /* Espacio entre los botones (opcional, mejora la estética) */
+			margin-bottom: 10px; /* Espacio debajo de los botones (opcional) */
+		}        
+		.menu-item, .btn {
+			display: inline-block; 
+			margin: 8px 6px;
+			padding: 10px 14px;
+			font-size: 16px;
+			cursor: pointer;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			text-align: center;
+			text-decoration: none;
+		}
+
+		/* Estilo específico para los botones dentro del grupo principal */
+		.button-group .btn {
+			flex-grow: 1; /* Permite que el elemento crezca para ocupar el espacio disponible */
+			width: 50%;   /* Establecer el ancho base */
+			margin: 0;    /* Eliminar los márgenes para un control total por flexbox */
+		}
+        .menu-item:hover, .btn:hover {
+            background-color: #0056b3;
+        }        
+        #ejercicio-container {
+            display: none; /* Ocultar el contenedor inicial de ejercicio */
+            text-align: left;
+        }
+        #examen-container {
+            display: none;
+        }
+        .ejercicio-titulo {
+           // border-top: 2px solid;
+           font-size: 24px;
+        }
+
+
+        .pregunta-texto {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .respuesta-texto {
+			font-size: 20px;
+            font-weight: bold;
+            color: red; /* Color para las respuestas */
+            display: none;
+        }
+        .buttons-container {
+            margin-top: 10px;
+            
+        }
+        .buttons-inline {
+            display: flex;
+            gap: 10px;
+        }        
+		.buttons-inline .btn {
+			flex-grow: 1; /* Permite que el botón crezca para llenar el espacio */
+			width: 50%;   /* Establece una base de 50% */
+			margin: 0;    /* Elimina el margen lateral que interfiere con el cálculo del ancho */
+			/* El padding ya está definido en .menu-item, .btn */
+		}        
+        .footer-text {
+            width: 100%;
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+        }
+        .ejercicio-block {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+	<center><h1>Cinética Química</h1></center>
+	<div class="button-group">
+		<button id="generar-ejercicios-btn" class="btn" onclick="generarEjercicios()">Generar Ejercicios</button>
+		<button id="generar-examen-btn" class="btn" onclick="generarExamen()">Generar Examen</button>
+	</div>
+    <div id="ejercicios-generados">
+        </div>
+
+    <div id="ejercicio-container">
+        <h2 class="ejercicio-titulo"></h2>
+        <div class="pregunta-texto"></div>
+        <div class="respuesta-texto"></div>
+    </div>
+    
+</div>
+
+<div class="footer-text">
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+</div>
+
+<script>
+
+function C_to_K(X) {
+  return X + 273.15;
+};
+
+function K_to_C(X) {
+  return X - 273.15;
+};
+
+function Pa_to_atm(X) {
+  return X / 101325;
+};
+
+function atm_to_Pa(X) {
+  return X * 101325;
+};
+
+function Pa_to_mmHg(X) {
+  return X / 133.322;
+};
+
+function mmHg_to_Pa(X) {
+  return X * 133.322;
+};
+
+function J_to_cal(X) {
+  return X / 4.184;
+};
+
+function cal_to_J(X) {
+  return X * 4.184;
+};
+
+function L_to_m3(L) {
+    return L / 1000;
+}		
+
+function m3_to_L(m3) {
+    return m3 * 1000;
+}		
+
+function coin() {
+    return Math.round(Math.random());
+};
+
+function irand(A, B) {
+  return Math.floor(Math.random() * (B - A + 1)) + A;
+};	  
+
+function frand(A, B) {
+  return Math.random() * (B - A) + A;
+};	
+
+// Constante de los gases en unidades SI
+const R = 8.314; 
+    
+///////////////////////////////////////////////////////////////////////////////////////////////
+function CineticaOrden0_C() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = -k*t + C0;
+		console.log(C0, C, t, k);
+		if(C >=10) break;
+	}
+	
+	respuesta = C + "mol/L";
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" mol / L s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina la concentración de A después de "+t+" s.";
+		
+	respuesta = C.toFixed(4) + " mol/L";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden0_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = -k*t + C0;
+		console.log(C0, C, t, k);
+		if(C >=10) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" mol / L s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina los segundos necesarios para que la concentración de A sea "+C.toFixed(2)+" mol/s.";
+		
+	respuesta = t + " s";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}			
+
+
+function CineticaOrden0_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = -k*t + C0;
+		console.log(C0, C, t, k);
+		if(C >=10) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B<br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(2)+" mol/L. ";
+	pregunta += "Determina la constante de velocidad.";
+		
+	respuesta = k + " mol / L s";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden0_C0() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = -k*t + C0;
+		console.log(C0, C, t, k);
+		if(C >=10) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" mol / L s</center><br>";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(3)+" mol/s. ";
+	pregunta += "Determina la concentración inicial de A.";
+		
+	respuesta = C0 + " mol/L";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden0TVM_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = C0/(2*k);
+		if(t >=5) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" L / mol s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina el tiempo de vida media en segundos.";
+		
+	respuesta = t.toFixed(2) + " s";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden0TVM_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = C0/(2*k);
+		if(t >=5) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de orden cero:";
+	pregunta += "<br><center>A &rarr; B</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Si el tiempo de vida media de dicha reacción es "+t.toFixed(2)+" s, determina la constante de velocidad.";
+		
+	respuesta = k + " mol / L s";
+
+	return { titulo: "Reacción de Orden Cero", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+function CineticaOrden1_C() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C =  Math.exp(-k*t + Math.log(C0) );
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+	respuesta = C + "mol/L";
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" 1/s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina la concentración de A después de "+t+" s.";
+		
+	respuesta = C.toFixed(4) + " mol/L";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden1_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C =  Math.exp(-k*t + Math.log(C0) );
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" 1/s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina los segundos necesarios para que la concentración de A sea "+C.toFixed(2)+" mol/s.";
+		
+	respuesta = t + " s";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}			
+
+
+function CineticaOrden1_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C =  Math.exp(-k*t + Math.log(C0) );
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B<br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(2)+" mol/L. ";
+	pregunta += "Determina la constante de velocidad.";
+		
+	respuesta = k + " 1/s";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden1_C0() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C =  Math.exp(-k*t + Math.log(C0) );
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" 1/s</center><br>";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(2)+" mol/s. ";
+	pregunta += "Determina la concentración inicial de A.";
+		
+	respuesta = C0 + " mol/L";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden1TVM_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = 0.693/k;
+		if(t >=5) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" 1/s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina el tiempo de vida media en segundos.";
+		
+	respuesta = t.toFixed(2) + " s";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden1TVM_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = 0.693/k;
+		if(t >=5) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de primer orden:";
+	pregunta += "<br><center>A &rarr; B</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Si el tiempo de vida media de dicha reacción es "+t.toFixed(2)+" s, determina la constante de velocidad.";
+		
+	respuesta = k + " 1/s";
+
+	return { titulo: "Reacción de 1er Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+function CineticaOrden2_C() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = 1/(k*t + 1/C0);
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+	respuesta = C + "mol/L";
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" L / mol s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina la concentración de A después de "+t+" s.";
+		
+	respuesta = C.toFixed(4) + " mol/L";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden2_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = 1/(k*t + 1/C0);
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" L / mol s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina los segundos necesarios para que la concentración de A sea "+C.toFixed(2)+" mol/s.";
+		
+	respuesta = t + " s";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}			
+
+
+function CineticaOrden2_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = 1/(k*t + 1/C0);
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B<br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(2)+" mol/L. ";
+	pregunta += "Determina la constante de velocidad.";
+		
+	respuesta = k + " L / mol s";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden2_C0() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		t = irand(5,300);  // s
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		C = 1/(k*t + 1/C0);
+		console.log(C0, C, t, k);
+		if(C >=1) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" L / mol s</center><br>";
+	pregunta += "Después de "+t+" s, concentración de A es "+C.toFixed(3)+" mol/s. ";
+	pregunta += "Determina la concentración inicial de A.";
+		
+	respuesta = C0 + " mol/L";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden2TVM_t() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = 1/(k*C0);
+		if(t >=2) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B, k = "+k+" L / mol s</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Determina el tiempo de vida media en segundos.";
+		
+	respuesta = t.toFixed(2) + " s";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function CineticaOrden2TVM_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let t;
+	let C0;
+	let k;
+	let C;
+
+	while(1){
+		C0 = irand(10,1000); // mol/L
+		k = irand(1,100)/1000.0;
+		t = 1/(k*C0);
+		if(t >=2) break;
+	}
+	
+
+	pregunta  = "Considera la siguiente reacción de segundo orden:";
+	pregunta += "<br><center>A &rarr; B</center><br>";
+	pregunta += "La concentración inicial de A es "+C0+" mol/L. ";
+	pregunta += "Si el tiempo de vida media de dicha reacción es "+t.toFixed(2)+" s, determina la constante de velocidad.";
+		
+	respuesta = k + " L / mol s";
+
+	return { titulo: "Reacción de 2do Orden", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+////////////////////////////////////////////////
+function Arrhenius_k() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let k1,k2;
+	let T1,T2;
+	let E;
+	
+	let R = 8.314;
+
+	while(1){
+
+		k1 = irand(100,999)/100000;
+		k1 = k1.toFixed(4);
+		T1 = irand(10,90); //°C
+		T2 = T1 + irand(20,300);
+		E  = irand(10,99)*1000;
+		R = 8.314;
+
+		k2 = k1/Math.exp( (E/R)*(1/(T2+273.15) - 1/(T1+273.15)) ) ;
+
+		//console.log(k1, k2, T1, T2, E);
+		if( k2 > 0 && k2 < 1 ) break;
+	}
+
+
+	pregunta  = "La constante de rapidez de cierta reacción química es "+k1+" 1/s a ";
+	pregunta += T1+" °C. Calcula dicha constante a "+T2;
+	pregunta += " °C, si la energía de activación es "+(E/1000)+" kJ/mol."
+		
+	respuesta = k2.toFixed(4) + " 1/s";
+
+	return { titulo: "Ecuación de Arrhenius", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+function Arrhenius_E() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let k1,k2;
+	let T1,T2;
+	let E;
+	
+	let R = 8.314;
+
+	while(1){
+
+		k1 = irand(100,999)/100000;
+		k1 = k1.toFixed(4);
+		T1 = irand(10,90); //°C
+		T2 = T1 + irand(20,300);
+		E  = irand(10,99)*1000;
+		R = 8.314;
+
+		k2 = k1/Math.exp( (E/R)*(1/(T2+273.15) - 1/(T1+273.15)) ) ;
+		k2 = k2.toFixed(4);
+
+		//console.log(k1, k2, T1, T2, E);
+		if( k2 > 0 && k2 < 1 ) break;
+	}
+
+
+	pregunta  = "La constante de rapidez de cierta reacción química es "+k1+" 1/s a ";
+	pregunta += T1+" °C y "+k2+" 1/s a "+T2+" °C. ";
+	pregunta += "Calcula la energía de activación (en kJ/mol) de la reacción."
+
+		
+	respuesta = E/1000 + " kJ/mol";
+
+	return { titulo: "Ecuación de Arrhenius", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+
+function Arrhenius_T() {
+
+
+	let pregunta = "";
+	let respuesta = 0;
+	
+	let k1,k2;
+	let T1,T2;
+	let E;
+	
+	let R = 8.314;
+
+	while(1){
+
+		k1 = irand(100,999)/100000;
+		k1 = k1.toFixed(4);
+		T1 = irand(10,90); //°C
+		T2 = T1 + irand(20,300);
+		E  = irand(10,99)*1000;
+		R = 8.314;
+
+		k2 = k1/Math.exp( (E/R)*(1/(T2+273.15) - 1/(T1+273.15)) ) ;
+		k2 = k2.toFixed(4);
+
+		//console.log(k1, k2, T1, T2, E);
+		if( k2 > 0 && k2 < 1 ) break;
+	}
+
+
+	pregunta  = "La constante de rapidez de cierta reacción química es "+k1+" 1/s a "+T1+" °C y "+k2+" 1/s a cierta temperatura desconocida. ";
+	pregunta += "Calcula dicha temperatura (en °C) si la energía de activación es "+E/1000+" kJ/mol.";
+		
+	respuesta = T2 + " °C";
+
+	return { titulo: "Ecuación de Arrhenius", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+///////////////////////////////////////////////////
+function DeterminarOrden() {
+	
+	/*
+	orden 0, k [=] mol/(L s)
+	orden 1, k [=] 1/s
+	orden 2, k [=] L/(mol s)
+	*/
+	
+	let pregunta = "";
+	let respuesta = 0;	
+
+	let t0, C0;
+	let t1, C1;
+	let t2, C2;
+	let dt;
+
+	t0 = 10.0;
+	C2 = 0.2;
+
+	let k, kUNI;
+	let orden,noesorden;
+
+	orden = irand(1,3); orden--;
+	while(1){
+		noesorden = irand(1,3); noesorden--;
+		if( orden !== noesorden ) break;
+	}
+	console.log(orden, noesorden);
+
+	if(orden===0){
+		while(1){
+			kUNI = " mol/(L s)";
+			k = irand(100,999)/10000.0;
+			dt = irand(1,40);
+
+			t0 = 0;
+			C0 = irand(10,1000); // mol/L
+			t1 = dt;
+			C1 = -k*t1 + C0;
+			t2 = t1 + dt;
+			C2 = -k*t2 + C0;
+			//console.log(orden, C0, C2, t2, k);
+			if(C2 >=1 && Math.abs(C1-C0)>=2 ) break;
+		}
+	}
+	//console.log("...");
+
+	if(orden===1){
+		while(1){
+			kUNI = " 1/s";
+			k = irand(100,999)/100000.0;
+			dt = irand(1,10);
+
+			t0 = 0;
+			C0 = irand(10,1000); // mol/L
+			t1 = dt;
+			C1 = Math.exp(-k*t1 + Math.log(C0) ) ;
+			t2 = t1 + dt;
+			C2 = Math.exp(-k*t2 + Math.log(C0) ) ;
+			//console.log(orden, C0, C2, t2, k);
+			if(C2 >=1 && Math.abs(C1-C0)>=5 ) break;
+		}
+	}
+	//console.log("...");
+
+	if(orden===2){
+		while(1){
+			kUNI = " L/(mol s)";
+			k = irand(100,999)/1000.0;
+			k = irand(1,100)/1000.0;
+			dt = irand(1,10);
+
+			t0 = 0;
+			C0 = irand(1,100); // mol/L
+			t1 = dt;
+			C1 = 1/(k*t1 + 1/C0);
+			t2 = 2*dt;
+			C2 = 1/(k*t2 + 1/C0);
+			//console.log(orden, C0, C1, C2, dt, k);
+			if( C2>= 0.1 && Math.abs(C1-C0)>=2 ) break;
+		}
+	}
+	//console.log("...");
+
+	pregunta  = "Datos de una reacción de orden desconocido:";
+	pregunta += "<br><br>";
+	pregunta += "<style>table, th, td {border:1px solid black;}</style>";
+	pregunta += "<center><table>";
+	pregunta += "<code>";
+	pregunta += "<tr><td>t, s</td> <td>[A], mol/L</td> </tr>";
+	pregunta += "<tr><td>"+t0+"</td> <td>"+C0.toFixed(6)+"</td> </tr>";
+	pregunta += "<tr><td>"+t1+"</td> <td>"+C1.toFixed(6)+"</td> </tr>";
+	pregunta += "<tr><td>"+t2+"</td> <td>"+C2.toFixed(6)+"</td> </tr>";
+	pregunta += "</table></center>";
+	pregunta += "</code><br>";
+	pregunta += "Determina el orden de la reacción y la constante de rapidez.<br>";
+	pregunta += "NOTA: La reacción no es orden "+noesorden+".";
+
+	//console.log(T1, T2, K1, K2, dH);
+		
+	respuesta = k + kUNI + " (orden: "+orden+")";
+
+	return { titulo: "Orden Desconocido", pregunta: pregunta, respuesta: respuesta };
+  
+}
+
+
+
+// --- Generadores globales en el mismo orden (para poder regenerar individualmente) ---
+const GENERADORES = [
+    CineticaOrden0_C,
+	CineticaOrden0_t,
+	CineticaOrden0_k,
+	CineticaOrden0_C0,
+	CineticaOrden0TVM_t,
+	CineticaOrden0TVM_k,
+    CineticaOrden1_C,
+	CineticaOrden1_t,
+	CineticaOrden1_k,
+	CineticaOrden1_C0,
+	CineticaOrden1TVM_t,
+	CineticaOrden1TVM_k,
+    CineticaOrden2_C,
+	CineticaOrden2_t,
+	CineticaOrden2_k,
+	CineticaOrden2_C0,
+	CineticaOrden2TVM_t,
+	CineticaOrden2TVM_k,
+	Arrhenius_k,
+	Arrhenius_E,
+	Arrhenius_T,
+	DeterminarOrden
+    
+];
+
+// Función principal para generar y mostrar los ejercicios (respuestas ocultas)
+function generarEjercicios() {
+    const ejercicios = [];
+    GENERADORES.forEach(func => {
+        ejercicios.push(func()); // Ejecutar cada función para obtener el ejercicio
+    });
+
+    // Construir HTML con respuestas ocultas y botones alineados
+    let htmlContent = '';
+    ejercicios.forEach((ejercicio, index) => {
+        htmlContent += `
+            <div class="ejercicio-block" id="ejercicio-${index}">
+                <h3 class="ejercicio-titulo">Ejercicio ${index + 1}: ${ejercicio.titulo}</h3>
+                <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                <div class="respuesta-texto" id="respuesta-${index}" style="display:none;"><br>Respuesta: ${ejercicio.respuesta}</div>
+                <div class="buttons-container">
+                    <div class="buttons-inline">
+                        <button id="mostrar-btn-${index}" class="btn" onclick="mostrarRespuesta(${index})">Mostrar respuesta</button>
+                        <button class="btn" onclick="generarOtro(${index})">Generar otro</button>
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
+}
+
+
+function generarExamen() {
+
+
+    // --- Definición de categorías temáticas ---
+    const categorias = {
+        Orden0: [
+			CineticaOrden0_C,
+			CineticaOrden0_t,
+			CineticaOrden0_k,
+			CineticaOrden0_C0,
+			CineticaOrden0TVM_t,
+			CineticaOrden0TVM_k,
+        ],
+        Orden1: [
+			CineticaOrden1_C,
+			CineticaOrden1_t,
+			CineticaOrden1_k,
+			CineticaOrden1_C0,
+			CineticaOrden1TVM_t,
+			CineticaOrden1TVM_k,
+        ],
+        Orden2: [
+			CineticaOrden2_C,
+			CineticaOrden2_t,
+			CineticaOrden2_k,
+			CineticaOrden2_C0,
+			CineticaOrden2TVM_t,
+			CineticaOrden2TVM_k,
+        ],
+        Arrhenius: [
+			Arrhenius_E,
+			Arrhenius_k,
+			Arrhenius_T
+		],
+		OrdenX:[
+			DeterminarOrden,
+			DeterminarOrden
+		]
+
+    };
+
+    // --- Configuración del equilibrio temático ---
+    const configuracion = {
+        Orden0: 2,
+        Orden1: 2,
+        Orden2: 2,
+        Arrhenius: 2,
+        OrdenX: 2
+    };
+
+    // --- Selección equilibrada de ejercicios ---
+    const ejercicios = [];
+    Object.keys(configuracion).forEach(cat => {
+        const lista = categorias[cat];
+        const cantidad = configuracion[cat];
+        const indicesUsados = new Set();
+
+        while (indicesUsados.size < cantidad && indicesUsados.size < lista.length) {
+            const i = irand(0, lista.length - 1);
+            if (!indicesUsados.has(i)) {
+                indicesUsados.add(i);
+                ejercicios.push(lista[i]());
+            }
+        }
+    });
+
+    // --- Generar HTML con respuestas visibles ---
+    let html = '';
+    ejercicios.forEach((e, i) => {
+        html += `
+        <div class="ejercicio-block" id="examen-${i}">
+            <h3 class="ejercicio-titulo">Ejercicio ${i + 1}: ${e.titulo}</h3>
+            <div class="pregunta-texto">${e.pregunta}</div>
+            <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${e.respuesta}</div>
+        </div>`;
+    });
+
+    document.getElementById('ejercicios-generados').innerHTML = html;
+}
+
+// Mostrar/ocultar respuesta (toggle) y actualizar etiqueta del botón
+function mostrarRespuesta(index) {
+    const resp = document.getElementById(`respuesta-${index}`);
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (!resp) return;
+    if (resp.style.display === 'none' || resp.style.display === '') {
+        resp.style.display = 'block';
+        if (btn) btn.textContent = 'Ocultar respuesta';
+    } else {
+        resp.style.display = 'none';
+        if (btn) btn.textContent = 'Mostrar respuesta';
+    }
+}
+
+// Generar otro ejercicio del mismo tipo y dejar respuesta oculta
+function generarOtro(index) {
+    if (index < 0 || index >= GENERADORES.length) return;
+    const nuevo = GENERADORES[index]();
+    const cont = document.getElementById(`ejercicio-${index}`);
+    if (!cont) return;
+    cont.querySelector('.ejercicio-titulo').innerHTML = `Ejercicio ${index + 1}: ${nuevo.titulo}`;
+    cont.querySelector('.pregunta-texto').innerHTML = nuevo.pregunta;
+    const resp = cont.querySelector('.respuesta-texto');
+    resp.innerHTML = `<br>Respuesta: ${nuevo.respuesta}`;
+    resp.style.display = 'none';
+    const btn = document.getElementById(`mostrar-btn-${index}`);
+    if (btn) btn.textContent = 'Mostrar respuesta';
+}
+
+// La página inicial solo muestra el botón "Generar Ejercicios".
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('ejercicios-generados').innerHTML = '';
+});
+
+</script>
+
+</body>
+</html>
