@@ -1,16 +1,48 @@
+<!--
+    (C) 2024, 2025 Dr. José Octavio Juárez Sánchez
+    octavio.juarez@unison.mx
+-->
+
+
+<!--
+
+RECUERDA:
+
+El estilo moderno de desarrollo HTML/CSS/JS se centra en la Separación de 
+Responsabilidades y la Eficiencia del Código para mejorar la mantenibilidad, 
+la escalabilidad y el rendimiento de la aplicación.
+
+HTML: Estructura Pura (Sin Lógica):
+El objetivo es que el HTML solo defina la estructura y el contenido, 
+abstrayéndose de cualquier comportamiento.
+
+CSS: Apariencia y Transiciones (Sin Comportamiento):
+El CSS debe centrarse en la presentación y en cómo se ven las cosas 
+en respuesta a los estados (clases) manipulados por JS.
+
+JS: Comportamiento y Gestión del Estado (Pura Lógica):
+El JS es el motor que controla la interacción del usuario 
+y manipula el DOM (document object model) y las clases de CSS.
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... Todo el código de inicialización y vinculación de eventos va aquí ...
+});
+
+-->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicios de Equilibrio Físico</title>
+    <title>Cinética Química (MODERNIZADO)</title>
     <style>
 
 		@font-face {
 			font-family: 'Open Sans';
 			src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
-			font-weight: 300 800; /* Define el rango de peso (por ejemplo, de fina a extra-negra) */
-			font-style: normal italic; /* Define el estilo (normal e itálico) */
+			font-weight: 300 800;
+			font-style: normal italic;
 		}
 
         body {
@@ -18,7 +50,6 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
-            //background-color: #f0f0f0;
             background-color: #FAFAFA;
             margin: 0;
         }
@@ -32,100 +63,102 @@
             margin: 10px auto;
         }
 		.button-group {
-			display: flex; /* Habilitar flexbox para alineación */
-			width: 100%; /* Asegurar que ocupe todo el ancho del contenedor padre */
-			gap: 10px; /* Espacio entre los botones (opcional, mejora la estética) */
-			margin-bottom: 10px; /* Espacio debajo de los botones (opcional) */
-		}        
-		.menu-item, .btn {
-			display: inline-block; 
-			margin: 8px 6px;
-			padding: 10px 14px;
-			font-size: 16px;
-			cursor: pointer;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			text-align: center;
-			text-decoration: none;
+			display: flex; 
+			width: 100%; 
+			gap: 10px; 
+			margin-bottom: 10px; 
 		}
 
-		/* Estilo específico para los botones dentro del grupo principal */
-		.button-group .btn {
-			flex-grow: 1; /* Permite que el elemento crezca para ocupar el espacio disponible */
-			width: 50%;   /* Establecer el ancho base */
-			margin: 0;    /* Eliminar los márgenes para un control total por flexbox */
-		}
-        .menu-item:hover, .btn:hover {
+        /* Estilos base para todos los botones de acción */
+		.btn {
+            padding: 10px 14px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            flex-grow: 1; 
+            transition: background-color 0.2s; 
+            margin: 0; /* Asegura el control con flexbox */
+        }
+
+        .btn:hover {
             background-color: #0056b3;
-        }        
-        #ejercicio-container {
-            display: none; /* Ocultar el contenedor inicial de ejercicio */
-            text-align: left;
-        }
-        #examen-container {
-            display: none;
-        }
-        .ejercicio-titulo {
-           // border-top: 2px solid;
-           font-size: 24px;
-        }
-
-
-        .pregunta-texto {
-            font-size: 20px;
-            margin-bottom: 10px;
         }
         
-        .respuesta-texto {
-			font-size: 20px;
+        .ejercicio-contenedor {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .ejercicio-titulo {
             font-weight: bold;
-            color: red; /* Color para las respuestas */
-            display: none;
+            color: #555;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 5px;
+            font-size: 20px; /* Ajuste para mejor lectura */
         }
-        .buttons-container {
-            margin-top: 10px;
-            
+        
+        /* Contenedor de la pregunta y respuesta */
+        .pregunta-texto, .respuesta-texto {
+            font-size: 18px; 
+            margin-bottom: 10px;
         }
+
+        /* CLASE MODERNA DE VISIBILIDAD: Reemplaza style.display='none' */
+        .respuesta-texto {
+            display: none; /* Inicia oculto */
+            font-style: italic;
+            color: #28a745; /* Verde para la respuesta */
+            font-weight: normal; 
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+        
+        /* CLASE MODERNA DE VISIBILIDAD: Se añade por JS para mostrar */
+        .respuesta-visible {
+            display: block !important; /* Prioridad para asegurar visibilidad */
+            font-weight: bold;
+            color: #007bff; /* Azul para visibilidad en examen */
+        }
+
         .buttons-inline {
             display: flex;
             gap: 10px;
-        }        
-		.buttons-inline .btn {
-			flex-grow: 1; /* Permite que el botón crezca para llenar el espacio */
-			width: 50%;   /* Establece una base de 50% */
-			margin: 0;    /* Elimina el margen lateral que interfiere con el cálculo del ancho */
-			/* El padding ya está definido en .menu-item, .btn */
-		}        
+            margin-top: 10px;
+        }
+        
+        .buttons-inline .btn {
+            flex-grow: 1;
+        }
+        
         .footer-text {
             width: 100%;
             color: #666;
             text-align: center;
             font-size: 12px;
-        }
-        .ejercicio-block {
-            padding: 15px;
-            text-align: left;
-        }
+        }        
+        
     </style>
 </head>
 <body>
 
 <div class="container">
 
-	<center><h1>Equilibrio Químico</h1></center>
+	<center><h1>Ejercicios de Cinética Química</h1></center>
 	<div class="button-group">
-		<button id="generar-ejercicios-btn" class="btn" onclick="generarEjercicios()">Generar Ejercicios</button>
-		<button id="generar-examen-btn" class="btn" onclick="generarExamen()">Generar Examen</button>
+		<button id="generar-ejercicios-btn" class="btn">Generar Ejercicios</button>
+		<button id="generar-examen-btn" class="btn">Generar Examen</button>
 	</div>
-    <div id="ejercicios-generados">
-        </div>
 
-    <div id="ejercicio-container">
-        <h2 class="ejercicio-titulo"></h2>
-        <div class="pregunta-texto"></div>
-        <div class="respuesta-texto"></div>
+    <div id="ejercicios-generados">
+        <p></p>
     </div>
     
 </div>
@@ -1045,11 +1078,15 @@ function vanthoff_T2(){
 				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta };
 }
 
+    function getRandomElements(arr, n) {
+        // Copia el array y lo mezcla aleatoriamente
+        const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+        // Devuelve los primeros 'n' elementos
+        return shuffled.slice(0, n);
+    }
 
-
-
-
-// --- Generadores globales en el mismo orden (para poder regenerar individualmente) ---
+   
+    // --- Generadores globales en el mismo orden (para poder regenerar individualmente) ---
 const GENERADORES = [
     RxQuimHomo_Kc,
     RxQuimHomo_C,
@@ -1063,128 +1100,193 @@ const GENERADORES = [
     vanthoff_dH   
     
 ];
+    
+    // ----------------------------------------------------------------------
+    // FUNCIONES DE MANEJO DE VISTAS Y EVENTOS (Lógica Moderna)
+    // ----------------------------------------------------------------------
+    
+    // Referencias DOM (inicializadas en DOMContentLoaded)
+    let contenedorEjercicios;
+    let btnGenerarEjercicios;
+    let btnGenerarExamen;
 
-// Función principal para generar y mostrar los ejercicios (respuestas ocultas)
-function generarEjercicios() {
-    const ejercicios = [];
-    GENERADORES.forEach(func => {
-        ejercicios.push(func()); // Ejecutar cada función para obtener el ejercicio
-    });
-
-    // Construir HTML con respuestas ocultas y botones alineados
-    let htmlContent = '';
-    ejercicios.forEach((ejercicio, index) => {
-        htmlContent += `
-            <div class="ejercicio-block" id="ejercicio-${index}">
-                <h3 class="ejercicio-titulo">Ejercicio ${index + 1}: ${ejercicio.titulo}</h3>
-                <div class="pregunta-texto">${ejercicio.pregunta}</div>
-                <div class="respuesta-texto" id="respuesta-${index}" style="display:none;"><br>Respuesta: ${ejercicio.respuesta}</div>
-                <div class="buttons-container">
-                    <div class="buttons-inline">
-                        <button id="mostrar-btn-${index}" class="btn" onclick="mostrarRespuesta(${index})">Mostrar respuesta</button>
-                        <button class="btn" onclick="generarOtro(${index})">Generar otro</button>
-                    </div>
-                    
-                </div>
-            </div>
-        `;
-    });
-
-    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
-}
-
-function generarExamen() {
-
-	// Mapeo de nombres de funciones generadoras (strings) a las funciones reales
-	const GeneradoresMap = {
-		'RxQuimHomo_Kc': RxQuimHomo_Kc,
-		'RxQuimHomo_C': RxQuimHomo_C,
-		'RxQuimHetero_Kc': RxQuimHetero_Kc,
-		'RxQuimHetero_C': RxQuimHetero_C,
-		'KpKc_Kp': KpKc_Kp,
-		'KpKc_T': KpKc_T,
-		'ICE': ICE,
-		'vanthoff_K2': vanthoff_K2,
-		'vanthoff_T2': vanthoff_T2,
-		'vanthoff_dH': vanthoff_dH
-	};
-
-    // 1. Configuración del examen: Define qué tipos de ejercicios y cuántos generar.
-    const configuracionExamen = [
-        { categoria: 'RxQuimHomo_Kc', cantidad: 1 },
-        { categoria: 'RxQuimHomo_C', cantidad: 1 },
-        { categoria: 'RxQuimHetero_Kc', cantidad: 1 },
-        { categoria: 'RxQuimHetero_C', cantidad: 1 },
-        { categoria: 'KpKc_Kp', cantidad: 1 },
-        { categoria: 'KpKc_T', cantidad: 1 },
-        { categoria: 'ICE', cantidad: 1 },
-        { categoria: 'vanthoff_K2', cantidad: 1 },
-        { categoria: 'vanthoff_T2', cantidad: 1 },
-        { categoria: 'vanthoff_dH', cantidad: 1 }
-    ];
-
-    const ejerciciosGenerados = [];
-    let contadorEjercicio = 1;
-
-    // 2. Generar los ejercicios según la configuración
-    configuracionExamen.forEach(config => {
-        const generador = GeneradoresMap[config.categoria];
-        if (generador) {
-            for (let i = 0; i < config.cantidad; i++) {
-                ejerciciosGenerados.push(generador());
-            }
+    /**
+     * Muestra/oculta la respuesta utilizando la clase CSS, 
+     * lo cual es más eficiente que manipular style.display.
+     * @param {HTMLElement} resp - Elemento contenedor de la respuesta.
+     * @param {HTMLElement} btn - Botón que activó la acción.
+     */
+    function mostrarRespuesta(resp, btn) {
+        // PRÁCTICA MODERNA: Usar classList.toggle para cambiar el estado de CSS.
+        const estaVisible = resp.classList.toggle('respuesta-visible');
+        
+        if (btn) {
+            btn.textContent = estaVisible ? 'Ocultar respuesta' : 'Mostrar respuesta';
         }
-    });
-	
+    }
 
-    // 3. Construir HTML con respuestas **visibles** (estilo `display:block;`)
-    let htmlContent = '';
-    ejerciciosGenerados.forEach((ejercicio, index) => {
-        htmlContent += `
-            <div class="ejercicio-block" id="examen-ejercicio-${index}">
-                <h3 class="ejercicio-titulo">Ejercicio ${contadorEjercicio++}: ${ejercicio.titulo}</h3>
-                <div class="pregunta-texto">${ejercicio.pregunta}</div>
-                <div class="respuesta-texto" style="display:block;"><br>Respuesta: ${ejercicio.respuesta}</div>
-            </div>
-        `;
-    });
-
-    document.getElementById('ejercicios-generados').innerHTML = htmlContent;
-}
-
-// Mostrar/ocultar respuesta (toggle) y actualizar etiqueta del botón
-function mostrarRespuesta(index) {
-    const resp = document.getElementById(`respuesta-${index}`);
-    const btn = document.getElementById(`mostrar-btn-${index}`);
-    if (!resp) return;
-    if (resp.style.display === 'none' || resp.style.display === '') {
-        resp.style.display = 'block';
-        if (btn) btn.textContent = 'Ocultar respuesta';
-    } else {
-        resp.style.display = 'none';
+    /**
+     * Genera otro ejercicio del mismo tipo y actualiza el contenedor.
+     * @param {number} index - Índice del ejercicio en GENERADORES.
+     * @param {HTMLElement} cont - Contenedor del ejercicio a actualizar.
+     */
+    function generarOtro(index, cont) {
+        if (index < 0 || index >= GENERADORES.length) return;
+        
+        // Genera un nuevo ejercicio usando el generador del índice.
+        const nuevo = GENERADORES[index]();
+        
+        if (!cont) return;
+        
+        // Actualiza el contenido
+        cont.querySelector('.ejercicio-titulo').innerHTML = `Ejercicio ${index + 1}: ${nuevo.titulo}`;
+        cont.querySelector('.pregunta-texto').innerHTML = nuevo.pregunta;
+        
+        const resp = cont.querySelector('.respuesta-texto');
+        resp.innerHTML = `<br>Respuesta: ${nuevo.respuesta}`;
+        
+        // Asegura que la respuesta esté oculta inicialmente (para el modo Ejercicios)
+        resp.classList.remove('respuesta-visible');
+        
+        // Actualiza el botón "Mostrar respuesta"
+        const btn = cont.querySelector('[data-action="mostrar"]');
         if (btn) btn.textContent = 'Mostrar respuesta';
     }
-}
 
-// Generar otro ejercicio del mismo tipo y dejar respuesta oculta
-function generarOtro(index) {
-    if (index < 0 || index >= GENERADORES.length) return;
-    const nuevo = GENERADORES[index]();
-    const cont = document.getElementById(`ejercicio-${index}`);
-    if (!cont) return;
-    cont.querySelector('.ejercicio-titulo').innerHTML = `Ejercicio ${index + 1}: ${nuevo.titulo}`;
-    cont.querySelector('.pregunta-texto').innerHTML = nuevo.pregunta;
-    const resp = cont.querySelector('.respuesta-texto');
-    resp.innerHTML = `<br>Respuesta: ${nuevo.respuesta}`;
-    resp.style.display = 'none';
-    const btn = document.getElementById(`mostrar-btn-${index}`);
-    if (btn) btn.textContent = 'Mostrar respuesta';
-}
 
-// La página inicial solo muestra el botón "Generar Ejercicios".
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('ejercicios-generados').innerHTML = '';
-});
+    /**
+     * Genera y muestra la lista completa de ejercicios con respuestas ocultas.
+     */
+    function generarEjercicios() {
+        let htmlContent = '';
+        GENERADORES.forEach((generador, index) => {
+            const ejercicio = generador();
+            htmlContent += `
+                <div class="ejercicio-contenedor" data-index="${index}" id="ejercicio-${index}">
+                    <h3 class="ejercicio-titulo">Ejercicio ${index + 1}: ${ejercicio.titulo}</h3>
+                    <div class="pregunta-texto">${ejercicio.pregunta}</div>
+                    
+                    <div class="respuesta-texto" id="respuesta-${index}">
+                        <br>Respuesta: ${ejercicio.respuesta}
+                    </div>
+
+                    <div class="buttons-inline">
+                        <button class="btn action-btn" data-action="mostrar" data-index="${index}" id="mostrar-btn-${index}">
+                            Mostrar respuesta
+                        </button>
+                        <button class="btn action-btn" data-action="generar-otro" data-index="${index}">
+                            Generar otro
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        contenedorEjercicios.innerHTML = htmlContent;
+    }
+
+
+
+    function generarExamen() {
+		
+        
+        // --- Definición de categorías temáticas para selección equilibrada ---
+        const categorias = {
+            RxHomo: [RxQuimHomo_C, RxQuimHomo_Kc],
+            RxHete: [RxQuimHetero_C, RxQuimHetero_Kc],
+            KPKc: [KpKc_Kp, KpKc_T],
+            ICE: [ICE],
+            vanthoff:[vanthoff_K2, vanthoff_T2,vanthoff_dH]
+        };
+
+        // --- Configuración del equilibrio temático (2 por categoría) ---
+        const configuracion = {
+            RxHomo: 2, RxHete: 2, KPKc: 2, ICE: 1, vanthoff: 3
+        };
+
+        const ejercicios = [];
+        Object.keys(configuracion).forEach(cat => {
+            const lista = categorias[cat];
+            const cantidad = configuracion[cat];
+            
+            // Usamos getRandomElements para obtener una selección aleatoria de cada categoría.
+            const seleccion = getRandomElements(lista, cantidad);
+            
+            seleccion.forEach(func => {
+                ejercicios.push(func()); // Ejecuta la función generadora
+            });
+        });
+
+
+        // --- Generar HTML con respuestas visibles ---
+        let html = '';
+        ejercicios.forEach((e, i) => {
+            html += `
+            <div class="ejercicio-contenedor" id="examen-${i}">
+                <h3 class="ejercicio-titulo">Pregunta ${i + 1}: ${e.titulo}</h3>
+                <div class="pregunta-texto">${e.pregunta}</div>
+                <div class="respuesta-texto respuesta-visible"> 
+                    <br>Respuesta: ${e.respuesta}
+                </div>
+            </div>`;
+        });
+
+        contenedorEjercicios.innerHTML = html;
+    }
+
+
+    /**
+     * MANEJO DE EVENTOS CENTRALIZADO (DELEGACIÓN)
+     * Escucha los clics en el contenedor padre y decide la acción basada en los data-attributes.
+     * Esta función reemplaza a los onclick individuales de los botones dinámicos.
+     * @param {Event} e - Objeto evento.
+     */
+    function manejarClicEjercicios(e) {
+        // Asegura que el elemento clickeado es un botón de acción con la clase 'action-btn'
+        const target = e.target.closest('.action-btn');
+        if (!target) return;
+
+        // Extrae la acción y el índice
+        const action = target.dataset.action;
+        const index = parseInt(target.dataset.index);
+        const contenedorPadre = target.closest('.ejercicio-contenedor');
+        const respuesta = contenedorPadre ? contenedorPadre.querySelector('.respuesta-texto') : null;
+        
+        if (!contenedorPadre || !respuesta) return;
+
+        // Ejecuta la acción correspondiente
+        if (action === 'mostrar') {
+            mostrarRespuesta(respuesta, target);
+        } else if (action === 'generar-otro') {
+            generarOtro(index, contenedorPadre);
+        }
+    }
+
+
+    // --- Inicialización de la Aplicación (Punto de Entrada Moderno) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // Asignación de referencias DOM
+        contenedorEjercicios = document.getElementById('ejercicios-generados');
+        btnGenerarEjercicios = document.getElementById('generar-ejercicios-btn');
+        btnGenerarExamen = document.getElementById('generar-examen-btn');
+
+        // 1. VINCULACIÓN DE EVENTOS PARA BOTONES ESTÁTICOS (General)
+        if (btnGenerarEjercicios) {
+            btnGenerarEjercicios.addEventListener('click', generarEjercicios);
+        }
+        if (btnGenerarExamen) {
+            btnGenerarExamen.addEventListener('click', generarExamen);
+        }
+        
+        // 2. VINCULACIÓN DE EVENTOS PARA CONTENIDO DINÁMICO (Delegación)
+        // Se adjunta un ÚNICO listener al contenedor padre estático.
+        if (contenedorEjercicios) {
+            contenedorEjercicios.addEventListener('click', manejarClicEjercicios);
+        }
+        
+        // Inicializa el contenedor vacío
+        contenedorEjercicios.innerHTML = '<p></p>';
+    });
 
 </script>
 
