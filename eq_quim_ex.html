@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinética Química (MODERNIZADO)</title>
+    <title>Equilibrio Químico</title>
     <style>
 
 		@font-face {
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div class="container">
 
-	<center><h1>Ejercicios de Cinética Química</h1></center>
+	<center><h1>Equilibrio Químico</h1></center>
 	<div class="button-group">
 		<button id="generar-ejercicios-btn" class="btn">Generar Ejercicios</button>
 		<button id="generar-examen-btn" class="btn">Generar Examen</button>
@@ -785,11 +785,65 @@ function KpKc_Kp(){
 				
 				return { titulo: "Kp y Kc", pregunta: pregunta, respuesta: respuesta };
 }
+
+function KpKc_Kc(){
+				
+				let pregunta = "";
+				let respuesta = 0;
+				
+				let dn = 0
+				let reaccionAleatoria;
+				let T;
+				let R;
+				let Kc;
+				let Kp;
+				
+				
+				while(1){
+					// Seleccionar una reacción homogénea al azar
+					reaccionAleatoria = RxQuimHomoData[irand(0, RxQuimHomoData.length - 1)];
+					
+					dn = 0; // Diferencia de moles gaseosos (Delta n)
+					
+					// Calcular la suma de los coeficientes de los productos gaseosos
+					let sumProd = 0;
+					reaccionAleatoria.productos.forEach(producto => {
+						sumProd += producto.coeficiente;
+					});
+					
+					// Calcular la suma de los coeficientes de los reactivos gaseosos
+					let sumReac = 0;
+					reaccionAleatoria.reactivos.forEach(reactivo => {
+						sumReac += reactivo.coeficiente;
+					});
+					
+					dn = sumProd - sumReac;
+					
+					// Generar valores aleatorios para T y Kc dentro de rangos razonables
+					T = irand(298, 500); // Temperatura en Kelvin
+					Kc = parseFloat((frand(1, 1000)).toFixed(2));
+					
+					R = 0.08206; // Constante de los gases en L·atm/(mol·K)
+					
+					// Calcular Kp = Kc * (R * T) ^ dn
+					Kp = Kc * Math.pow(R * T, dn);
+					
+					if(Kp > 1) break;
+					
+				}
+				
+				// Redondear la respuesta a 2 decimales
+				respuesta = parseFloat(Kc.toFixed(2));
+				
+				// Construir la pregunta
+				pregunta = "Considera la siguiente reacción química ("+ T + " K): <br>" + reaccionAleatoria.ecuacion + "; K<sub>p</sub> = " + Kp + "<br><br>";
+				pregunta += "Calcula la constante de equilibrio K<sub>c</sub> si las presiones fueran medidas en atm.";
+				
+				return { titulo: "Kp y Kc", pregunta: pregunta, respuesta: respuesta };
+}
 					
 function KpKc_T(){
 
-				// OBJETIVO: generar un ejercicio para calcular la Temperatura de la reacción química a partir de Kc, Kp y delta n
-				// CUIDADO: delta n debe ser diferente de cero.
 				let pregunta = "";
 				let respuesta = 0;
 				let reaccionAleatoria;
@@ -839,6 +893,117 @@ function KpKc_T(){
 				pregunta += "Calcula a qué temperatura se llevó a cabo la reacción si las presiones fueron medidas en atm.";
 				
 				return { titulo: "Kp y Kc", pregunta: pregunta, respuesta: respuesta };				
+			
+}
+
+function DeltaGyK_G(){
+
+
+				let pregunta = "";
+				let respuesta = 0;
+				let reaccionAleatoria;
+				
+				let T;
+				let R;
+				let deltaG;
+				let K;				
+				
+				
+				T = irand(298, 500); // Temperatura en Kelvin			
+				//K = parseFloat((frand(0.01, 2)).toFixed(2));
+				
+				if(coin()===1){
+					K = irand(100,1000);
+				}else{
+					K = irand(100,1000)/1000;				
+				}
+				
+				R = 8.314; // Constante de los gases en J/(mol·K)
+				
+				DeltaG = -R*T*Math.log(K);
+									
+				respuesta = DeltaG.toFixed(2) + " J/mol";
+				
+				console.log(K,DeltaG);
+				
+				pregunta = "La constante de equilibrio químico de cierta reacción química a "+T+" K es " + K + ". ";
+				pregunta += "Calcula &Delta;G° en J/mol.";
+				
+				return { titulo: "&Delta;G° y K", pregunta: pregunta, respuesta: respuesta };				
+			
+}
+
+function DeltaGyK_K(){
+
+
+				let pregunta = "";
+				let respuesta = 0;
+				let reaccionAleatoria;
+				
+				let T;
+				let R;
+				let deltaG;
+				let K;				
+				
+				
+				T = irand(298, 500); // Temperatura en Kelvin			
+				//K = parseFloat((frand(0.01, 2)).toFixed(2));
+				
+				if(coin()===1){
+					K = irand(100,1000);
+				}else{
+					K = irand(100,1000)/1000;				
+				}
+				
+				R = 8.314; // Constante de los gases en J/(mol·K)
+				
+				DeltaG = -R*T*Math.log(K);
+									
+				respuesta = K;
+				
+				console.log(K,DeltaG);
+				
+				pregunta = "&Delta;G° de cierta reacción química a "+T+" K es " + DeltaG.toFixed(2) + " J/mol. ";
+				pregunta += "Calcula la constante de equilibrio químico.";
+				
+				return { titulo: "&Delta;G° y K", pregunta: pregunta, respuesta: respuesta };				
+			
+}
+
+function DeltaGyK_T(){
+
+
+				let pregunta = "";
+				let respuesta = 0;
+				let reaccionAleatoria;
+				
+				let T;
+				let R;
+				let deltaG;
+				let K;				
+				
+				
+				T = irand(298, 500); // Temperatura en Kelvin			
+				//K = parseFloat((frand(0.01, 2)).toFixed(2));
+				
+				if(coin()===1){
+					K = irand(100,1000);
+				}else{
+					K = irand(100,1000)/1000;				
+				}
+				
+				R = 8.314; // Constante de los gases en J/(mol·K)
+				
+				DeltaG = -R*T*Math.log(K);
+									
+				respuesta = T + " K";
+				
+				console.log(K,DeltaG);
+				
+				pregunta = "Para cierta reacción química a una temperatura desconocida &Delta;G° = " + DeltaG.toFixed(2) + " J/mol y ";
+				pregunta += "K = "+K+" ; determina la temperatura en Kelvin.";
+				
+				return { titulo: "&Delta;G° y K", pregunta: pregunta, respuesta: respuesta };				
 			
 }
 
@@ -981,7 +1146,7 @@ function vanthoff_K2(){
 				// 5. Construir la pregunta con los valores generados
 				pregunta = `
 					Para cierta reacción química la constante de equilibrio K<sub>c</sub> = ${Kc1} a ${T1_C} °C. 
-					Calcula la constante de equilibrio a ${T2_C} °C si la entalpía de reacción es ${deltaH} J/mol.
+					Calcula la constante de equilibrio a ${T2_C} °C si la entalpía estándar de reacción es ${deltaH} J/mol.
 				`;
 
 				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta };
@@ -1016,7 +1181,7 @@ function vanthoff_dH(){
 				// 6. Construir la pregunta
 				pregunta = `
 					Para cierta reacción química, las constantes de equilibrio a diferente temperatura son: K<sub>c</sub> = ${Kc1} a ${T1_K} K y K<sub>c</sub> = ${Kc2.toFixed(2)} a ${T2_K} K. 
-					Calcula la entalpía de la reacción en J/mol.
+					Calcula la entalpía estándar de la reacción en J/mol.
 				`;
 
 				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta + " J/mol" };
@@ -1072,7 +1237,7 @@ function vanthoff_T2(){
 				pregunta = `
 					Para cierta reacción química, se midieron las siguientes constantes de equilibrio: 
 					K<sub>c</sub> = ${Kc1} a ${T1_K} K y K<sub>c</sub> = ${Kc2_round} a una temperatura desconocida. 
-					Calcula a qué temperatura se midió la segunda constante de equilibrio (en Kelvin), si la entalpía de reacción es ${deltaH} J/mol.
+					Calcula a qué temperatura se midió la segunda constante de equilibrio (en Kelvin), si la entalpía estándar de reacción es ${deltaH} J/mol.
 				`;
 
 				return { titulo: "Ecuación de van't Hoff", pregunta: pregunta, respuesta: respuesta };
@@ -1093,11 +1258,15 @@ const GENERADORES = [
     RxQuimHetero_Kc,
     RxQuimHetero_C,
     KpKc_Kp,
+    KpKc_Kc,
     KpKc_T,
-    ICE,
+    DeltaGyK_G,
+    DeltaGyK_K,
+    DeltaGyK_T,
     vanthoff_K2,
     vanthoff_T2,
-    vanthoff_dH   
+    vanthoff_dH,
+    ICE
     
 ];
     
@@ -1193,14 +1362,20 @@ const GENERADORES = [
         const categorias = {
             RxHomo: [RxQuimHomo_C, RxQuimHomo_Kc],
             RxHete: [RxQuimHetero_C, RxQuimHetero_Kc],
-            KPKc: [KpKc_Kp, KpKc_T],
-            ICE: [ICE],
-            vanthoff:[vanthoff_K2, vanthoff_T2,vanthoff_dH]
+            KPKc: [KpKc_Kp, KpKc_Kp, KpKc_T],
+			DeltaGyK: [DeltaGyK_T, DeltaGyK_K, DeltaGyK_G],
+            vanthoff:[vanthoff_K2, vanthoff_T2,vanthoff_dH],
+            ICE: [ICE]
         };
 
         // --- Configuración del equilibrio temático (2 por categoría) ---
         const configuracion = {
-            RxHomo: 2, RxHete: 2, KPKc: 2, ICE: 1, vanthoff: 3
+            RxHomo: 2, 
+            RxHete: 2, 
+            KPKc: 1,
+            DeltaGyK: 2,
+            vanthoff: 1,             
+            ICE: 1            
         };
 
         const ejercicios = [];
