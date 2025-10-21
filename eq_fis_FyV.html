@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<!--
+
+RECUERDA:
+
+El estilo moderno de desarrollo HTML/CSS/JS se centra en la Separación de 
+Responsabilidades y la Eficiencia del Código para mejorar la mantenibilidad, 
+la escalabilidad y el rendimiento de la aplicación.
+
+HTML: Estructura Pura (Sin Lógica):
+El objetivo es que el HTML solo defina la estructura y el contenido, 
+abstrayéndose de cualquier comportamiento.
+
+CSS: Apariencia y Transiciones (Sin Comportamiento):
+El CSS debe centrarse en la presentación y en cómo se ven las cosas 
+en respuesta a los estados (clases) manipulados por JS.
+
+JS: Comportamiento y Gestión del Estado (Pura Lógica):
+El JS es el motor que controla la interacción del usuario 
+y manipula el DOM (document object model) y las clases de CSS.
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... Todo el código de inicialización y vinculación de eventos va aquí ...
+});
+
+-->
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equilibrio Físico - Examen Moderno</title>
+
+<style>
+        /* [OMITIDO: Estilos CSS Originales, sin cambios funcionales] */
+        @font-face {
+            font-family: 'Open Sans';
+            src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+            font-weight: 300 800;
+            font-style: normal italic;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #FAFAFA;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            margin: 10px auto;
+        }
+        .button-group {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            margin-bottom: 10px;
+        }        
+        
+        .btn {
+            padding: 10px 14px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            flex-grow: 1;
+            margin: 0;
+            transition: background-color 0.2s; 
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }        
+        .footer-text {
+            width: 100%;
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .falso-item {
+            color: gray;
+        }
+        
+        .oculto {
+            display: none;
+        }
+        
+        .question-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .question-item p {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center; 
+            gap: 5px; 
+        }
+        .resultado-icono {
+            font-size: 1.5em; 
+            flex-shrink: 0; 
+        }
+        .options {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .result-item-correct::before,
+        .result-item-incorrect::before {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        
+        .result-item-correct::before {
+            content: '✅';
+        }
+        .result-item-incorrect::before {
+            content: '❌';
+        }
+        
+        .result-list-item {
+            color: #333; 
+            font-weight: normal;
+            padding-left: 0;
+            margin-left: 0;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div class="container">
+
+    <center><h1>Equilibrio Físico</h1></center>
+    <div class="button-group">
+        <button id="oraciones" class="btn">Oraciones</button>
+        <button id="examen" class="btn">Examen</button>
+    </div>
+
+    <div id="contenido-preguntas" class="oculto"> 
+    </div>
+
+    <div id="contenido-examen" class="oculto">
+        <form id="examenForm"></form>
+        <button id="verificar" class="btn btn-check oculto">Verificar</button>
+        <div id="resultados-examen"></div>
+    </div>
+    
+</div>
+
+<div class="footer-text">
+    <h4>&#169; 2024, 2025 Dr. Octavio Juárez</h4>
+    <h5>octavio.juarez@unison.mx</h5>
+</div>
+
+<script>
+    // DATA: Preguntas y respuestas del examen
+    const PREGUNTAS = [
+      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son iguales", respuesta: "Verdadero" },
+      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son diferentes", respuesta: "Falso" },
+      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es igual a la de condensación", respuesta: "Verdadero" },
+      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es más grande que la de condensación", respuesta: "Falso" },
+      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.01 °C", respuesta: "Verdadero" },
+      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.1 °C", respuesta: "Falso" },
+      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Verdadero" },
+      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando no se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Falso" },
+      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido", respuesta: "Verdadero" },
+      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado sólido", respuesta: "Falso" },
+      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa", respuesta: "Verdadero" },
+      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido es menor a la presión externa", respuesta: "Falso" },
+      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión atmosférica estándar (1 atm)", respuesta: "Verdadero" },
+      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido es mayor a la presión atmosférica estándar (1 atm)", respuesta: "Falso" },
+      { pregunta: "A cada presión de vapor le corresponde una temperatura de ebullición", respuesta: "Verdadero" },
+      { pregunta: "A cada presión de vapor le corresponden dos temperaturas de ebullición", respuesta: "Falso" },
+      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles", respuesta: "Verdadero" },
+      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares fuertes", respuesta: "Falso" },
+      { pregunta: "Si la presión de vapor es alta, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Verdadero" },
+      { pregunta: "Si la presión de vapor es baja, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Falso" },
+      { pregunta: "Si la presión de vapor es alta, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Verdadero" },
+      { pregunta: "Si la presión de vapor es baja, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Falso" },
+      { pregunta: "Si la presión de vapor es alta, el punto de ebullición es bajo", respuesta: "Verdadero" },
+      { pregunta: "Si la presión de vapor es baja, el punto de ebullición es bajo", respuesta: "Falso" },
+      { pregunta: "Si la presión de vapor es alta, el punto de sublimación es bajo", respuesta: "Verdadero" },
+      { pregunta: "Si la presión de vapor es baja, el punto de sublimación es bajo", respuesta: "Falso" },
+      { pregunta: "Si la presión externa aumenta, el punto de ebullición aumenta", respuesta: "Verdadero" },
+      { pregunta: "Si la presión externa disminuye, el punto de ebullición aumenta", respuesta: "Falso" },
+      { pregunta: "Una disolución (solución) es una mezcla homogénea de dos o más sustancias", respuesta: "Verdadero" },
+      { pregunta: "Una disolución (solución) es una mezcla heterogénea de dos o más sustancias", respuesta: "Falso" },
+      { pregunta: "En una disolución, la sustancia en menor cantidad es el soluto", respuesta: "Verdadero" },
+      { pregunta: "En una disolución, la sustancia en mayor cantidad es el soluto", respuesta: "Falso" },
+      { pregunta: "Una disolución saturada contiene la máxima cantidad de soluto posible", respuesta: "Verdadero" },
+      { pregunta: "Una disolución no saturada contiene la máxima cantidad de soluto posible", respuesta: "Falso" },
+      { pregunta: "Un soluto no polar tiene tiene una distribución de carga uniforme", respuesta: "Verdadero" },
+      { pregunta: "Un soluto polar tiene tiene una distribución de carga uniforme", respuesta: "Falso" },
+      { pregunta: "Las sustancias polares se disuelven en disolventes polares", respuesta: "Verdadero" },
+      { pregunta: "Las sustancias polares se disuelven en disolventes no polares", respuesta: "Falso" },
+      { pregunta: "La concentración de un gas en una disolución es directamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Verdadero" },
+      { pregunta: "La concentración de un gas en una disolución es inversamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Falso" },
+      { pregunta: "Si la temperatura aumenta, la solubilidad de los gases en líquidos disminuye", respuesta: "Verdadero" },
+      { pregunta: "Si la temperatura disminuye, la solubilidad de los gases en líquidos disminuye", respuesta: "Falso" },
+      { pregunta: "Una solución ideal obedece la Ley de Raoult", respuesta: "Verdadero" },
+      { pregunta: "Una solución ideal no obedece la Ley de Raoult", respuesta: "Falso" },
+      { pregunta: "El volumen de una solución ideal es la suma de los volúmenes de los componentes puros", respuesta: "Verdadero" },
+      { pregunta: "El volumen de una solución real es la suma de los volúmenes de los componentes puros", respuesta: "Falso" },
+      { pregunta: "Cuando se prepara una solución ideal el cambio de entalpía es cero", respuesta: "Verdadero" },
+      { pregunta: "Cuando se prepara una solución real el cambio de entalpía es cero", respuesta: "Falso" },
+      { pregunta: "Las propiedades coligativas dependen solo del número de partículas de soluto, no de su identidad", respuesta: "Verdadero" },
+      { pregunta: "Las propiedades coligativas no dependen del número de partículas de soluto", respuesta: "Falso" },
+      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de soluto disuelta", respuesta: "Verdadero" },
+      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de disolvente", respuesta: "Falso" },
+      { pregunta: "i = 1, para solutos no electrolitos (como el azúcar)", respuesta: "Verdadero" },
+      { pregunta: "i = 1, para solutos electrolitos (como la sal)", respuesta: "Falso" },
+      { pregunta: "i > 1, para solutos electrolitos (como la sal)", respuesta: "Verdadero" },
+      { pregunta: "i > 1, para solutos no electrolitos (como el azúcar)", respuesta: "Falso" },
+      { pregunta: "Al agregar un soluto a un disolvente, desciende la presión de vapor", respuesta: "Verdadero" },
+      { pregunta: "Al agregar un soluto a un disolvente, aumenta la presión de vapor", respuesta: "Falso" },
+      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de ebullición", respuesta: "Verdadero" },
+      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de ebullición", respuesta: "Falso" },
+      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de congelación", respuesta: "Verdadero" },
+      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de congelación", respuesta: "Falso" },
+      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de menor concentración de soluto a una de mayor concentración", respuesta: "Verdadero" },
+      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de mayor concentración de soluto a una de menor concentración", respuesta: "Falso" },
+      { pregunta: "Una disolución isotónica tiene la misma presión osmótica que las células", respuesta: "Verdadero" },
+      { pregunta: "Una disolución isotónica tiene menor presión osmótica que las células", respuesta: "Falso" },
+      { pregunta: "Una disolución hipotónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Verdadero" },
+      { pregunta: "Una disolución hipotónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Falso" },
+      { pregunta: "Una disolución hipertónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Verdadero" },
+      { pregunta: "Una disolución hipertónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Falso" }
+    ];
+    
+    let currentExamQuestions = [];
+
+    // --- Referencias DOM (Acceso a Elementos) ---
+    // PRÁCTICA MODERNA: Se obtienen referencias una sola vez al inicio.
+    const contenedorOraciones = document.getElementById('contenido-preguntas');
+    const contenedorExamen = document.getElementById('contenido-examen');
+    const formExamen = document.getElementById('examenForm');
+    const botonVerificar = document.getElementById('verificar');
+    const resultadosBox = document.getElementById('resultados-examen');
+    const btnOraciones = document.getElementById('oraciones'); // Nueva referencia
+    const btnExamen = document.getElementById('examen');       // Nueva referencia
+    
+    // --- Funciones de Utilidad ---
+    
+    /**
+     * Devuelve elementos aleatorios de un array.
+     * @param {Array} arr - Array de origen.
+     * @param {number} n - Número de elementos a devolver.
+     */
+    function getRandomElements(arr, n) {
+        const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, n);
+    }
+    
+    /**
+     * Muestra el contenido de las oraciones. Se llama al inicio.
+     */
+    function inicializarOraciones() {
+        let htmlContent = '<ul>';
+        PREGUNTAS.forEach((item) => {
+            const esFalso = item.respuesta.trim().toLowerCase().startsWith("falso"); 
+            const clase = esFalso ? 'class="falso-item"' : '';
+            const respuesta_str = item.respuesta.endsWith('.') ? item.respuesta : item.respuesta + '.'; 
+            htmlContent += `<li ${clase}>${item.pregunta}: ${respuesta_str}</li><br>`; 
+        });
+
+        htmlContent += '</ul>';
+        contenedorOraciones.innerHTML = htmlContent;
+    }
+
+    // --- Función de Control de Vistas ---
+    
+    /**
+     * Cambia entre la vista de 'oraciones' y 'examen'.
+     * Ya no es necesario que sea global (sin 'window.').
+     * @param {string} vista - 'oraciones' o 'examen'.
+     */
+    function cambiarVista(vista) {
+        // Limpiar elementos de la vista anterior
+        resultadosBox.innerHTML = '';
+        botonVerificar.classList.add('oculto');
+        document.querySelectorAll('.resultado-icono').forEach(el => el.remove());
+        
+        if (vista === 'oraciones') {
+            contenedorOraciones.classList.remove('oculto');
+            contenedorExamen.classList.add('oculto');
+        } else if (vista === 'examen') {
+            contenedorOraciones.classList.add('oculto');
+            contenedorExamen.classList.remove('oculto');
+            generarContenidoExamen(); // Carga las preguntas
+        }
+    }
+
+
+    function generarContenidoExamen() {
+        currentExamQuestions = getRandomElements(PREGUNTAS, 10);
+        
+        let examHtml = '';
+        currentExamQuestions.forEach((item, index) => {
+            examHtml += `
+                <div class="question-item" data-index="${index}">
+                    <p>${index + 1}. ${item.pregunta}</p>
+                    <div class="options">
+                        <label>
+                            <input type="radio" name="q${index}" value="Verdadero" required> Verdadero
+                        </label>
+                        <label>
+                            <input type="radio" name="q${index}" value="Falso"> Falso
+                        </label>
+                    </div>
+                </div>
+            `;
+        });
+
+        formExamen.innerHTML = examHtml;
+        botonVerificar.classList.remove('oculto');
+    }
+
+    /**
+     * Verifica las respuestas del examen y muestra los íconos de resultado.
+     * Ya no es necesario que sea global (sin 'window.').
+     */
+    function verificarExamen() {
+        let allAnswered = true;
+        
+        // Primero, eliminar todos los iconos anteriores antes de volver a verificar
+        document.querySelectorAll('.resultado-icono').forEach(el => el.remove());
+        
+        currentExamQuestions.forEach((item, index) => {
+            const name = `q${index}`;
+            const questionItem = formExamen.querySelector(`.question-item[data-index="${index}"]`);
+            const questionParagraph = questionItem.querySelector('p');
+            const selected = formExamen.querySelector(`input[name="${name}"]:checked`);
+            
+            if (!selected) {
+                allAnswered = false;
+                return;
+            }
+            
+            const userAnswer = selected.value;
+            const isCorrect = userAnswer === item.respuesta;
+            
+            // Crear y añadir el icono al inicio del párrafo
+            const iconSpan = document.createElement('span');
+            iconSpan.classList.add('resultado-icono');
+            iconSpan.innerHTML = isCorrect ? '✅' : '❌'; // Asigna el ícono
+            
+            // Insertar el icono al inicio del párrafo
+            questionParagraph.insertBefore(iconSpan, questionParagraph.firstChild);
+        });
+
+        if (!allAnswered) {
+            resultadosBox.innerHTML = '<p style="color: red; font-weight: bold;">Por favor, conteste todas las preguntas para verificar.</p>';
+            return; 
+        }
+        
+        resultadosBox.innerHTML = ''; // Limpia el mensaje de error si existe
+    }
+    
+    // --- Ejecución Inicial y Vinculación de Eventos ---
+    // PRÁCTICA MODERNA: document.addEventListener('DOMContentLoaded') asegura que el script espera a que el HTML se cargue.
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // Inicializa el contenido de la primera vista
+        inicializarOraciones();
+        
+        // Asegura que la vista de "Oraciones" esté activa al cargar
+        contenedorExamen.classList.add('oculto'); 
+        contenedorOraciones.classList.remove('oculto'); 
+        
+        // VINCULACIÓN DE EVENTOS (Práctica Moderna: addEventListener)
+        if (btnOraciones) {
+            // Usa una función anónima para llamar a cambiarVista con el argumento 'oraciones'
+            btnOraciones.addEventListener('click', () => cambiarVista('oraciones'));
+        }
+        if (btnExamen) {
+            // Usa una función anónima para llamar a cambiarVista con el argumento 'examen'
+            btnExamen.addEventListener('click', () => cambiarVista('examen'));
+        }
+        if (botonVerificar) {
+            // Vincula directamente la función verificarExamen al click
+            botonVerificar.addEventListener('click', verificarExamen);
+        }
+    });
+
+</script>
+
+</body>
+</html>
