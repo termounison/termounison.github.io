@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equilibrio Físico</title>
+    <title>Cinética Química</title>
 
 <style>
-        /* [OMITIDO: Estilos CSS Originales, sin cambios funcionales] */
+       
         @font-face {
             font-family: 'Open Sans';
             src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div class="container">
 
-    <center><h1>Equilibrio Físico</h1></center>
+    <center><h1>Cinética Química</h1></center>
     <div class="button-group">
         <button id="oraciones" class="btn">Oraciones</button>
         <button id="examen" class="btn">Examen</button>
@@ -171,82 +171,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
     // DATA: Preguntas y respuestas del examen
-    const PREGUNTAS = [
-      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son iguales", respuesta: "Verdadero" },
-      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son diferentes", respuesta: "Falso" },
-      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es igual a la de condensación", respuesta: "Verdadero" },
-      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es más grande que la de condensación", respuesta: "Falso" },
-      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.01 °C", respuesta: "Verdadero" },
-      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.1 °C", respuesta: "Falso" },
-      { pregunta: "A  25 °C la presión de vapor del agua es 23.8 mmHg", respuesta: "Verdadero"},
-      { pregunta: "A  100 °C la presión de vapor del agua es 23.8 mmHg", respuesta: "Falso"},      
-      { pregunta: "A  100 °C la presión de vapor del agua es 760 mmHg", respuesta: "Verdadero"},
-      { pregunta: "A  25 °C la presión de vapor del agua es  760 mmHg", respuesta: "Falso"},       
-      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Verdadero" },
-      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando no se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Falso" },
-      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido", respuesta: "Verdadero" },
-      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado sólido", respuesta: "Falso" },
-      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa", respuesta: "Verdadero" },
-      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido es menor a la presión externa", respuesta: "Falso" },
-      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión atmosférica estándar (1 atm)", respuesta: "Verdadero" },
-      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido es mayor a la presión atmosférica estándar (1 atm)", respuesta: "Falso" },
-      { pregunta: "A cada presión de vapor le corresponde una temperatura de ebullición", respuesta: "Verdadero" },
-      { pregunta: "A cada presión de vapor le corresponden dos temperaturas de ebullición", respuesta: "Falso" },
-      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles", respuesta: "Verdadero" },
-      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares fuertes", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, el punto de ebullición es bajo", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, el punto de ebullición es bajo", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, el punto de sublimación es bajo", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, el punto de sublimación es bajo", respuesta: "Falso" },
-      { pregunta: "Si la presión externa aumenta, el punto de ebullición aumenta", respuesta: "Verdadero" },
-      { pregunta: "Si la presión externa disminuye, el punto de ebullición aumenta", respuesta: "Falso" },
-      { pregunta: "Una disolución (solución) es una mezcla homogénea de dos o más sustancias", respuesta: "Verdadero" },
-      { pregunta: "Una disolución (solución) es una mezcla heterogénea de dos o más sustancias", respuesta: "Falso" },
-      { pregunta: "En una disolución, la sustancia en menor cantidad es el soluto", respuesta: "Verdadero" },
-      { pregunta: "En una disolución, la sustancia en mayor cantidad es el soluto", respuesta: "Falso" },
-      { pregunta: "Una disolución saturada contiene la máxima cantidad de soluto posible", respuesta: "Verdadero" },
-      { pregunta: "Una disolución no saturada contiene la máxima cantidad de soluto posible", respuesta: "Falso" },
-      { pregunta: "Un soluto no polar tiene tiene una distribución de carga uniforme", respuesta: "Verdadero" },
-      { pregunta: "Un soluto polar tiene tiene una distribución de carga uniforme", respuesta: "Falso" },
-      { pregunta: "Las sustancias polares se disuelven en disolventes polares", respuesta: "Verdadero" },
-      { pregunta: "Las sustancias polares se disuelven en disolventes no polares", respuesta: "Falso" },
-      { pregunta: "La concentración de un gas en una disolución es directamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Verdadero" },
-      { pregunta: "La concentración de un gas en una disolución es inversamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Falso" },
-      { pregunta: "Si la temperatura aumenta, la solubilidad de los gases en líquidos disminuye", respuesta: "Verdadero" },
-      { pregunta: "Si la temperatura disminuye, la solubilidad de los gases en líquidos disminuye", respuesta: "Falso" },
-      { pregunta: "Una solución ideal obedece la Ley de Raoult", respuesta: "Verdadero" },
-      { pregunta: "Una solución ideal no obedece la Ley de Raoult", respuesta: "Falso" },
-      { pregunta: "El volumen de una solución ideal es la suma de los volúmenes de los componentes puros", respuesta: "Verdadero" },
-      { pregunta: "El volumen de una solución real es la suma de los volúmenes de los componentes puros", respuesta: "Falso" },
-      { pregunta: "Cuando se prepara una solución ideal el cambio de entalpía es cero", respuesta: "Verdadero" },
-      { pregunta: "Cuando se prepara una solución real el cambio de entalpía es cero", respuesta: "Falso" },
-      { pregunta: "Las propiedades coligativas dependen solo del número de partículas de soluto, no de su identidad", respuesta: "Verdadero" },
-      { pregunta: "Las propiedades coligativas no dependen del número de partículas de soluto", respuesta: "Falso" },
-      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de soluto disuelta", respuesta: "Verdadero" },
-      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de disolvente", respuesta: "Falso" },
-      { pregunta: "i = 1, para solutos no electrolitos (como el azúcar)", respuesta: "Verdadero" },
-      { pregunta: "i = 1, para solutos electrolitos (como la sal)", respuesta: "Falso" },
-      { pregunta: "i > 1, para solutos electrolitos (como la sal)", respuesta: "Verdadero" },
-      { pregunta: "i > 1, para solutos no electrolitos (como el azúcar)", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende la presión de vapor", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta la presión de vapor", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de ebullición", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de ebullición", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de congelación", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de congelación", respuesta: "Falso" },
-      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de menor concentración de soluto a una de mayor concentración", respuesta: "Verdadero" },
-      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de mayor concentración de soluto a una de menor concentración", respuesta: "Falso" },
-      //{ pregunta: "Una disolución isotónica tiene la misma presión osmótica que las células", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución isotónica tiene menor presión osmótica que las células", respuesta: "Falso" },
-      //{ pregunta: "Una disolución hipotónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución hipotónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Falso" },
-      //{ pregunta: "Una disolución hipertónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución hipertónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Falso" }
-    ];
+const PREGUNTAS = [
+  { pregunta: "La Cinética Química es el área de la química que estudia la velocidad de las reacciones químicas y los mecanismos por los que ocurren", respuesta: "Verdadero" },
+  { pregunta: "La Cinética Química es el área de la química que estudia la energía involucrada en las reacciones químicas", respuesta: "Falso" },
+  { pregunta: "La velocidad de reacción se puede medir en mol/(L s)", respuesta: "Verdadero" },
+  { pregunta: "La velocidad de reacción se puede medir en mol/s", respuesta: "Falso" }, // CORRECCIÓN: Velocidad de reacción es M/s, no mol/s
+  { pregunta: "La velocidad de una reacción generalmente disminuye con el tiempo a medida que los reactivos se consumen", respuesta: "Verdadero" },
+  { pregunta: "La velocidad de una reacción generalmente aumenta con el tiempo a medida que los reactivos se consumen", respuesta: "Falso" },
+  { pregunta: "Los factores que afectan la velocidad de reacción incluyen la concentración, la temperatura y la presencia de catalizadores", respuesta: "Verdadero" },
+  { pregunta: "Los factores que afectan la velocidad de reacción incluyen la cantidad de solvente y la presión atmosférica estándar", respuesta: "Falso" },
+  { pregunta: "La Ley de Velocidad (o Ley de Rapidez) relaciona la velocidad de reacción con las concentraciones de los reactivos y la constante de velocidad (k)", respuesta: "Verdadero" },
+  { pregunta: "La Ley de Velocidad (o Ley de Rapidez) relaciona la velocidad de reacción con la constante de equilibrio (K)", respuesta: "Falso" },
+  { pregunta: "El orden de reacción es la suma de los exponentes de las concentraciones en la Ley de Velocidad", respuesta: "Verdadero" },
+  { pregunta: "El orden de reacción es igual a la suma de los coeficientes estequiométricos de los reactivos", respuesta: "Falso" },
+  { pregunta: "La constante de velocidad (k) es independiente de las concentraciones iniciales de los reactivos", respuesta: "Verdadero" },
+  { pregunta: "La constante de velocidad (k) es independiente de la temperatura", respuesta: "Falso" },
+  { pregunta: "La constante de rapidez (k) de una reacción cambia solo con la temperatura", respuesta: "Verdadero" },
+  { pregunta: "La constante de rapidez (k) de una reacción cambia solo con la concentración de los reactivos", respuesta: "Falso" },
+  { pregunta: "La constante de velocidad k de una reacción de orden cero se mide en mol/(L s)", respuesta: "Verdadero" },
+  { pregunta: "La constante de velocidad k de una reacción de orden cero se mide en 1/s", respuesta: "Falso" },
+  { pregunta: "La constante de velocidad k de una reacción de primer orden se mide en 1/s", respuesta: "Verdadero" },
+  { pregunta: "La constante de velocidad k de una reacción de primer orden se mide en mol/s", respuesta: "Falso" },
+  { pregunta: "La constante de velocidad k de una reacción de segundo orden se mide en L/(mol s)", respuesta: "Verdadero" },
+  { pregunta: "La constante de velocidad k de una reacción de segundo orden se mide en 1/s", respuesta: "Falso" },
+  { pregunta: "La ley de rapidez y el orden de reacción deben determinarse experimentalmente", respuesta: "Verdadero" },
+  { pregunta: "La ley de rapidez y el orden de reacción pueden determinarse a partir de la estequiometría de la ecuación global de la reacción", respuesta: "Falso" },
+  { pregunta: "Para una reacción de orden cero, la velocidad de reacción es constante y no depende de la concentración de reactivos", respuesta: "Verdadero" },
+  { pregunta: "Para una reacción de orden cero, la vida media es constante y no depende de la concentración inicial", respuesta: "Falso" },
+  { pregunta: "La Teoría de Colisiones postula que las moléculas deben chocar con la orientación adecuada y la energía suficiente para reaccionar", respuesta: "Verdadero" },
+  { pregunta: "La Teoría de Colisiones postula que cualquier colisión entre moléculas resulta en una reacción", respuesta: "Falso" },
+  { pregunta: "La Energía de Activación ($E_a$) es la energía mínima requerida para que una colisión sea efectiva y ocurra la reacción", respuesta: "Verdadero" },
+  { pregunta: "La Energía de Activación ($E_a$) es el cambio de entalpía de la reacción", respuesta: "Falso" },
+  { pregunta: "Un aumento de temperatura acelera la reacción porque incrementa la fracción de moléculas que tienen energía cinética igual o superior a $E_a$", respuesta: "Verdadero" },
+  { pregunta: "Un aumento de temperatura acelera la reacción porque disminuye la Energía de Activación ($E_a$)", respuesta: "Falso" },
+  { pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad ($k$) con la Energía de Activación ($E_a$) y la temperatura ($T$)", respuesta: "Verdadero" },
+  { pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad ($k$) con el cambio de energía libre de Gibbs ($\Delta G$)", respuesta: "Falso" },
+  { pregunta: "Un mecanismo de reacción es la secuencia de pasos elementales que describen cómo ocurre una reacción a nivel molecular", respuesta: "Verdadero" },
+  { pregunta: "Un mecanismo de reacción es la estequiometría global de la reacción", respuesta: "Falso" },
+  { pregunta: "Un catalizador es una sustancia que aumenta la velocidad de reacción al proporcionar un camino de reacción con una Energía de Activación menor", respuesta: "Verdadero" },
+  { pregunta: "Un catalizador es una sustancia que se consume permanentemente durante la reacción", respuesta: "Falso" }
+];
+
     
     let currentExamQuestions = [];
 

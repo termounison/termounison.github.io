@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equilibrio Físico</title>
+    <title>Equilibrio Químico</title>
 
 <style>
-        /* [OMITIDO: Estilos CSS Originales, sin cambios funcionales] */
+       
         @font-face {
             font-family: 'Open Sans';
             src: url('./fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <div class="container">
 
-    <center><h1>Equilibrio Físico</h1></center>
+    <center><h1>Equilibrio Químico</h1></center>
     <div class="button-group">
         <button id="oraciones" class="btn">Oraciones</button>
         <button id="examen" class="btn">Examen</button>
@@ -171,82 +171,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
     // DATA: Preguntas y respuestas del examen
-    const PREGUNTAS = [
-      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son iguales", respuesta: "Verdadero" },
-      { pregunta: "En un equilibrio dinámico las velocidades de las transformaciones directa e inversa son diferentes", respuesta: "Falso" },
-      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es igual a la de condensación", respuesta: "Verdadero" },
-      { pregunta: "El equilibrio líquido-vapor ocurre cuando la velocidad de evaporación es más grande que la de condensación", respuesta: "Falso" },
-      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.01 °C", respuesta: "Verdadero" },
-      { pregunta: "El punto triple del agua se encuentra a 4.58 mmHg y 0.1 °C", respuesta: "Falso" },
-      { pregunta: "A  25 °C la presión de vapor del agua es 23.8 mmHg", respuesta: "Verdadero"},
-      { pregunta: "A  100 °C la presión de vapor del agua es 23.8 mmHg", respuesta: "Falso"},      
-      { pregunta: "A  100 °C la presión de vapor del agua es 760 mmHg", respuesta: "Verdadero"},
-      { pregunta: "A  25 °C la presión de vapor del agua es  760 mmHg", respuesta: "Falso"},       
-      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Verdadero" },
-      { pregunta: "La presión de vapor es la presión que ejerce el vapor de una sustancia cuando no se encuentra en equilibrio con su líquido a una temperatura dada", respuesta: "Falso" },
-      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado líquido", respuesta: "Verdadero" },
-      { pregunta: "La temperatura crítica es la temperatura máxima a la que una sustancia puede existir en estado sólido", respuesta: "Falso" },
-      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión externa", respuesta: "Verdadero" },
-      { pregunta: "La temperatura de ebullición es la temperatura a la cual la presión de vapor de un líquido es menor a la presión externa", respuesta: "Falso" },
-      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido se iguala a la presión atmosférica estándar (1 atm)", respuesta: "Verdadero" },
-      { pregunta: "El punto de ebullición normal es la temperatura a la cual la presión de vapor de un líquido es mayor a la presión atmosférica estándar (1 atm)", respuesta: "Falso" },
-      { pregunta: "A cada presión de vapor le corresponde una temperatura de ebullición", respuesta: "Verdadero" },
-      { pregunta: "A cada presión de vapor le corresponden dos temperaturas de ebullición", respuesta: "Falso" },
-      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares débiles", respuesta: "Verdadero" },
-      { pregunta: "Una sustancia es más volátil cuando sus moléculas se mantienen unidas por fuerzas intermoleculares fuertes", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, la sustancia es más volátil (se evapora más fácilmente)", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, la sustancia tiene fuerzas intermoleculares débiles", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, el punto de ebullición es bajo", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, el punto de ebullición es bajo", respuesta: "Falso" },
-      { pregunta: "Si la presión de vapor es alta, el punto de sublimación es bajo", respuesta: "Verdadero" },
-      { pregunta: "Si la presión de vapor es baja, el punto de sublimación es bajo", respuesta: "Falso" },
-      { pregunta: "Si la presión externa aumenta, el punto de ebullición aumenta", respuesta: "Verdadero" },
-      { pregunta: "Si la presión externa disminuye, el punto de ebullición aumenta", respuesta: "Falso" },
-      { pregunta: "Una disolución (solución) es una mezcla homogénea de dos o más sustancias", respuesta: "Verdadero" },
-      { pregunta: "Una disolución (solución) es una mezcla heterogénea de dos o más sustancias", respuesta: "Falso" },
-      { pregunta: "En una disolución, la sustancia en menor cantidad es el soluto", respuesta: "Verdadero" },
-      { pregunta: "En una disolución, la sustancia en mayor cantidad es el soluto", respuesta: "Falso" },
-      { pregunta: "Una disolución saturada contiene la máxima cantidad de soluto posible", respuesta: "Verdadero" },
-      { pregunta: "Una disolución no saturada contiene la máxima cantidad de soluto posible", respuesta: "Falso" },
-      { pregunta: "Un soluto no polar tiene tiene una distribución de carga uniforme", respuesta: "Verdadero" },
-      { pregunta: "Un soluto polar tiene tiene una distribución de carga uniforme", respuesta: "Falso" },
-      { pregunta: "Las sustancias polares se disuelven en disolventes polares", respuesta: "Verdadero" },
-      { pregunta: "Las sustancias polares se disuelven en disolventes no polares", respuesta: "Falso" },
-      { pregunta: "La concentración de un gas en una disolución es directamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Verdadero" },
-      { pregunta: "La concentración de un gas en una disolución es inversamente proporcional a la presión parcial de ese gas sobre la disolución", respuesta: "Falso" },
-      { pregunta: "Si la temperatura aumenta, la solubilidad de los gases en líquidos disminuye", respuesta: "Verdadero" },
-      { pregunta: "Si la temperatura disminuye, la solubilidad de los gases en líquidos disminuye", respuesta: "Falso" },
-      { pregunta: "Una solución ideal obedece la Ley de Raoult", respuesta: "Verdadero" },
-      { pregunta: "Una solución ideal no obedece la Ley de Raoult", respuesta: "Falso" },
-      { pregunta: "El volumen de una solución ideal es la suma de los volúmenes de los componentes puros", respuesta: "Verdadero" },
-      { pregunta: "El volumen de una solución real es la suma de los volúmenes de los componentes puros", respuesta: "Falso" },
-      { pregunta: "Cuando se prepara una solución ideal el cambio de entalpía es cero", respuesta: "Verdadero" },
-      { pregunta: "Cuando se prepara una solución real el cambio de entalpía es cero", respuesta: "Falso" },
-      { pregunta: "Las propiedades coligativas dependen solo del número de partículas de soluto, no de su identidad", respuesta: "Verdadero" },
-      { pregunta: "Las propiedades coligativas no dependen del número de partículas de soluto", respuesta: "Falso" },
-      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de soluto disuelta", respuesta: "Verdadero" },
-      { pregunta: "El Factor de van't Hoff (i) mide el número de partículas que se forman por cada molécula de disolvente", respuesta: "Falso" },
-      { pregunta: "i = 1, para solutos no electrolitos (como el azúcar)", respuesta: "Verdadero" },
-      { pregunta: "i = 1, para solutos electrolitos (como la sal)", respuesta: "Falso" },
-      { pregunta: "i > 1, para solutos electrolitos (como la sal)", respuesta: "Verdadero" },
-      { pregunta: "i > 1, para solutos no electrolitos (como el azúcar)", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende la presión de vapor", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta la presión de vapor", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de ebullición", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de ebullición", respuesta: "Falso" },
-      { pregunta: "Al agregar un soluto a un disolvente, desciende el punto de congelación", respuesta: "Verdadero" },
-      { pregunta: "Al agregar un soluto a un disolvente, aumenta el punto de congelación", respuesta: "Falso" },
-      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de menor concentración de soluto a una de mayor concentración", respuesta: "Verdadero" },
-      { pregunta: "La ósmosis es el movimiento neto de moléculas de disolvente a través de una membrana semipermeable desde una región de mayor concentración de soluto a una de menor concentración", respuesta: "Falso" },
-      //{ pregunta: "Una disolución isotónica tiene la misma presión osmótica que las células", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución isotónica tiene menor presión osmótica que las células", respuesta: "Falso" },
-      //{ pregunta: "Una disolución hipotónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución hipotónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Falso" },
-      //{ pregunta: "Una disolución hipertónica tiene mayor presión osmótica que las células (el agua sale de la célula)", respuesta: "Verdadero" },
-      //{ pregunta: "Una disolución hipertónica tiene menor presión osmótica que las células (el agua entra en la célula)", respuesta: "Falso" }
-    ];
+const PREGUNTAS = [
+  { pregunta: "Una reacción reversible es aquella en la que los productos pueden reaccionar para formar nuevamente los reactivos", respuesta: "Verdadero" },
+  { pregunta: "Una reacción reversible es aquella en la que los productos no pueden reaccionar para formar nuevamente los reactivos", respuesta: "Falso" },
+  { pregunta: "El equilibrio químico se alcanza cuando las velocidades de la reacción directa e inversa son iguales", respuesta: "Verdadero" },
+  { pregunta: "El equilibrio químico se alcanza cuando las velocidades de la reacción directa e inversa son diferentes", respuesta: "Falso" },
+  { pregunta: "En el equilibrio químico, las concentraciones de reactivos y productos permanecen constantes en el tiempo", respuesta: "Verdadero" },
+  { pregunta: "En el equilibrio químico, las concentraciones de reactivos y productos cambian con el tiempo", respuesta: "Falso" },
+  { pregunta: "La Ley de Acción de Masas establece que existe una relación matemática entre las concentraciones de productos y reactivos en el equilibrio", respuesta: "Verdadero" },
+  { pregunta: "La Ley de Acción de Masas establece que existe una relación matemática entre las velocidades de reacción iniciales", respuesta: "Falso" },
+  //{ pregunta: "El valor de K depende de la forma en que está balanceada la ecuación química", respuesta: "Verdadero" },
+  //{ pregunta: "El valor de K no depende de la forma en que está balanceada la ecuación química", respuesta: "Falso" },
+  { pregunta: "Si K >> 1, el equilibrio está desplazado hacia la formación de productos", respuesta: "Verdadero" },
+  { pregunta: "Si K << 1, el equilibrio está desplazado hacia la formación de productos", respuesta: "Falso" },
+  { pregunta: "Si K << 1, el equilibrio está desplazado hacia la formación de reactivos", respuesta: "Verdadero" },
+  { pregunta: "Si K >> 1, el equilibrio está desplazado hacia la formación de reactivos", respuesta: "Falso" },
+  { pregunta: "La constante de equilibrio (K) solo depende de la temperatura", respuesta: "Verdadero" },
+  { pregunta: "La constante de equilibrio (K) depende de la concentración inicial de los reactivos", respuesta: "Falso" },
+  { pregunta: "En el cálculo de K, no se incluyen las concentraciones de sustancias en estado líquido puro o sólido puro", respuesta: "Verdadero" },
+  { pregunta: "En el cálculo de K, se incluyen las concentraciones de todas las sustancias, incluyendo sólidos y líquidos puros", respuesta: "Falso" },
+  { pregunta: "Si Q < K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Verdadero" },
+  { pregunta: "Si Q > K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Falso" },
+  { pregunta: "El Principio de Le Châtelier establece que un sistema en equilibrio, al ser perturbado, evoluciona en la dirección que contrarresta el efecto de la perturbación", respuesta: "Verdadero" },
+  { pregunta: "El Principio de Le Châtelier establece que un sistema en equilibrio, al ser perturbado, evoluciona en la dirección que amplifica el efecto de la perturbación", respuesta: "Falso" },
+  { pregunta: "Si se aumenta la concentración de un reactivo, el equilibrio se desplaza hacia los productos", respuesta: "Verdadero" },
+  { pregunta: "Si se aumenta la concentración de un producto, el equilibrio se desplaza hacia los productos", respuesta: "Falso" },
+  { pregunta: "En reacciones con cambio de moles de gas, si se aumenta la presión (disminuyendo el volumen), el equilibrio se desplaza hacia el lado con menor número de moles de gas", respuesta: "Verdadero" },
+  { pregunta: "En reacciones con cambio de moles de gas, si se aumenta la presión, el equilibrio se desplaza hacia el lado con mayor número de moles de gas", respuesta: "Falso" },
+  { pregunta: "La adición de un catalizador en un sistema en equilibrio aumenta la velocidad de las reacciones directa e inversa por igual", respuesta: "Verdadero" },
+  { pregunta: "La adición de un catalizador en un sistema en equilibrio desplaza la posición del equilibrio", respuesta: "Falso" },
+  { pregunta: "Si Delta G° < 0, la reacción es espontánea en condiciones estándar y K > 1", respuesta: "Verdadero" },
+  { pregunta: "Si Delta G° > 0, la reacción es espontánea en condiciones estándar y K > 1", respuesta: "Falso" },
+  { pregunta: "Si Delta G° = 0, el sistema está en equilibrio en condiciones estándar y K = 1", respuesta: "Verdadero" },
+  { pregunta: "Si Delta G° = 0, el sistema está en equilibrio en condiciones estándar y K > 1", respuesta: "Falso" },
+  { pregunta: "Para una reacción endotérmica (ΔH° > 0), un aumento de temperatura provoca un aumento en el valor de la constante de equilibrio (K)", respuesta: "Verdadero" },
+  { pregunta: "Para una reacción exotérmica (ΔH° < 0), un aumento de temperatura provoca un aumento en el valor de la constante de equilibrio (K)", respuesta: "Falso" },
+  { pregunta: "Para una reacción endotérmica (ΔH° > 0), un aumento de temperatura desplaza el equilibrio hacia los productos", respuesta: "Verdadero" },
+  { pregunta: "Para una reacción exotérmica (ΔH° < 0), un aumento de temperatura desplaza el equilibrio hacia los productos", respuesta: "Falso" },
+  //{ pregunta: "Si la constante de equilibrio (K) aumenta al aumentar la temperatura, la reacción es endotérmica", respuesta: "Verdadero" },
+  //{ pregunta: "Si la constante de equilibrio (K) aumenta al aumentar la temperatura, la reacción es exotérmica", respuesta: "Falso" },
+  //{ pregunta: "Si la constante de equilibrio (K) aumenta al disminuir la temperatura, la reacción es exotérmica", respuesta: "Verdadero" },
+  //{ pregunta: "Si la constante de equilibrio (K) aumenta al disminuir la temperatura, la reacción es endotérmica", respuesta: "Falso" },
+  { pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por el producto de las constantes de equilibrio de las reacciones individuales", respuesta: "Verdadero" },
+  { pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por la suma de las constantes de equilibrio individuales", respuesta: "Falso" },
+  { pregunta: "Solo el cambio en la temperatura modifica el valor de la constante de equilibrio de una reacción en particular", respuesta: "Verdadero" },
+  { pregunta: "Los cambios en la concentración o presión modifican el valor de la constante de equilibrio de una reacción", respuesta: "Falso" },
+  { pregunta: "Los cambios en la concentración, presión o volumen pueden cambiar las concentraciones de equilibrio de los reactivos y productos", respuesta: "Verdadero" },
+  { pregunta: "Los cambios en la concentración, presión o volumen no tienen ningún efecto sobre las concentraciones de equilibrio", respuesta: "Falso" },
+  { pregunta: "La adición de un catalizador apresura el momento en el que se alcanza el equilibrio", respuesta: "Verdadero" },
+  { pregunta: "La adición de un catalizador modifica las concentraciones de los reactivos y de los productos en el equilibrio", respuesta: "Falso" }
+];
     
     let currentExamQuestions = [];
 
