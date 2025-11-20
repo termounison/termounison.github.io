@@ -172,8 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
     // DATA: Preguntas y respuestas del examen
 const PREGUNTAS = [
-  { pregunta: "La Cinética Química es el área de la química que estudia la velocidad de las reacciones químicas y los mecanismos por los que ocurren", respuesta: "Verdadero" },
-  { pregunta: "La Cinética Química es el área de la química que estudia la energía involucrada en las reacciones químicas", respuesta: "Falso" },
+  //{ pregunta: "La Cinética Química es el área de la química que estudia la velocidad de las reacciones químicas y los mecanismos por los que ocurren", respuesta: "Verdadero" },
+  //{ pregunta: "La Cinética Química es el área de la química que estudia la energía involucrada en las reacciones químicas", respuesta: "Falso" },
   { pregunta: "La velocidad de reacción se puede medir en mol/(L s)", respuesta: "Verdadero" },
   { pregunta: "La velocidad de reacción se puede medir en mol/s", respuesta: "Falso" }, // CORRECCIÓN: Velocidad de reacción es M/s, no mol/s
   { pregunta: "La velocidad de una reacción generalmente disminuye con el tiempo a medida que los reactivos se consumen", respuesta: "Verdadero" },
@@ -184,10 +184,8 @@ const PREGUNTAS = [
   { pregunta: "La Ley de Velocidad (o Ley de Rapidez) relaciona la velocidad de reacción con la constante de equilibrio (K)", respuesta: "Falso" },
   { pregunta: "El orden de reacción es la suma de los exponentes de las concentraciones en la Ley de Velocidad", respuesta: "Verdadero" },
   { pregunta: "El orden de reacción es igual a la suma de los coeficientes estequiométricos de los reactivos", respuesta: "Falso" },
-  { pregunta: "La constante de velocidad k es independiente de las concentraciones iniciales de los reactivos", respuesta: "Verdadero" },
-  { pregunta: "La constante de velocidad k es independiente de la temperatura", respuesta: "Falso" },
   { pregunta: "La constante de rapidez k de una reacción cambia solo con la temperatura", respuesta: "Verdadero" },
-  { pregunta: "La constante de rapidez k de una reacción cambia solo con la concentración de los reactivos", respuesta: "Falso" },
+  { pregunta: "La constante de velocidad k es independiente de la temperatura", respuesta: "Falso" },
   { pregunta: "La constante de velocidad k de una reacción de orden cero se mide en mol/(L s)", respuesta: "Verdadero" },
   { pregunta: "La constante de velocidad k de una reacción de orden cero se mide en 1/s", respuesta: "Falso" },
   { pregunta: "La constante de velocidad k de una reacción de primer orden se mide en 1/s", respuesta: "Verdadero" },
@@ -196,18 +194,18 @@ const PREGUNTAS = [
   { pregunta: "La constante de velocidad k de una reacción de segundo orden se mide en 1/s", respuesta: "Falso" },
   { pregunta: "La ley de rapidez y el orden de reacción deben determinarse experimentalmente", respuesta: "Verdadero" },
   { pregunta: "La ley de rapidez y el orden de reacción pueden determinarse a partir de la estequiometría de la ecuación global de la reacción", respuesta: "Falso" },
-  { pregunta: "Para una reacción de orden cero, la velocidad de reacción es constante y no depende de la concentración de reactivos", respuesta: "Verdadero" },
-  { pregunta: "Para una reacción de orden cero, la vida media es constante y no depende de la concentración inicial", respuesta: "Falso" },
+  //{ pregunta: "Para una reacción de orden cero, la velocidad de reacción es constante y no depende de la concentración de reactivos", respuesta: "Verdadero" },
+  //{ pregunta: "Para una reacción de orden cero, la vida media es constante y no depende de la concentración inicial", respuesta: "Falso" },
   { pregunta: "La Teoría de Colisiones postula que las moléculas deben chocar con la orientación adecuada y la energía suficiente para reaccionar", respuesta: "Verdadero" },
   { pregunta: "La Teoría de Colisiones postula que cualquier colisión entre moléculas resulta en una reacción", respuesta: "Falso" },
   { pregunta: "La Energía de Activación E es la energía mínima requerida para que una colisión sea efectiva y ocurra la reacción", respuesta: "Verdadero" },
   { pregunta: "La Energía de Activación E es el cambio de entalpía de la reacción", respuesta: "Falso" },
   { pregunta: "Un aumento de temperatura acelera la reacción porque incrementa la fracción de moléculas que tienen energía cinética igual o superior a la energía de activación E", respuesta: "Verdadero" },
   { pregunta: "Un aumento de temperatura acelera la reacción porque disminuye la Energía de Activación E", respuesta: "Falso" },
-  { pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad k con la Energía de Activación E y la temperatura T", respuesta: "Verdadero" },
-  { pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad k con el cambio de energía libre de Gibbs &Delta;G", respuesta: "Falso" },
-  { pregunta: "Un mecanismo de reacción es la secuencia de pasos elementales que describen cómo ocurre una reacción a nivel molecular", respuesta: "Verdadero" },
-  { pregunta: "Un mecanismo de reacción es la estequiometría global de la reacción", respuesta: "Falso" },
+  //{ pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad k con la Energía de Activación E y la temperatura T", respuesta: "Verdadero" },
+  //{ pregunta: "La Ecuación de Arrhenius relaciona la constante de velocidad k con el cambio de energía libre de Gibbs &Delta;G", respuesta: "Falso" },
+  //{ pregunta: "Un mecanismo de reacción es la secuencia de pasos elementales que describen cómo ocurre una reacción a nivel molecular", respuesta: "Verdadero" },
+  //{ pregunta: "Un mecanismo de reacción es la estequiometría global de la reacción", respuesta: "Falso" },
   { pregunta: "Un catalizador es una sustancia que aumenta la velocidad de reacción al proporcionar un camino de reacción con una Energía de Activación menor", respuesta: "Verdadero" },
   { pregunta: "Un catalizador es una sustancia que se consume permanentemente durante la reacción", respuesta: "Falso" }
 ];

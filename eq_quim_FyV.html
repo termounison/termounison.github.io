@@ -172,8 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
     // DATA: Preguntas y respuestas del examen
 const PREGUNTAS = [
-  { pregunta: "Una reacción reversible es aquella en la que los productos pueden reaccionar para formar nuevamente los reactivos", respuesta: "Verdadero" },
-  { pregunta: "Una reacción reversible es aquella en la que los productos no pueden reaccionar para formar nuevamente los reactivos", respuesta: "Falso" },
+  //{ pregunta: "Una reacción reversible es aquella en la que los productos pueden reaccionar para formar nuevamente los reactivos", respuesta: "Verdadero" },
+  //{ pregunta: "Una reacción reversible es aquella en la que los productos no pueden reaccionar para formar nuevamente los reactivos", respuesta: "Falso" },
   { pregunta: "El equilibrio químico se alcanza cuando las velocidades de la reacción directa e inversa son iguales", respuesta: "Verdadero" },
   { pregunta: "El equilibrio químico se alcanza cuando las velocidades de la reacción directa e inversa son diferentes", respuesta: "Falso" },
   { pregunta: "En el equilibrio químico, las concentraciones de reactivos y productos permanecen constantes en el tiempo", respuesta: "Verdadero" },
@@ -190,16 +190,14 @@ const PREGUNTAS = [
   { pregunta: "La constante de equilibrio (K) depende de la concentración inicial de los reactivos", respuesta: "Falso" },
   { pregunta: "En el cálculo de K, no se incluyen las concentraciones de sustancias en estado líquido puro o sólido puro", respuesta: "Verdadero" },
   { pregunta: "En el cálculo de K, se incluyen las concentraciones de todas las sustancias, incluyendo sólidos y líquidos puros", respuesta: "Falso" },
-  { pregunta: "Si Q < K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Verdadero" },
-  { pregunta: "Si Q > K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Falso" },
+  //{ pregunta: "Si Q < K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Verdadero" },
+  //{ pregunta: "Si Q > K, la reacción procederá hacia la derecha (formación de productos) para alcanzar el equilibrio", respuesta: "Falso" },
   { pregunta: "El Principio de Le Châtelier establece que un sistema en equilibrio, al ser perturbado, evoluciona en la dirección que contrarresta el efecto de la perturbación", respuesta: "Verdadero" },
   { pregunta: "El Principio de Le Châtelier establece que un sistema en equilibrio, al ser perturbado, evoluciona en la dirección que amplifica el efecto de la perturbación", respuesta: "Falso" },
-  { pregunta: "Si se aumenta la concentración de un reactivo, el equilibrio se desplaza hacia los productos", respuesta: "Verdadero" },
-  { pregunta: "Si se aumenta la concentración de un producto, el equilibrio se desplaza hacia los productos", respuesta: "Falso" },
+  //{ pregunta: "Si se aumenta la concentración de un reactivo, el equilibrio se desplaza hacia los productos", respuesta: "Verdadero" },
+  //{ pregunta: "Si se aumenta la concentración de un producto, el equilibrio se desplaza hacia los productos", respuesta: "Falso" },
   { pregunta: "En reacciones con cambio de moles de gas, si se aumenta la presión (disminuyendo el volumen), el equilibrio se desplaza hacia el lado con menor número de moles de gas", respuesta: "Verdadero" },
   { pregunta: "En reacciones con cambio de moles de gas, si se aumenta la presión, el equilibrio se desplaza hacia el lado con mayor número de moles de gas", respuesta: "Falso" },
-  { pregunta: "La adición de un catalizador en un sistema en equilibrio aumenta la velocidad de las reacciones directa e inversa por igual", respuesta: "Verdadero" },
-  { pregunta: "La adición de un catalizador en un sistema en equilibrio desplaza la posición del equilibrio", respuesta: "Falso" },
   { pregunta: "Si Delta G° < 0, la reacción es espontánea en condiciones estándar y K > 1", respuesta: "Verdadero" },
   { pregunta: "Si Delta G° > 0, la reacción es espontánea en condiciones estándar y K > 1", respuesta: "Falso" },
   { pregunta: "Si Delta G° = 0, el sistema está en equilibrio en condiciones estándar y K = 1", respuesta: "Verdadero" },
@@ -212,13 +210,13 @@ const PREGUNTAS = [
   //{ pregunta: "Si la constante de equilibrio (K) aumenta al aumentar la temperatura, la reacción es exotérmica", respuesta: "Falso" },
   //{ pregunta: "Si la constante de equilibrio (K) aumenta al disminuir la temperatura, la reacción es exotérmica", respuesta: "Verdadero" },
   //{ pregunta: "Si la constante de equilibrio (K) aumenta al disminuir la temperatura, la reacción es endotérmica", respuesta: "Falso" },
-  { pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por el producto de las constantes de equilibrio de las reacciones individuales", respuesta: "Verdadero" },
-  { pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por la suma de las constantes de equilibrio individuales", respuesta: "Falso" },
+  //{ pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por el producto de las constantes de equilibrio de las reacciones individuales", respuesta: "Verdadero" },
+  //{ pregunta: "Si una reacción se puede expresar como la suma de dos o más reacciones, la constante de equilibrio de la reacción global está dada por la suma de las constantes de equilibrio individuales", respuesta: "Falso" },
   { pregunta: "Solo el cambio en la temperatura modifica el valor de la constante de equilibrio de una reacción en particular", respuesta: "Verdadero" },
   { pregunta: "Los cambios en la concentración o presión modifican el valor de la constante de equilibrio de una reacción", respuesta: "Falso" },
   { pregunta: "Los cambios en la concentración, presión o volumen pueden cambiar las concentraciones de equilibrio de los reactivos y productos", respuesta: "Verdadero" },
   { pregunta: "Los cambios en la concentración, presión o volumen no tienen ningún efecto sobre las concentraciones de equilibrio", respuesta: "Falso" },
-  { pregunta: "La adición de un catalizador apresura el momento en el que se alcanza el equilibrio", respuesta: "Verdadero" },
+  { pregunta: "La adición de un catalizador en un sistema en equilibrio aumenta la velocidad de las reacciones directa e inversa por igual", respuesta: "Verdadero" },
   { pregunta: "La adición de un catalizador modifica las concentraciones de los reactivos y de los productos en el equilibrio", respuesta: "Falso" }
 ];
     
